@@ -34,11 +34,13 @@ public class CommandHandler {
         if (input_parts.length == 2) {
             jsonData = input_parts[1];
         }
-//        switch (command){
-//            case "addUser":
-//
-//
-//        }
+        switch (command){
+            case "addUser":
+                System.out.println("Adding User");
+
+
+
+        }
         runCommand();
 
     }
