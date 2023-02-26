@@ -9,6 +9,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.util.Date;
+import java.util.List;
 
 
 @Getter
@@ -23,6 +24,8 @@ public class User {
     private Date birthDate;
     private String address;
     private float credit;
+
+    List<Commodity> BuyList;
     public User(int id, String username, String password, String email, Date birthDate, String address, float credit) {
         this.id = id;
         this.username = username;
