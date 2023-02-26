@@ -7,4 +7,8 @@ public class Baloot {
     HashMap<Integer, User> users;
     HashMap<Integer, Commodity> commodities;
     HashMap<Integer, Provider> providers;
+
+
+
 }
+
