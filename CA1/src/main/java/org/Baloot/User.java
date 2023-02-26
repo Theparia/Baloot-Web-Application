@@ -14,9 +14,8 @@ import java.util.List;
 
 @Getter
 @Setter
-//@NoArgsConstructor
+@NoArgsConstructor
 public class User {
-    private int id;
     private String username; //unique validation + handling !@#
     private String password;
     private String email;
@@ -26,13 +25,25 @@ public class User {
     private float credit;
 
     List<Commodity> BuyList;
-    public User(int id, String username, String password, String email, Date birthDate, String address, float credit) {
-        this.id = id;
+    public User(String username, String password, String email, Date birthDate, String address, float credit) {
         this.username = username;
         this.password = password;
         this.email = email;
         this.birthDate = birthDate;
         this.address = address;
         this.credit = credit;
+    }
+
+    public boolean isEqual(String username) {
+        return this.username.equals(username);
+    }
+
+    public void update(User user){
+        this.password = user.getPassword();
+        this.email = user.getEmail();
+        this.credit = user.getCredit();
+        this.address = user.getAddress();
+        this.birthDate = user.getBirthDate();
+        this.BuyList = user.getBuyList();
     }
 }
