@@ -1,13 +1,12 @@
 package org.Baloot;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import javax.swing.plaf.basic.BasicInternalFrameTitlePane;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.util.Map;
 
 public class CommandHandler {
 
@@ -45,33 +44,34 @@ public class CommandHandler {
                 if(!jsonData.isEmpty()) {
                     User user = mapper.readValue(jsonData, User.class);
                     baloot.addUser(user);
+                    System.out.println("User Added");
                 }
 //                else //TODO: print error?
-                System.out.println("User Added");
-
                 break;
             case "addProvider":
                 if(!jsonData.isEmpty()) {
                     Provider provider = mapper.readValue(jsonData, Provider.class);
                     baloot.addProvider(provider);
+                    System.out.println("Provider Added");
                 }
-                System.out.println("Provider Added");
                 break;
             case "addCommodity":
-                System.out.println("Adding Commodity");
                 if(!jsonData.isEmpty()) {
                     Commodity commodity = mapper.readValue(jsonData, Commodity.class);
                     baloot.addCommodity(commodity);
+                    System.out.println("Commodity Added");
                 }
                 break;
             case "getCommoditiesList":
-                baloot.getCommoditiesList();
+                baloot.getCommoditiesList().print();
                 break;
 
         }
 //        baloot.printData(); //checking
 
     }
+
+
 
 
 }

@@ -7,7 +7,6 @@ import com.fasterxml.jackson.databind.node.ObjectNode;
 
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
 public class Baloot {
@@ -72,7 +71,7 @@ public class Baloot {
         //TODO: What if commodity already exist?
      }
 
-     public void getCommoditiesList() throws Exception{
+     public Response getCommoditiesList() throws Exception{
          ObjectMapper objectMapper = new ObjectMapper();
          List<ObjectNode> JsonCommodities = new ArrayList<>();
          for (Commodity entry : commodities) {
@@ -82,7 +81,8 @@ public class Baloot {
          ArrayNode arrayNode = objectMapper.valueToTree(JsonCommodities);
          ObjectNode commoditiesList = objectMapper.createObjectNode();
          commoditiesList.putArray("CommoditiesList").addAll(arrayNode);
-         System.out.println(objectMapper.writeValueAsString(commoditiesList));
+//         String data = objectMapper.writeValueAsString(commoditiesList);
+         return new Response(true, commoditiesList);
      }
 
     public void printData(){
@@ -99,7 +99,6 @@ public class Baloot {
             System.out.println(commodity.getId());
         }
     }
-
 
 }
 
