@@ -57,12 +57,13 @@ public class CommandHandler {
                 }
                 System.out.println("Provider Added");
                 break;
-//            case "addCommodity":
-//                System.out.println("Adding Commodity");
-//                if(!jsonData.isEmpty()) {
-//                    Commodity commodity = mapper.readValue(jsonData, Commodity.class);
-//                    baloot.addCommodity(commodity);
-//                }
+            case "addCommodity":
+                System.out.println("Adding Commodity");
+                if(!jsonData.isEmpty()) {
+                    Commodity commodity = mapper.readValue(jsonData, Commodity.class);
+                    baloot.addCommodity(commodity);
+                }
+                break;
 
         }
 //        baloot.printData(); //checking
