@@ -64,6 +64,9 @@ public class CommandHandler {
                     baloot.addCommodity(commodity);
                 }
                 break;
+            case "getCommoditiesList":
+                baloot.getCommoditiesList();
+                break;
 
         }
 //        baloot.printData(); //checking

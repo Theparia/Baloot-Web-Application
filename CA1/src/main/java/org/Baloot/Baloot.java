@@ -1,5 +1,11 @@
 package org.Baloot;
 
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.ArrayNode;
+import com.fasterxml.jackson.databind.node.ObjectNode;
+
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -64,6 +70,19 @@ public class Baloot {
         }
         else throw new Exception("Error: Provider with id " + newCommodity.getProviderId() + " does not exists.");
         //TODO: What if commodity already exist?
+     }
+
+     public void getCommoditiesList() throws Exception{
+         ObjectMapper objectMapper = new ObjectMapper();
+         List<ObjectNode> JsonCommodities = new ArrayList<>();
+         for (Commodity entry : commodities) {
+             ObjectNode node = objectMapper.convertValue(entry, ObjectNode.class);
+             JsonCommodities.add(node);
+         }
+         ArrayNode arrayNode = objectMapper.valueToTree(JsonCommodities);
+         ObjectNode commoditiesList = objectMapper.createObjectNode();
+         commoditiesList.putArray("CommoditiesList").addAll(arrayNode);
+         System.out.println(objectMapper.writeValueAsString(commoditiesList));
      }
 
     public void printData(){
