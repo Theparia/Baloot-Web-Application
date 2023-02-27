@@ -24,6 +24,13 @@ public class Baloot {
         return false;
     }
 
+    private boolean doesProviderExist(Provider newProvider) {
+        for (Provider provider : providers)
+            if (provider.isEqual(newProvider.getId()))
+                return true;
+        return false;
+    }
+
     public void addUser(User newUser){
         if (doesUserExist(newUser)) {
             System.out.println(newUser.getUsername());
@@ -33,5 +40,42 @@ public class Baloot {
             users.add(newUser);
         }
     }
+     public void addProvider(Provider newProvider) throws Exception{
+        if(!doesProviderExist(newProvider)){
+            providers.add(newProvider);
+        }
+        else{
+            throw new Exception("Provider with id "+ newProvider.getId() + " already exist.");
+        }
+     }
+
+//     public Provider findProviderById(String providerId){
+//        for (Provider provider : providers){
+//            if(provider.isEqual(providerId)){
+//                return provider;
+//            }
+//        }
+//        return null;
+//     }
+//
+//     public void addCommodity(Commodity newCommodity) throws Exception{
+//        if(findProviderById(newCommodity.getProviderId()) != null){
+//            commodities.add(newCommodity);
+//        }
+//        else throw new Exception("Error: Provider with id " + newCommodity.getProviderId() + " does not exists.");
+//     }
+
+    public void printData(){
+        System.out.println("Users:");
+        for(User user : users){
+            System.out.println(user.getUsername());
+        }
+        System.out.println("Providers:");
+        for(Provider provider : providers){
+            System.out.println(provider.getId());
+        }
+    }
+
+
 }
 

@@ -27,29 +27,45 @@ public class CommandHandler {
 
     private static void start(String input) throws IOException {
         String[] input_parts = parseInput(input);
-//        Baloot b = new Baloot();
         String command = input_parts[0];
         String jsonData = "";
         if (input_parts.length == 2) {
             jsonData = input_parts[1];
         }
-
+        try {
+            runCommand(command, jsonData);
+        } catch (Exception e){
+            System.out.println(e.getMessage());
+        }
+    }
+    private static void runCommand(String command, String jsonData) throws Exception{
         ObjectMapper mapper = new ObjectMapper();
-
         switch (command){
             case "addUser":
-                System.out.println("Adding User");
                 if(!jsonData.isEmpty()) {
                     User user = mapper.readValue(jsonData, User.class);
                     baloot.addUser(user);
                 }
+//                else //TODO: print error?
+                System.out.println("User Added");
 
+                break;
+            case "addProvider":
+                if(!jsonData.isEmpty()) {
+                    Provider provider = mapper.readValue(jsonData, Provider.class);
+                    baloot.addProvider(provider);
+                }
+                System.out.println("Provider Added");
+                break;
+//            case "addCommodity":
+//                System.out.println("Adding Commodity");
+//                if(!jsonData.isEmpty()) {
+//                    Commodity commodity = mapper.readValue(jsonData, Commodity.class);
+//                    baloot.addCommodity(commodity);
+//                }
 
         }
-        runCommand();
-
-    }
-    private static void runCommand() {
+//        baloot.printData(); //checking
 
     }
 
