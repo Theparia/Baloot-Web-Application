@@ -19,7 +19,7 @@ public class Response {
         this.data = data;
     }
 
-    public void print() throws JsonProcessingException {
+    public void print() {
         ObjectMapper objectMapper = new ObjectMapper();
         ObjectNode node = objectMapper.convertValue(this, ObjectNode.class);
         System.out.println(node);

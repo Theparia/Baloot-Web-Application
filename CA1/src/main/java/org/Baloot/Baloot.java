@@ -13,6 +13,13 @@ public class Baloot {
     List<User> users = new ArrayList<>();
     List<Commodity> commodities = new ArrayList<>();
     List<Provider> providers = new ArrayList<>();
+    ObjectMapper mapper;
+    ObjectNode responseNode;
+
+    public Baloot(){
+        mapper = new ObjectMapper();
+        responseNode = mapper.createObjectNode();
+    }
 
     private User findUserByUsername(String username){
         for (User user : users){
@@ -36,22 +43,27 @@ public class Baloot {
         return false;
     }
 
-    public void addUser(User newUser){
+    public Response addUser(User newUser){
         if (doesUserExist(newUser)) {
-            System.out.println(newUser.getUsername());
             findUserByUsername(newUser.getUsername()).update(newUser);
         }
         else {
             users.add(newUser);
         }
+        responseNode.set("Response", mapper.convertValue("User Added.", JsonNode.class));
+        return new Response(true, responseNode);
+        //TODO: Handling errors of Adding User
     }
-     public void addProvider(Provider newProvider) throws Exception{
-        if(!doesProviderExist(newProvider)){
+     public Response addProvider(Provider newProvider) throws Exception{
+         if (!doesProviderExist(newProvider)){
             providers.add(newProvider);
-        }
-        else{
-            throw new Exception("Provider with id "+ newProvider.getId() + " already exist.");
-        }
+            responseNode.set("Response", mapper.convertValue("Provider Added.", JsonNode.class));
+            return new Response(true, responseNode);
+         }
+         else {
+            responseNode.set("Response", mapper.convertValue("Provider Already Exists.", JsonNode.class));
+            return new Response(false, responseNode);
+         }
      }
 
      public Provider findProviderById(String providerId){
@@ -63,11 +75,25 @@ public class Baloot {
         return null;
      }
 
-     public void addCommodity(Commodity newCommodity) throws Exception{
+    public Commodity findCommodityById(String commodityId){
+        for (Commodity commodity : commodities){
+            if(commodity.isEqual(commodityId)){
+                return commodity;
+            }
+        }
+        return null;
+    }
+
+     public Response addCommodity(Commodity newCommodity) throws Exception{
         if(findProviderById(newCommodity.getProviderId()) != null){
             commodities.add(newCommodity);
+            responseNode.set("Response", mapper.convertValue("Commodity Added.", JsonNode.class));
+            return new Response(true, responseNode);
         }
-        else throw new Exception("Error: Provider with id " + newCommodity.getProviderId() + " does not exists.");
+        else {
+            responseNode.set("Response", mapper.convertValue("Provider NOT Exists.", JsonNode.class));
+            return new Response(false, responseNode);
+        }
         //TODO: What if commodity already exist?
      }
 
@@ -83,6 +109,16 @@ public class Baloot {
          commoditiesList.putArray("CommoditiesList").addAll(arrayNode);
 //         String data = objectMapper.writeValueAsString(commoditiesList);
          return new Response(true, commoditiesList);
+     }
+
+     public void rateCommodity(String username, String commodityId, float score) throws Exception {
+         if(findCommodityById(commodityId) == null){
+            throw new Exception("Error: Commodity does not exist.");
+         }
+         if(findUserByUsername(username) == null){
+             throw new Exception("Error: User does not exist.");
+         }
+         findCommodityById(commodityId).addUserRating(username, score);
      }
 
     public void printData(){

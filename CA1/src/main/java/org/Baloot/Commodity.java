@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 
 @Getter
@@ -18,11 +19,12 @@ public class Commodity {
     private String id;
     private String name; //unique validation + handling !@#
     private String providerId;
-    private float price;
+    private Float price;
     private List<String> categories;
-    private int rating;
+    private HashMap<String, Float> usersRating = new HashMap<>();
+    private Float rating;
     private int inStock;
-    public Commodity(String id, String name, String providerId, float price, List<String> categories, int rating, int inStock) {
+    public Commodity(String id, String name, String providerId, Float price, List<String> categories, Float rating, int inStock) {
         this.id = id;
         this.name = name;
         this.providerId = providerId;
@@ -30,6 +32,30 @@ public class Commodity {
         this.categories = categories;
         this.rating = rating;
         this.inStock = inStock;
+        this.usersRating.put("###", rating);
+    }
+
+    public void addUserRating(String username, Float rating){
+        if (usersRating.containsKey(username)){
+            usersRating.replace(username, rating);
+        }
+        else {
+            usersRating.put(username, rating);
+        }
+        updateRating();
+    }
+
+    private void updateRating(){
+        float sum = 0;
+        for (HashMap.Entry<String, Float> entry : usersRating.entrySet()) {
+            sum += entry.getValue();
+        }
+        rating = sum / usersRating.size();
+        System.out.println("new rating: " + rating);
+    }
+
+    public boolean isEqual(String id) {
+        return this.id.equals(id);
     }
 
 //    public void reduceInStock(int count){

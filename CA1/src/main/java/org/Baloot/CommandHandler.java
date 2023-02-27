@@ -7,6 +7,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.util.Map;
 
 public class CommandHandler {
 
@@ -32,43 +33,48 @@ public class CommandHandler {
             jsonData = input_parts[1];
         }
         try {
-            runCommand(command, jsonData);
+            Response response = runCommand(command, jsonData);
+            response.print();
         } catch (Exception e){
             System.out.println(e.getMessage());
         }
     }
-    private static void runCommand(String command, String jsonData) throws Exception{
+    private static Response runCommand(String command, String jsonData) throws Exception{
         ObjectMapper mapper = new ObjectMapper();
         switch (command){
             case "addUser":
                 if(!jsonData.isEmpty()) {
                     User user = mapper.readValue(jsonData, User.class);
-                    baloot.addUser(user);
-                    System.out.println("User Added");
+                    return baloot.addUser(user);
                 }
 //                else //TODO: print error?
                 break;
             case "addProvider":
                 if(!jsonData.isEmpty()) {
                     Provider provider = mapper.readValue(jsonData, Provider.class);
-                    baloot.addProvider(provider);
-                    System.out.println("Provider Added");
+                    return  baloot.addProvider(provider);
                 }
                 break;
             case "addCommodity":
                 if(!jsonData.isEmpty()) {
                     Commodity commodity = mapper.readValue(jsonData, Commodity.class);
-                    baloot.addCommodity(commodity);
-                    System.out.println("Commodity Added");
+                    return baloot.addCommodity(commodity);
                 }
                 break;
             case "getCommoditiesList":
-                baloot.getCommoditiesList().print();
+                return baloot.getCommoditiesList();
+            case "rateCommodity":
+                if(!jsonData.isEmpty()) {
+                    Map inputDataMap = null;
+                    inputDataMap = mapper.readValue(jsonData, Map.class);
+                    baloot.rateCommodity((String) inputDataMap.get("username"), String.valueOf(inputDataMap.get("commodityId")), (Integer) inputDataMap.get("score"));
+                    System.out.println("Rating Added");
+                }
                 break;
 
         }
 //        baloot.printData(); //checking
-
+        return null;
     }
 
 
