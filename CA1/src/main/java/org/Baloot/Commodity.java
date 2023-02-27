@@ -2,6 +2,9 @@ package org.Baloot;
 
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -51,7 +54,6 @@ public class Commodity {
             sum += entry.getValue();
         }
         rating = sum / usersRating.size();
-        System.out.println("new rating: " + rating);
     }
 
     public boolean isEqual(String id) {

@@ -111,14 +111,18 @@ public class Baloot {
          return new Response(true, commoditiesList);
      }
 
-     public void rateCommodity(String username, String commodityId, float score) throws Exception {
+     public Response rateCommodity(String username, String commodityId, float score) throws Exception {
          if(findCommodityById(commodityId) == null){
-            throw new Exception("Error: Commodity does not exist.");
+             responseNode.set("Response", mapper.convertValue("Commodity does not exist.", JsonNode.class));
+             return new Response(false, responseNode);
          }
          if(findUserByUsername(username) == null){
-             throw new Exception("Error: User does not exist.");
+             responseNode.set("Response", mapper.convertValue("User does not exist.", JsonNode.class));
+             return new Response(false, responseNode);
          }
          findCommodityById(commodityId).addUserRating(username, score);
+         responseNode.set("Response", mapper.convertValue("Rating Added.", JsonNode.class));
+         return new Response(true, responseNode);
      }
 
     public void printData(){

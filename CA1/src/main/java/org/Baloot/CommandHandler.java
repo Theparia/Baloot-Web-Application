@@ -65,13 +65,10 @@ public class CommandHandler {
                 return baloot.getCommoditiesList();
             case "rateCommodity":
                 if(!jsonData.isEmpty()) {
-                    Map inputDataMap = null;
+                    Map inputDataMap;
                     inputDataMap = mapper.readValue(jsonData, Map.class);
-                    baloot.rateCommodity((String) inputDataMap.get("username"), String.valueOf(inputDataMap.get("commodityId")), (Integer) inputDataMap.get("score"));
-                    System.out.println("Rating Added");
+                    return baloot.rateCommodity((String) inputDataMap.get("username"), String.valueOf(inputDataMap.get("commodityId")), (Integer) inputDataMap.get("score"));
                 }
-                break;
-
         }
 //        baloot.printData(); //checking
         return null;
