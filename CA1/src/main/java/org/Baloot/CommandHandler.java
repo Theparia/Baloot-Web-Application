@@ -87,6 +87,12 @@ public class CommandHandler {
                     inputDataMap = mapper.readValue(jsonData, Map.class);
                     return baloot.getCommodityById(String.valueOf(inputDataMap.get("id")));
                 }
+            case "getCommoditiesByCategory":
+                if(!jsonData.isEmpty()) {
+                    Map inputDataMap;
+                    inputDataMap = mapper.readValue(jsonData, Map.class);
+                    return baloot.getCommoditiesByCategory(String.valueOf(inputDataMap.get("category")));
+                }
         }
 //        baloot.printData(); //checking
         return null;

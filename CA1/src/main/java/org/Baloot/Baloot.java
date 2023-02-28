@@ -84,6 +84,16 @@ public class Baloot {
         return null;
     }
 
+    public List<Commodity> findCommoditiesByCategory(String category){
+        List<Commodity> commoditiesInCategory = new ArrayList<>();
+        for (Commodity commodity : commodities){
+            if(commodity.isInCategory(category)){
+                commoditiesInCategory.add(commodity);
+            }
+        }
+        return commoditiesInCategory;
+    }
+
      public Response addCommodity(Commodity newCommodity) throws Exception{
         if(findProviderById(newCommodity.getProviderId()) != null){
             commodities.add(newCommodity);
@@ -178,6 +188,21 @@ public class Baloot {
         return new Response(true, node);
     }
 
+    public Response getCommoditiesByCategory(String category){
+        List<Commodity> commoditiesInCategory = findCommoditiesByCategory(category);
+        ObjectMapper objectMapper = new ObjectMapper();
+        List<ObjectNode> JsonCommodities = new ArrayList<>();
+        for (Commodity entry : commoditiesInCategory) {
+            ObjectNode node = objectMapper.convertValue(entry, ObjectNode.class);
+            JsonCommodities.add(node);
+        }
+        ArrayNode arrayNode = objectMapper.valueToTree(JsonCommodities);
+        ObjectNode commoditiesList = objectMapper.createObjectNode();
+        commoditiesList.putArray("commoditiesListByCategory").addAll(arrayNode);
+        return new Response(true, commoditiesList);
+        // TODO: omit inStock field for just this command.
+        // TODO: Is the sample output correct?
+    }
 
     public void printData(){
         System.out.println("Users:");

@@ -21,6 +21,7 @@ import java.util.List;
 public class Commodity {
     //@Id
     private String id;
+    //TODO: change id type to int if needed.
     private String name; //unique validation + handling !@#
     private String providerId;
     private Float price;
@@ -64,6 +65,15 @@ public class Commodity {
 
     public boolean isEqual(String id) {
         return this.id.equals(id);
+    }
+
+    public boolean isInCategory(String category){
+        for(String cat: categories){
+            if (cat.equals(category)){
+                return true;
+            }
+        }
+        return false;
     }
 
 //    public void reduceInStock(int count){
