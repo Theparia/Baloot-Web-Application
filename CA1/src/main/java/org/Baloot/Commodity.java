@@ -2,6 +2,7 @@ package org.Baloot;
 
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
@@ -24,6 +25,7 @@ public class Commodity {
     private String providerId;
     private Float price;
     private List<String> categories;
+    @JsonIgnore
     private HashMap<String, Float> usersRating = new HashMap<>();
     private Float rating;
     private int inStock;

@@ -168,6 +168,17 @@ public class Baloot {
          }
      }
 
+    public Response getCommodityById(String commodityId) throws Exception{
+        if(findCommodityById(commodityId) == null){
+            responseNode.set("Response", mapper.convertValue("Commodity Not Exists.", JsonNode.class));
+            return new Response(false, responseNode);
+        }
+        ObjectMapper objectMapper = new ObjectMapper();
+        ObjectNode node = objectMapper.convertValue(findCommodityById(commodityId), ObjectNode.class);
+        return new Response(true, node);
+    }
+
+
     public void printData(){
         System.out.println("Users:");
         for(User user : users){
