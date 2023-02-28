@@ -62,7 +62,7 @@ public class Baloot {
         return new Response(success, responseNode);
         //TODO: Handling errors of Adding User
     }
-     public Response addProvider(Provider newProvider) throws Exception{
+     public Response addProvider(Provider newProvider) {
          if (!doesProviderExist(newProvider)){
             providers.add(newProvider);
             responseNode.set("Response", mapper.convertValue("Provider Added.", JsonNode.class));
@@ -102,7 +102,7 @@ public class Baloot {
         return commoditiesInCategory;
     }
 
-     public Response addCommodity(Commodity newCommodity) throws Exception{
+     public Response addCommodity(Commodity newCommodity){
         if(findProviderById(newCommodity.getProviderId()) != null){
             commodities.add(newCommodity);
             responseNode.set("Response", mapper.convertValue("Commodity Added.", JsonNode.class));
@@ -129,18 +129,23 @@ public class Baloot {
          return new Response(true, commoditiesList);
      }
 
-     public Response rateCommodity(String username, String commodityId, float score) throws Exception {
-         if(findCommodityById(commodityId) == null){
-             responseNode.set("Response", mapper.convertValue("Commodity does not exist.", JsonNode.class));
-             return new Response(false, responseNode);
+     public Response rateCommodity(String username, String commodityId, Integer score) {
+        boolean success = false;
+        if(score < 1 || score > 10){
+            responseNode.set("Error", mapper.convertValue("Rating Out of Range", JsonNode.class));
+        }
+         else if(findCommodityById(commodityId) == null){
+             responseNode.set("Error", mapper.convertValue("Commodity does not exist.", JsonNode.class));
          }
-         if(findUserByUsername(username) == null){
-             responseNode.set("Response", mapper.convertValue("User does not exist.", JsonNode.class));
-             return new Response(false, responseNode);
+         else if(findUserByUsername(username) == null) {
+             responseNode.set("Error", mapper.convertValue("User does not exist.", JsonNode.class));
          }
-         findCommodityById(commodityId).addUserRating(username, score);
-         responseNode.set("Response", mapper.convertValue("Rating Added.", JsonNode.class));
-         return new Response(true, responseNode);
+         else {
+            findCommodityById(commodityId).addUserRating(username, score);
+            responseNode.set("Response", mapper.convertValue("Rating Added.", JsonNode.class));
+            success = true;
+        }
+         return new Response(success, responseNode);
      }
 
      public Response addToBuyList(String username, String commodityId){

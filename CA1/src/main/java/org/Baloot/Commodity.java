@@ -54,12 +54,12 @@ public class Commodity {
     public Boolean isInStock(){
         return inStock > 0;
     }
-    public void addUserRating(String username, Float rating){
+    public void addUserRating(String username, Integer rating){
         if (usersRating.containsKey(username)){
-            usersRating.replace(username, rating);
+            usersRating.replace(username, (float) rating);
         }
         else {
-            usersRating.put(username, rating);
+            usersRating.put(username, (float) rating);
         }
         updateRating();
     }

@@ -1,0 +1,12 @@
+[
+  {
+    "id": 1,
+    "name": "P1",
+    "registryDate": "2022-01-01"
+  },
+  {
+    "id": 2,
+    "name": "P2",
+    "registryDate": "2023-01-01"
+  }
+]
