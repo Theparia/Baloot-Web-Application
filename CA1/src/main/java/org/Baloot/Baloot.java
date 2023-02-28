@@ -44,14 +44,22 @@ public class Baloot {
     }
 
     public Response addUser(User newUser){
+        boolean success = true;
         if (doesUserExist(newUser)) {
             findUserByUsername(newUser.getUsername()).update(newUser);
         }
         else {
-            users.add(newUser);
+            if (newUser.getUsername().matches("\\w+")) {
+                users.add(newUser);
+                responseNode.set("Response", mapper.convertValue("User Added.", JsonNode.class));
+            }
+            else{
+                responseNode.set("Error", mapper.convertValue("Invalid Username", JsonNode.class));
+                success = false;
+            }
+
         }
-        responseNode.set("Response", mapper.convertValue("User Added.", JsonNode.class));
-        return new Response(true, responseNode);
+        return new Response(success, responseNode);
         //TODO: Handling errors of Adding User
     }
      public Response addProvider(Provider newProvider) throws Exception{
