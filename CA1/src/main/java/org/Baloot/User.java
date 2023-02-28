@@ -2,6 +2,7 @@ package org.Baloot;
 
 
 import Exceptions.CommodityAlreadyExistsInBuyList;
+import Exceptions.CommodityNotInBuyList;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
@@ -69,4 +70,16 @@ public class User {
 //            System.out.println(commodity1.getId());
 //        }
     }
+
+    public void removeFromBuyList(Commodity commodity) throws CommodityNotInBuyList {
+        if(findCommodity(commodity) == null){
+            throw new CommodityNotInBuyList();
+        }
+        this.buyList.remove(commodity);
+//        System.out.println("BuyList:");
+//        for (Commodity commodity1: buyList){
+//            System.out.println(commodity1.getId());
+//        }
+    }
+
 }

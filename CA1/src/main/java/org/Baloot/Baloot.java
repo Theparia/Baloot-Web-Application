@@ -151,6 +151,23 @@ public class Baloot {
 
      }
 
+     public Response removeFromBuyList(String username, String commodityId){
+         if (findUserByUsername(username) == null){
+             responseNode.set("Response", mapper.convertValue("User Not Exists.", JsonNode.class));
+             return new Response(false, responseNode);
+         }
+         else{
+             try{
+                 findUserByUsername(username).removeFromBuyList(findCommodityById(commodityId));
+                 responseNode.set("Response", mapper.convertValue("Commodity removed from buyList.", JsonNode.class));
+                 return new Response(true, responseNode);
+             } catch (Exception e){
+                 responseNode.set("Response", mapper.convertValue(e.getMessage(), JsonNode.class));
+                 return new Response(false, responseNode);
+             }
+         }
+     }
+
     public void printData(){
         System.out.println("Users:");
         for(User user : users){
