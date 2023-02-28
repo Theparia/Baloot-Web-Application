@@ -204,6 +204,25 @@ public class Baloot {
         // TODO: Is the sample output correct?
     }
 
+    public Response getBuyList(String username){
+        if (findUserByUsername(username) == null){
+            responseNode.set("Response", mapper.convertValue("User Not Exists.", JsonNode.class));
+            return new Response(false, responseNode);
+        }
+        List<Commodity> buyList = findUserByUsername(username).getBuyList();
+        ObjectMapper objectMapper = new ObjectMapper();
+        List<ObjectNode> JsonCommodities = new ArrayList<>();
+        for (Commodity entry : buyList) {
+            ObjectNode node = objectMapper.convertValue(entry, ObjectNode.class);
+            JsonCommodities.add(node);
+        }
+        ArrayNode arrayNode = objectMapper.valueToTree(JsonCommodities);
+        ObjectNode commoditiesList = objectMapper.createObjectNode();
+        commoditiesList.putArray("buyList").addAll(arrayNode);
+        return new Response(true, commoditiesList);
+        //TODO: is omitting categories & inStock fields needed?
+    }
+
     public void printData(){
         System.out.println("Users:");
         for(User user : users){

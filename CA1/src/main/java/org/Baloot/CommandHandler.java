@@ -93,6 +93,12 @@ public class CommandHandler {
                     inputDataMap = mapper.readValue(jsonData, Map.class);
                     return baloot.getCommoditiesByCategory(String.valueOf(inputDataMap.get("category")));
                 }
+            case "getBuyList":
+                if(!jsonData.isEmpty()) {
+                    Map inputDataMap;
+                    inputDataMap = mapper.readValue(jsonData, Map.class);
+                    return baloot.getBuyList(String.valueOf(inputDataMap.get("username")));
+                }
         }
 //        baloot.printData(); //checking
         return null;
