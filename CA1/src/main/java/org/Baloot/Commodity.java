@@ -42,6 +42,15 @@ public class Commodity {
     }
 
 
+    private void updateRating(){
+        float sum = 0;
+        for (HashMap.Entry<String, Float> entry : usersRating.entrySet()) {
+            sum += entry.getValue();
+        }
+        rating = sum / usersRating.size();
+    }
+
+
     public Boolean isInStock(){
         return inStock > 0;
     }
@@ -53,14 +62,6 @@ public class Commodity {
             usersRating.put(username, rating);
         }
         updateRating();
-    }
-
-    private void updateRating(){
-        float sum = 0;
-        for (HashMap.Entry<String, Float> entry : usersRating.entrySet()) {
-            sum += entry.getValue();
-        }
-        rating = sum / usersRating.size();
     }
 
     public boolean isEqual(String id) {
@@ -84,5 +85,6 @@ public class Commodity {
 //            inStock -= count;
 //        }
 //    }
+    //TODO: reduce from stock
 
 }
