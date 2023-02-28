@@ -1,9 +1,7 @@
 package org.Baloot;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.junit.Before;
-import org.junit.BeforeClass;
-import org.junit.Test;
+import org.junit.*;
 
 import java.io.File;
 import java.io.IOException;
@@ -19,7 +17,7 @@ public class BalootTest {
     private static Commodity[] commodities;
 
     @BeforeClass
-    public static void setup(){
+    public static void preClass(){
         baloot = new Baloot();
         ObjectMapper objectMapper = new ObjectMapper();
         try {
@@ -33,7 +31,7 @@ public class BalootTest {
     }
 
     @Before
-    public void setBalootParameters(){
+    public void setUp(){
         for(User user : users)
             baloot.addUser(user);
         for(Provider provider: providers)
@@ -47,6 +45,18 @@ public class BalootTest {
         Response response = baloot.rateCommodity("1", "1", 11);
         assertFalse(response.isSuccess());
         assertEquals("Rating Out of Range", response.getData().get("Error").asText());
+    }
+
+    @After
+    public void tearDown(){
+        baloot = null;
+    }
+
+    @AfterClass
+    public void postClass(){
+        users = null;
+        providers = null;
+        commodities = null;
     }
 
 }
