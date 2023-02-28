@@ -125,6 +125,32 @@ public class Baloot {
          return new Response(true, responseNode);
      }
 
+     public Response addToBuyList(String username, String commodityId){
+        if (findUserByUsername(username) == null){
+            responseNode.set("Response", mapper.convertValue("User Not Exists.", JsonNode.class));
+            return new Response(false, responseNode);
+        }
+        else if(findCommodityById(commodityId) == null){
+                responseNode.set("Response", mapper.convertValue("Commodity Not Exists.", JsonNode.class));
+                return new Response(false, responseNode);
+            }
+        else if(!findCommodityById(commodityId).isInStock()){
+            responseNode.set("Response", mapper.convertValue("Commodity Out of Stock.", JsonNode.class));
+            return new Response(false, responseNode);
+        }
+        else {
+            try {
+                findUserByUsername(username).addToBuyList(findCommodityById(commodityId));
+                responseNode.set("Response", mapper.convertValue("Commodity Added to buyList", JsonNode.class));
+                return new Response(true, responseNode);
+            } catch (Exception e){
+                responseNode.set("Response", mapper.convertValue(e.getMessage(), JsonNode.class));
+                return new Response(false, responseNode);
+            }
+        }
+
+     }
+
     public void printData(){
         System.out.println("Users:");
         for(User user : users){

@@ -69,6 +69,12 @@ public class CommandHandler {
                     inputDataMap = mapper.readValue(jsonData, Map.class);
                     return baloot.rateCommodity((String) inputDataMap.get("username"), String.valueOf(inputDataMap.get("commodityId")), (Integer) inputDataMap.get("score"));
                 }
+            case "addToBuyList":
+                if(!jsonData.isEmpty()) {
+                    Map inputDataMap;
+                    inputDataMap = mapper.readValue(jsonData, Map.class);
+                    return baloot.addToBuyList((String) inputDataMap.get("username"), String.valueOf(inputDataMap.get("commodityId")));
+                }
         }
 //        baloot.printData(); //checking
         return null;

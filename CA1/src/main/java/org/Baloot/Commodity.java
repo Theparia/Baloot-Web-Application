@@ -38,6 +38,10 @@ public class Commodity {
         this.usersRating.put("###", rating);
     }
 
+
+    public Boolean isInStock(){
+        return inStock > 0;
+    }
     public void addUserRating(String username, Float rating){
         if (usersRating.containsKey(username)){
             usersRating.replace(username, rating);

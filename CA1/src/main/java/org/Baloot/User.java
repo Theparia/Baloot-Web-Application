@@ -1,6 +1,7 @@
 package org.Baloot;
 
 
+import Exceptions.CommodityAlreadyExistsInBuyList;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
@@ -8,6 +9,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import javax.swing.text.StyledEditorKit;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -23,8 +26,7 @@ public class User {
     private Date birthDate;
     private String address;
     private float credit;
-
-    List<Commodity> BuyList;
+    List<Commodity> buyList = new ArrayList<>();
     public User(String username, String password, String email, Date birthDate, String address, float credit) {
         this.username = username;
         this.password = password;
@@ -32,6 +34,7 @@ public class User {
         this.birthDate = birthDate;
         this.address = address;
         this.credit = credit;
+        this.buyList = new ArrayList<>();
     }
 
     public boolean isEqual(String username) {
@@ -44,6 +47,26 @@ public class User {
         this.credit = user.getCredit();
         this.address = user.getAddress();
         this.birthDate = user.getBirthDate();
-        this.BuyList = user.getBuyList();
+        this.buyList = user.getBuyList();
+    }
+
+    public Commodity findCommodity(Commodity commodity){
+        for (Commodity commodity1: buyList){
+            if(commodity1.isEqual(commodity.getId())){
+                return commodity1;
+            }
+        }
+        return null;
+    }
+
+    public void addToBuyList(Commodity commodity) throws CommodityAlreadyExistsInBuyList {
+        if(findCommodity(commodity) != null){
+            throw new CommodityAlreadyExistsInBuyList();
+        }
+        this.buyList.add(commodity);
+//        System.out.println("BuyList:");
+//        for (Commodity commodity1: buyList){
+//            System.out.println(commodity1.getId());
+//        }
     }
 }
