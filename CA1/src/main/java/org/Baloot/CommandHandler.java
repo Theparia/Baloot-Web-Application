@@ -67,25 +67,25 @@ public class CommandHandler {
                 if(!jsonData.isEmpty()) {
                     Map inputDataMap;
                     inputDataMap = mapper.readValue(jsonData, Map.class);
-                    return baloot.rateCommodity((String) inputDataMap.get("username"), String.valueOf(inputDataMap.get("commodityId")), (Integer) inputDataMap.get("score"));
+                    return baloot.rateCommodity((String) inputDataMap.get("username"),(Integer) inputDataMap.get("commodityId"), (Integer) inputDataMap.get("score"));
                 }
             case "addToBuyList":
                 if(!jsonData.isEmpty()) {
                     Map inputDataMap;
                     inputDataMap = mapper.readValue(jsonData, Map.class);
-                    return baloot.addToBuyList((String) inputDataMap.get("username"), String.valueOf(inputDataMap.get("commodityId")));
+                    return baloot.addToBuyList((String) inputDataMap.get("username"),(Integer) inputDataMap.get("commodityId"));
                 }
             case "removeFromBuyList":
                 if(!jsonData.isEmpty()) {
                     Map inputDataMap;
                     inputDataMap = mapper.readValue(jsonData, Map.class);
-                    return baloot.removeFromBuyList((String) inputDataMap.get("username"), String.valueOf(inputDataMap.get("commodityId")));
+                    return baloot.removeFromBuyList((String) inputDataMap.get("username"), (Integer) inputDataMap.get("commodityId"));
                 }
             case "getCommodityById":
                 if(!jsonData.isEmpty()) {
                     Map inputDataMap;
                     inputDataMap = mapper.readValue(jsonData, Map.class);
-                    return baloot.getCommodityById(String.valueOf(inputDataMap.get("id")));
+                    return baloot.getCommodityById((Integer) inputDataMap.get("id"));
                 }
             case "getCommoditiesByCategory":
                 if(!jsonData.isEmpty()) {

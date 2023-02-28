@@ -14,17 +14,17 @@ import java.util.Date;
 
 public class Provider {
     //@Id
-    private String id; //TODO: unique validation
+    private Integer id; //TODO: unique validation
     private String name;
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-DD")
     private Date registryDate;
-    public Provider(String id, String name, Date registryDate) {
+    public Provider(Integer id, String name, Date registryDate) {
         this.id = id;
         this.name = name;
         this.registryDate = registryDate;
     }
 
-    public boolean isEqual(String providerId) {
+    public boolean isEqual(Integer providerId) {
         return this.id.equals(providerId);
     }
 

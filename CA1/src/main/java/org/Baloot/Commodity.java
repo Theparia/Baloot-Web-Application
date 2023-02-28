@@ -20,17 +20,18 @@ import java.util.List;
 
 public class Commodity {
     //@Id
-    private String id;
+    private Integer id;
     //TODO: change id type to int if needed.
     private String name; //unique validation + handling !@#
-    private String providerId;
+    private Integer providerId;
     private Float price;
     private List<String> categories;
     @JsonIgnore
     private HashMap<String, Float> usersRating = new HashMap<>();
     private Float rating;
     private int inStock;
-    public Commodity(String id, String name, String providerId, Float price, List<String> categories, Float rating, int inStock) {
+
+    public Commodity(Integer id, String name, Integer providerId, Float price, List<String> categories, Float rating, int inStock) {
         this.id = id;
         this.name = name;
         this.providerId = providerId;
@@ -38,7 +39,7 @@ public class Commodity {
         this.categories = categories;
         this.rating = rating;
         this.inStock = inStock;
-        this.usersRating.put("###", rating);
+        this.usersRating.put("###", rating); //TODO
     }
 
 
@@ -48,6 +49,9 @@ public class Commodity {
             sum += entry.getValue();
         }
         rating = sum / usersRating.size();
+//        System.out.print("sum in update" + sum);
+//        System.out.print("rating in update" + rating);
+
     }
 
 
@@ -62,9 +66,10 @@ public class Commodity {
             usersRating.put(username, (float) rating);
         }
         updateRating();
+//        System.out.print("rating " + rating);
     }
 
-    public boolean isEqual(String id) {
+    public boolean isEqual(Integer id) {
         return this.id.equals(id);
     }
 

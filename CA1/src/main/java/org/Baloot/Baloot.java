@@ -74,7 +74,7 @@ public class Baloot {
          }
      }
 
-     public Provider findProviderById(String providerId){
+     public Provider findProviderById(Integer providerId){
         for (Provider provider : providers){
             if(provider.isEqual(providerId)){
                 return provider;
@@ -83,7 +83,7 @@ public class Baloot {
         return null;
      }
 
-    public Commodity findCommodityById(String commodityId){
+    public Commodity findCommodityById(Integer commodityId){
         for (Commodity commodity : commodities){
             if(commodity.isEqual(commodityId)){
                 return commodity;
@@ -129,7 +129,7 @@ public class Baloot {
          return new Response(true, commoditiesList);
      }
 
-     public Response rateCommodity(String username, String commodityId, Integer score) {
+     public Response rateCommodity(String username, Integer commodityId, Integer score) {
         boolean success = false;
         if(score < 1 || score > 10){
             responseNode.set("Error", mapper.convertValue("Rating Out of Range", JsonNode.class));
@@ -148,7 +148,7 @@ public class Baloot {
          return new Response(success, responseNode);
      }
 
-     public Response addToBuyList(String username, String commodityId){
+     public Response addToBuyList(String username, Integer commodityId){
         if (findUserByUsername(username) == null){
             responseNode.set("Response", mapper.convertValue("User Not Exists.", JsonNode.class));
             return new Response(false, responseNode);
@@ -174,7 +174,7 @@ public class Baloot {
 
      }
 
-     public Response removeFromBuyList(String username, String commodityId){
+     public Response removeFromBuyList(String username, Integer commodityId){
          if (findUserByUsername(username) == null){
              responseNode.set("Response", mapper.convertValue("User Not Exists.", JsonNode.class));
              return new Response(false, responseNode);
@@ -191,7 +191,7 @@ public class Baloot {
          }
      }
 
-    public Response getCommodityById(String commodityId) throws Exception{
+    public Response getCommodityById(Integer commodityId){
         if(findCommodityById(commodityId) == null){
             responseNode.set("Response", mapper.convertValue("Commodity Not Exists.", JsonNode.class));
             return new Response(false, responseNode);
