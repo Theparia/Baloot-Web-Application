@@ -17,7 +17,6 @@ public class BalootTest {
 
     @BeforeClass
     public static void preClass(){
-        baloot = new Baloot();
         ObjectMapper objectMapper = new ObjectMapper();
         try {
             users = objectMapper.readValue(new File("src/test/database/users.json"), User[].class);
@@ -31,6 +30,7 @@ public class BalootTest {
 
     @Before
     public void setUp(){
+        baloot = new Baloot();
         for(User user : users)
             baloot.addUser(user);
         for(Provider provider: providers)
