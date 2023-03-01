@@ -2,12 +2,10 @@ package org.Baloot;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.*;
-import org.junit.jupiter.api.BeforeEach;
 
 import java.io.File;
 import java.io.IOException;
 import java.util.Arrays;
-import java.util.List;
 
 import static org.junit.Assert.*;
 
@@ -41,8 +39,11 @@ public class BalootTest {
 //    rateCommodity
     @Test
     public void test_update_rating_correctly() {
-        baloot.rateCommodity("paria", 1, 5);
+        Response response = baloot.rateCommodity("paria", 1, 5);
         assertEquals("6.25", baloot.getCommodityById(1).getData().get("rating").asText());
+        assertTrue(response.isSuccess());
+        assertEquals("Rating Added.", response.getData().get("Response").asText());
+
     }
 
     @Test
@@ -94,10 +95,9 @@ public class BalootTest {
     @Test
     public void test_commodity_is_out_of_stock() {
         Response response = baloot.addToBuyList("paria", 3);
+        assertFalse(baloot.findCommodityById(3).getInStock() > 0);
         assertFalse(response.isSuccess());
         assertEquals("Commodity Out of Stock.", response.getData().get("Error").asText());
-//        System.out.println("test_commodity_is_out_of_stock -->"+baloot.findCommodityById(1).getInStock());
-
     }
 
     @Test
@@ -105,7 +105,6 @@ public class BalootTest {
         Response response = baloot.addToBuyList("amin", 1);
         assertFalse(response.isSuccess());
         assertEquals("User Not Exists.", response.getData().get("Error").asText());
-
     }
 
     @Test
@@ -121,13 +120,13 @@ public class BalootTest {
         Response response = baloot.addToBuyList("paria", 1);
         assertFalse(response.isSuccess());
         assertEquals("Commodity Already Exists in BuyList", response.getData().get("Error").asText());
-//        System.out.println("test_commodity_already_exists_in_buylist -->"+baloot.findCommodityById(1).getInStock());
     }
 
     @Test
     public void test_commodity_added_to_buylist_successfully() {
         Response response = baloot.addToBuyList("paria", 2);
         assertTrue(baloot.findUserByUsername("paria").getBuyList().contains(baloot.findCommodityById(1)));
+        assertTrue(response.isSuccess());
         assertEquals("Commodity Added to buyList", response.getData().get("Response").asText());
     }
 
