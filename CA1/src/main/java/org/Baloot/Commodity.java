@@ -57,7 +57,6 @@ public class Commodity {
             usersRating.put(username, (float) rating);
         }
         updateRating();
-//        System.out.print("rating " + rating);
     }
 
     private void updateRating(){
@@ -66,9 +65,6 @@ public class Commodity {
             sum += entry.getValue();
         }
         rating = sum / usersRating.size();
-//        System.out.print("sum in update" + sum);
-//        System.out.print("rating in update" + rating);
-
     }
 
     public boolean isEqual(Integer id) {

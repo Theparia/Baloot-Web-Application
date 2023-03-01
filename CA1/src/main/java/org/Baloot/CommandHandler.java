@@ -47,7 +47,6 @@ public class CommandHandler {
                     User user = mapper.readValue(jsonData, User.class);
                     return baloot.addUser(user);
                 }
-//                else //TODO: print error?
                 break;
             case "addProvider":
                 if(!jsonData.isEmpty()) {
@@ -100,7 +99,6 @@ public class CommandHandler {
                     return baloot.getBuyList(String.valueOf(inputDataMap.get("username")));
                 }
         }
-//        baloot.printData(); //checking
         return null;
     }
 

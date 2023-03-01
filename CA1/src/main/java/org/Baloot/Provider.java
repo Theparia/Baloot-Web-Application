@@ -14,7 +14,7 @@ import java.util.Date;
 
 public class Provider {
     //@Id
-    private Integer id; //TODO: unique validation
+    private Integer id;
     private String name;
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-DD")
     private Date registryDate;

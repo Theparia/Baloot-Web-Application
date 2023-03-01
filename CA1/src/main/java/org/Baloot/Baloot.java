@@ -115,7 +115,6 @@ public class Baloot {
             responseNode.set("Response", mapper.convertValue("Provider does not exist.", JsonNode.class));
             return new Response(false, responseNode);
         }
-        //TODO: What if commodity already exist?
      }
 
      public Response getCommoditiesList() throws Exception{
@@ -128,7 +127,6 @@ public class Baloot {
          ArrayNode arrayNode = objectMapper.valueToTree(JsonCommodities);
          ObjectNode commoditiesList = objectMapper.createObjectNode();
          commoditiesList.putArray("CommoditiesList").addAll(arrayNode);
-//         String data = objectMapper.writeValueAsString(commoditiesList);
          return new Response(true, commoditiesList);
      }
 

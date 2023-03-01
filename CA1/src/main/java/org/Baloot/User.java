@@ -20,7 +20,7 @@ import java.util.List;
 @Setter
 @NoArgsConstructor
 public class User {
-    private String username; //unique validation + handling !@#
+    private String username;
     private String password;
     private String email;
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-DD")
@@ -65,10 +65,6 @@ public class User {
             throw new CommodityAlreadyExistsInBuyList();
         }
         this.buyList.add(commodity);
-//        System.out.println("BuyList:");
-//        for (Commodity commodity1: buyList){
-//            System.out.println(commodity1.getId());
-//        }
     }
 
     public void removeFromBuyList(Commodity commodity) throws CommodityNotInBuyList {
@@ -76,10 +72,6 @@ public class User {
             throw new CommodityNotInBuyList();
         }
         this.buyList.remove(commodity);
-//        System.out.println("BuyList:");
-//        for (Commodity commodity1: buyList){
-//            System.out.println(commodity1.getId());
-//        }
     }
 
 }
