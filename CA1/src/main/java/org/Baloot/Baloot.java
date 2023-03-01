@@ -153,15 +153,15 @@ public class Baloot {
 
      public Response addToBuyList(String username, Integer commodityId){
         if (findUserByUsername(username) == null){
-            responseNode.set("Response", mapper.convertValue("User Not Exists.", JsonNode.class));
+            responseNode.set("Error", mapper.convertValue("User Not Exists.", JsonNode.class));
             return new Response(false, responseNode);
         }
         else if(findCommodityById(commodityId) == null){
-                responseNode.set("Response", mapper.convertValue("Commodity Not Exists.", JsonNode.class));
+                responseNode.set("Error", mapper.convertValue("Commodity Not Exists.", JsonNode.class));
                 return new Response(false, responseNode);
             }
         else if(!findCommodityById(commodityId).isInStock()){
-            responseNode.set("Response", mapper.convertValue("Commodity Out of Stock.", JsonNode.class));
+            responseNode.set("Error", mapper.convertValue("Commodity Out of Stock.", JsonNode.class));
             return new Response(false, responseNode);
         }
         else {
@@ -171,7 +171,7 @@ public class Baloot {
                 responseNode.set("Response", mapper.convertValue("Commodity Added to buyList", JsonNode.class));
                 return new Response(true, responseNode);
             } catch (Exception e){
-                responseNode.set("Response", mapper.convertValue(e.getMessage(), JsonNode.class));
+                responseNode.set("Error", mapper.convertValue(e.getMessage(), JsonNode.class));
                 return new Response(false, responseNode);
             }
         }
@@ -197,7 +197,7 @@ public class Baloot {
 
     public Response getCommodityById(Integer commodityId){
         if(findCommodityById(commodityId) == null){
-            responseNode.set("Response", mapper.convertValue("Commodity Not Exists.", JsonNode.class));
+            responseNode.set("Error", mapper.convertValue("Commodity Not Exists.", JsonNode.class));
             return new Response(false, responseNode);
         }
         ObjectMapper objectMapper = new ObjectMapper();

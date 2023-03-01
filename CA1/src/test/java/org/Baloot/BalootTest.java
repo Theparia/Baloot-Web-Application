@@ -51,7 +51,7 @@ public class BalootTest {
         commodities = null;
     }
 
-    //    rateCommodity
+//    rateCommodity
     @Test
     public void test_update_rating_correctly() {
         baloot.rateCommodity("paria", 1, 5);
@@ -87,7 +87,7 @@ public class BalootTest {
         assertEquals("User does not exist.", response.getData().get("Error").asText());
     }
 
-    //    getCommoditiesByCategory
+//    getCommoditiesByCategory
     @Test
     public void test_get_commodities_by_category_correctly() {
         Response response = baloot.getCommoditiesByCategory("Phone");
@@ -100,6 +100,61 @@ public class BalootTest {
     public void test_get_commodities_by_non_existing_category() {
         Response response = baloot.getCommoditiesByCategory("Art");
         assertTrue(response.isSuccess());
-        assertEquals("", response.getData().get("commoditiesListByCategory").toString());
+        assertEquals("[]", response.getData().get("commoditiesListByCategory").toString());
+    }
+
+//    addToBuyList
+    @Test
+    public void test_commodity_is_out_of_stock() {
+        Response response = baloot.addToBuyList("paria", 3);
+        assertFalse(response.isSuccess());
+        assertEquals("Commodity Out of Stock.", response.getData().get("Error").asText());
+
+    }
+
+    @Test
+    public void test_user_does_not_exist_for_adding_a_commodity_to_buylist() {
+        Response response = baloot.addToBuyList("amin", 1);
+        assertFalse(response.isSuccess());
+        assertEquals("User Not Exists.", response.getData().get("Error").asText());
+
+    }
+
+    @Test
+    public void test_commodity_does_not_exist_for_adding_a_commodity_to_buylist() {
+        Response response = baloot.addToBuyList("paria", 4);
+        assertFalse(response.isSuccess());
+        assertEquals("Commodity Not Exists.", response.getData().get("Error").asText());
+    }
+
+    @Test
+    public void test_commodity_already_exists_in_buylist() {
+        baloot.addToBuyList("paria", 1);
+        Response response = baloot.addToBuyList("paria", 1);
+        assertFalse(response.isSuccess());
+        assertEquals("Commodity Already Exists in BuyList", response.getData().get("Error").asText());
+    }
+
+    @Test
+    public void test_commodity_added_to_buylist_successfully() {
+        Response response = baloot.addToBuyList("paria", 1);
+        assertTrue(baloot.findUserByUsername("paria").getBuyList().contains(baloot.findCommodityById(1)));
+        assertEquals("Commodity Added to buyList", response.getData().get("Response").asText());
+    }
+
+//    getCommodityById
+    @Test
+    public void test_commodity_id_does_not_exist(){
+        Response response = baloot.getCommodityById(4);
+        assertFalse(response.isSuccess());
+        assertEquals("Commodity Not Exists.", response.getData().get("Error").asText());
+    }
+
+    @Test
+    public void test_get_commodity_by_id_correctly(){
+        Response response = baloot.getCommodityById(1);
+        assertTrue(response.isSuccess());
+        assertEquals("{\"id\":1,\"name\":\"apple\",\"providerId\":1,\"price\":500.0,\"categories\":[\"Vegetables\",\"Fruit\"],\"rating\":7.5,\"inStock\":2}",
+                response.getData().toString());
     }
 }
