@@ -164,6 +164,7 @@ public class Baloot {
         else {
             try {
                 findUserByUsername(username).addToBuyList(findCommodityById(commodityId));
+                findCommodityById(commodityId).reduceInStock();
                 responseNode.set("Response", mapper.convertValue("Commodity Added to buyList", JsonNode.class));
                 return new Response(true, responseNode);
             } catch (Exception e){

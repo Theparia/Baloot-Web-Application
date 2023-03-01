@@ -42,19 +42,6 @@ public class Commodity {
         this.usersRating.put("###", rating); //TODO
     }
 
-
-    private void updateRating(){
-        float sum = 0;
-        for (HashMap.Entry<String, Float> entry : usersRating.entrySet()) {
-            sum += entry.getValue();
-        }
-        rating = sum / usersRating.size();
-//        System.out.print("sum in update" + sum);
-//        System.out.print("rating in update" + rating);
-
-    }
-
-
     public Boolean isInStock(){
         return inStock > 0;
     }
@@ -67,6 +54,17 @@ public class Commodity {
         }
         updateRating();
 //        System.out.print("rating " + rating);
+    }
+
+    private void updateRating(){
+        float sum = 0;
+        for (HashMap.Entry<String, Float> entry : usersRating.entrySet()) {
+            sum += entry.getValue();
+        }
+        rating = sum / usersRating.size();
+//        System.out.print("sum in update" + sum);
+//        System.out.print("rating in update" + rating);
+
     }
 
     public boolean isEqual(Integer id) {
@@ -82,14 +80,8 @@ public class Commodity {
         return false;
     }
 
-//    public void reduceInStock(int count){
-//        if(inStock - count < 0){
-//            throw new Exception("Error: Out of Stock.");
-//        }
-//        else {
-//            inStock -= count;
-//        }
-//    }
-    //TODO: reduce from stock
+    public void reduceInStock(){
+        inStock -= 1;
+    }
 
 }
