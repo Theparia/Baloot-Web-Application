@@ -2,15 +2,17 @@ package org.Baloot;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.*;
+import org.junit.jupiter.api.BeforeEach;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.List;
 
 import static org.junit.Assert.*;
 
 public class BalootTest {
-    private static Baloot baloot;
+    private Baloot baloot;
     private static User[] users;
     private static Provider[] providers;
     private static Commodity[] commodities;
@@ -31,24 +33,9 @@ public class BalootTest {
     @Before
     public void setUp() {
         baloot = new Baloot();
-        for (User user : users)
-            baloot.addUser(user);
-        for (Provider provider : providers)
-            baloot.addProvider(provider);
-        for (Commodity commodity : commodities)
-            baloot.addCommodity(commodity);
-    }
-
-    @After
-    public void tearDown() {
-        baloot = null;
-    }
-
-    @AfterClass
-    public static void postClass() {
-        users = null;
-        providers = null;
-        commodities = null;
+        baloot.setUsers(Arrays.asList(users));
+        baloot.setProviders(Arrays.asList(providers));
+        baloot.setCommodities(Arrays.asList(commodities));
     }
 
 //    rateCommodity
@@ -109,6 +96,7 @@ public class BalootTest {
         Response response = baloot.addToBuyList("paria", 3);
         assertFalse(response.isSuccess());
         assertEquals("Commodity Out of Stock.", response.getData().get("Error").asText());
+//        System.out.println("test_commodity_is_out_of_stock -->"+baloot.findCommodityById(1).getInStock());
 
     }
 
@@ -133,11 +121,12 @@ public class BalootTest {
         Response response = baloot.addToBuyList("paria", 1);
         assertFalse(response.isSuccess());
         assertEquals("Commodity Already Exists in BuyList", response.getData().get("Error").asText());
+//        System.out.println("test_commodity_already_exists_in_buylist -->"+baloot.findCommodityById(1).getInStock());
     }
 
     @Test
     public void test_commodity_added_to_buylist_successfully() {
-        Response response = baloot.addToBuyList("paria", 1);
+        Response response = baloot.addToBuyList("paria", 2);
         assertTrue(baloot.findUserByUsername("paria").getBuyList().contains(baloot.findCommodityById(1)));
         assertEquals("Commodity Added to buyList", response.getData().get("Response").asText());
     }
@@ -152,9 +141,21 @@ public class BalootTest {
 
     @Test
     public void test_get_commodity_by_id_correctly(){
-        Response response = baloot.getCommodityById(1);
+        Response response = baloot.getCommodityById(3);
         assertTrue(response.isSuccess());
-        assertEquals("{\"id\":1,\"name\":\"apple\",\"providerId\":1,\"price\":500.0,\"categories\":[\"Vegetables\",\"Fruit\"],\"rating\":7.5,\"inStock\":2}",
+        assertEquals("{\"id\":3,\"name\":\"iPhone 5s\",\"providerId\":2,\"price\":1000.0,\"categories\":[\"Phone\",\"Technology\"],\"rating\":9.5,\"inStock\":0}",
                 response.getData().toString());
+    }
+
+    @After
+    public void tearDown() {
+        baloot = null;
+    }
+
+    @AfterClass
+    public static void postClass() {
+        users = null;
+        providers = null;
+        commodities = null;
     }
 }
