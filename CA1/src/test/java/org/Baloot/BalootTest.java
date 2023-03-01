@@ -55,13 +55,12 @@ public class BalootTest {
     @Test
     public void test_update_rating_correctly(){
         baloot.rateCommodity("paria", 1, 5);
-//        baloot.rateCommodity("parnian", 1, 7);
         assertEquals("6.25", baloot.getCommodityById(1).getData().get("rating").asText());
     }
 
     @Test
     public void test_rating_out_of_range_1_to_10(){
-        Response response = baloot.rateCommodity("paria", 1, 11);
+        Response response = baloot.rateCommodity("parnian", 1, 11);
         assertFalse(response.isSuccess());
         assertEquals("Rating Out of Range", response.getData().get("Error").asText());
     }
@@ -71,11 +70,23 @@ public class BalootTest {
         baloot.rateCommodity("paria", 1, 5);
         baloot.rateCommodity("paria", 1, 7);
         assertEquals("7.0", baloot.findCommodityById(1).getUsersRating().get("paria").toString());
+        assertEquals(2, baloot.findCommodityById(1).getUsersRating().size());
     }
-//    public void test_commodity_does_not_exist_for_rating(){
-//        Response response = baloot.rateCommodity("1", "1", 9);
-//        assertTrue(response.isSuccess());
-//        assertEquals("Rating Out of Range", response.getData().get("Error").asText());
-//    }
+
+    @Test
+    public void test_commodity_does_not_exist_for_rating(){
+        Response response = baloot.rateCommodity("paria", 4, 9);
+        assertFalse(response.isSuccess());
+        assertEquals("Commodity does not exist.", response.getData().get("Error").asText());
+    }
+
+    @Test
+    public void test_user_does_not_exist_for_rating(){
+        Response response = baloot.rateCommodity("amin", 1, 5);
+        assertFalse(response.isSuccess());
+        assertEquals("User does not exist.", response.getData().get("Error").asText());
+    }
+
+//    getCommoditiesByCategory
 
 }

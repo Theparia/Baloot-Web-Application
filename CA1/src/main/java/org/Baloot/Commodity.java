@@ -23,7 +23,6 @@ import java.util.List;
 public class Commodity {
     //@Id
     private Integer id;
-    //TODO: change id type to int if needed.
     private String name; //unique validation + handling !@#
     private Integer providerId;
     private Float price;

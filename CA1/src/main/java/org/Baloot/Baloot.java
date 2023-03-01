@@ -64,7 +64,6 @@ public class Baloot {
 
         }
         return new Response(success, responseNode);
-        //TODO: Handling errors of Adding User
     }
      public Response addProvider(Provider newProvider) {
          if (!doesProviderExist(newProvider)){
@@ -113,7 +112,7 @@ public class Baloot {
             return new Response(true, responseNode);
         }
         else {
-            responseNode.set("Response", mapper.convertValue("", JsonNode.class));
+            responseNode.set("Response", mapper.convertValue("Provider does not exist.", JsonNode.class));
             return new Response(false, responseNode);
         }
         //TODO: What if commodity already exist?
@@ -212,14 +211,13 @@ public class Baloot {
         List<ObjectNode> JsonCommodities = new ArrayList<>();
         for (Commodity entry : commoditiesInCategory) {
             ObjectNode node = objectMapper.convertValue(entry, ObjectNode.class);
+            node.remove("inStock");
             JsonCommodities.add(node);
         }
         ArrayNode arrayNode = objectMapper.valueToTree(JsonCommodities);
         ObjectNode commoditiesList = objectMapper.createObjectNode();
         commoditiesList.putArray("commoditiesListByCategory").addAll(arrayNode);
         return new Response(true, commoditiesList);
-        // TODO: omit inStock field for just this command.
-        // TODO: Is the sample output correct?
     }
 
     public Response getBuyList(String username){
@@ -232,13 +230,13 @@ public class Baloot {
         List<ObjectNode> JsonCommodities = new ArrayList<>();
         for (Commodity entry : buyList) {
             ObjectNode node = objectMapper.convertValue(entry, ObjectNode.class);
+            node.remove("inStock");
             JsonCommodities.add(node);
         }
         ArrayNode arrayNode = objectMapper.valueToTree(JsonCommodities);
         ObjectNode commoditiesList = objectMapper.createObjectNode();
         commoditiesList.putArray("buyList").addAll(arrayNode);
         return new Response(true, commoditiesList);
-        //TODO: is omitting categories & inStock fields needed?
     }
 
     public void printData(){
