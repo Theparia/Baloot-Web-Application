@@ -25,7 +25,7 @@ public class Baloot {
         responseNode = mapper.createObjectNode();
     }
 
-    private User findUserByUsername(String username){
+    public User findUserByUsername(String username){
         for (User user : users){
             if (user.getUsername().equals(username)){
                 return user;
@@ -113,7 +113,7 @@ public class Baloot {
             return new Response(true, responseNode);
         }
         else {
-            responseNode.set("Response", mapper.convertValue("Provider NOT Exists.", JsonNode.class));
+            responseNode.set("Response", mapper.convertValue("", JsonNode.class));
             return new Response(false, responseNode);
         }
         //TODO: What if commodity already exist?
