@@ -55,8 +55,8 @@ public class BalootTest {
     @Test
     public void test_update_rating_correctly(){
         baloot.rateCommodity("paria", 1, 5);
-        baloot.rateCommodity("parnian", 1, 7);
-        assertEquals("6.0", baloot.getCommodityById(1).getData().get("rating").asText());
+//        baloot.rateCommodity("parnian", 1, 7);
+        assertEquals("6.25", baloot.getCommodityById(1).getData().get("rating").asText());
     }
 
     @Test

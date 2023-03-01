@@ -1,8 +1,10 @@
 package org.Baloot;
 
 
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
@@ -31,7 +33,10 @@ public class Commodity {
     private Float rating;
     private int inStock;
 
-    public Commodity(Integer id, String name, Integer providerId, Float price, List<String> categories, Float rating, int inStock) {
+    @JsonCreator
+    public Commodity(@JsonProperty("id") Integer id, @JsonProperty("name") String name, @JsonProperty("providerId")  Integer providerId,
+                     @JsonProperty("price")  Float price, @JsonProperty("categories")  List<String> categories,
+                     @JsonProperty("rating")  Float rating, @JsonProperty("inStock")  int inStock) {
         this.id = id;
         this.name = name;
         this.providerId = providerId;
@@ -39,7 +44,7 @@ public class Commodity {
         this.categories = categories;
         this.rating = rating;
         this.inStock = inStock;
-        this.usersRating.put("###", rating); //TODO
+        this.usersRating.put("#initialRating#", rating);
     }
 
     public Boolean isInStock(){
