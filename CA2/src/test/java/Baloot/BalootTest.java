@@ -31,9 +31,9 @@ public class BalootTest {
     @Before
     public void setUp() {
         baloot = new Baloot();
-        baloot.setUsers(Arrays.asList(users));
-        baloot.setProviders(Arrays.asList(providers));
-        baloot.setCommodities(Arrays.asList(commodities));
+        baloot.getDb().setUsers(Arrays.asList(users));
+        baloot.getDb().setProviders(Arrays.asList(providers));
+        baloot.getDb().setCommodities(Arrays.asList(commodities));
     }
 
 //    rateCommodity

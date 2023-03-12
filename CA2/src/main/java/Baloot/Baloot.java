@@ -1,5 +1,10 @@
 package Baloot;
 
+import Baloot.Exceptions.InvalidUsername;
+import Baloot.Exceptions.ProviderAlreadyExists;
+import Baloot.Exceptions.ProviderNotFound;
+import Baloot.Exceptions.UserNotFound;
+import Database.Database;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ArrayNode;
@@ -11,37 +16,48 @@ import lombok.Setter;
 import java.util.ArrayList;
 import java.util.List;
 
+
+enum ResponseType{
+    RESPONE,
+    ERROR
+}
 @Getter
 @Setter
-public class Baloot {
-    List<User> users = new ArrayList<>();
-    List<Commodity> commodities = new ArrayList<>();
-    List<Provider> providers = new ArrayList<>();
-    ObjectMapper mapper;
-    ObjectNode responseNode;
+public class Baloot { //todo db public or private?
+    private Database db = new Database();
+//    List<User> users = new ArrayList<>();
+//    List<Commodity> commodities = new ArrayList<>();
+//    List<Provider> providers = new ArrayList<>();
+    private ObjectMapper mapper;
+    private ObjectNode responseNode;
 
     public Baloot(){
         mapper = new ObjectMapper();
         responseNode = mapper.createObjectNode();
     }
 
-    public User findUserByUsername(String username){
-        for (User user : users){
+    public void setResponseNode(ResponseType responseType, String message){
+        String type = (responseType == ResponseType.RESPONE) ? "Response" : "Error";
+        responseNode.set(type, mapper.convertValue(message, JsonNode.class));
+    }
+
+    public User findUserByUsername(String username) throws UserNotFound {
+        for (User user : db.getUsers()){
             if (user.getUsername().equals(username)){
                 return user;
             }
         }
-        return null;
+        throw new UserNotFound();
     }
     private boolean doesUserExist(User newUser) {
-        for (User user : users)
+        for (User user : db.getUsers())
             if (user.isEqual(newUser.getUsername()))
                 return true;
         return false;
     }
 
     private boolean doesProviderExist(Provider newProvider) {
-        for (Provider provider : providers)
+        for (Provider provider : db.getProviders())
             if (provider.isEqual(newProvider.getId()))
                 return true;
         return false;
@@ -49,25 +65,25 @@ public class Baloot {
 
     public Response addUser(User newUser){
         boolean success = true;
-        if (doesUserExist(newUser)) {
+        try{
             findUserByUsername(newUser.getUsername()).update(newUser);
-        }
-        else {
-            if (newUser.getUsername().matches("\\w+")) {
-                users.add(newUser);
-                responseNode.set("Response", mapper.convertValue("User Added.", JsonNode.class));
-            }
-            else{
-                responseNode.set("Error", mapper.convertValue("Invalid Username", JsonNode.class));
-                success = false;
-            }
-
+            setResponseNode(ResponseType.RESPONE, "User Info Updated");
+        } catch (UserNotFound userNotFoundError){
+             try{
+                 if(!newUser.getUsername().matches("\\w+"))
+                     throw new InvalidUsername(); //todo
+                 db.addUser(newUser);
+                 setResponseNode(ResponseType.RESPONE, "User Added");
+             } catch (InvalidUsername invalidUsernameError){
+                 setResponseNode(ResponseType.ERROR, invalidUsernameError.getMessage());
+                 success = false;
+             }
         }
         return new Response(success, responseNode);
     }
      public Response addProvider(Provider newProvider) {
          if (!doesProviderExist(newProvider)){
-            providers.add(newProvider);
+            db.addProvider(newProvider);
             responseNode.set("Response", mapper.convertValue("Provider Added.", JsonNode.class));
             return new Response(true, responseNode);
          }
@@ -77,17 +93,17 @@ public class Baloot {
          }
      }
 
-     public Provider findProviderById(Integer providerId){
-        for (Provider provider : providers){
+     public Provider findProviderById(Integer providerId) throws ProviderNotFound {
+        for (Provider provider : db.getProviders()){
             if(provider.isEqual(providerId)){
                 return provider;
             }
         }
-        return null;
+        throw new ProviderNotFound();
      }
 
     public Commodity findCommodityById(Integer commodityId){
-        for (Commodity commodity : commodities){
+        for (Commodity commodity : db.getCommodities()){
             if(commodity.isEqual(commodityId)){
                 return commodity;
             }
@@ -97,7 +113,7 @@ public class Baloot {
 
     public List<Commodity> findCommoditiesByCategory(String category){
         List<Commodity> commoditiesInCategory = new ArrayList<>();
-        for (Commodity commodity : commodities){
+        for (Commodity commodity : db.getCommodities()){
             if(commodity.isInCategory(category)){
                 commoditiesInCategory.add(commodity);
             }
@@ -107,7 +123,7 @@ public class Baloot {
 
      public Response addCommodity(Commodity newCommodity){
         if(findProviderById(newCommodity.getProviderId()) != null){
-            commodities.add(newCommodity);
+            db.addCommodity(newCommodity);
             responseNode.set("Response", mapper.convertValue("Commodity Added.", JsonNode.class));
             return new Response(true, responseNode);
         }
@@ -120,7 +136,7 @@ public class Baloot {
      public Response getCommoditiesList() throws Exception{
          ObjectMapper objectMapper = new ObjectMapper();
          List<ObjectNode> JsonCommodities = new ArrayList<>();
-         for (Commodity entry : commodities) {
+         for (Commodity entry : db.getCommodities()) {
              ObjectNode node = objectMapper.convertValue(entry, ObjectNode.class);
              JsonCommodities.add(node);
          }
@@ -239,15 +255,15 @@ public class Baloot {
 
     public void printData(){
         System.out.println("Users:");
-        for(User user : users){
+        for(User user : db.getUsers()){
             System.out.println(user.getUsername());
         }
         System.out.println("Providers:");
-        for(Provider provider : providers){
+        for(Provider provider : db.getProviders()){
             System.out.println(provider.getId());
         }
         System.out.println("Commodities:");
-        for(Commodity commodity : commodities){
+        for(Commodity commodity : db.getCommodities()){
             System.out.println(commodity.getId());
         }
     }
