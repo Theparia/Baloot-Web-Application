@@ -1,0 +1,29 @@
+[
+  {
+    "id": 1,
+    "name": "apple",
+    "providerId": 1,
+    "price": 500,
+    "categories": ["Vegetables", "Fruit"],
+    "rating": 7.5,
+    "inStock": 2
+  },
+  {
+    "id": 2,
+    "name": "broccoli",
+    "providerId": 2,
+    "price": 400,
+    "categories": ["Vegetables", "Fruit"],
+    "rating": 8.5,
+    "inStock": 1
+  },
+  {
+    "id": 3,
+    "name": "iPhone 5s",
+    "providerId": 2,
+    "price": 1000,
+    "categories": ["Phone", "Technology"],
+    "rating": 9.5,
+    "inStock": 0
+  }
+]
