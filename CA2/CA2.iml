@@ -30,7 +30,6 @@
     <orderEntry type="library" name="Maven: commons-logging:commons-logging:1.2" level="project" />
     <orderEntry type="library" name="Maven: commons-codec:commons-codec:1.11" level="project" />
     <orderEntry type="library" name="Maven: io.javalin:javalin:5.4.2" level="project" />
-    <orderEntry type="library" name="Maven: org.slf4j:slf4j-api:2.0.6" level="project" />
     <orderEntry type="library" name="Maven: org.eclipse.jetty:jetty-server:11.0.14" level="project" />
     <orderEntry type="library" name="Maven: org.eclipse.jetty.toolchain:jetty-jakarta-servlet-api:5.0.2" level="project" />
     <orderEntry type="library" name="Maven: org.eclipse.jetty:jetty-http:11.0.14" level="project" />
@@ -60,5 +59,6 @@
     <orderEntry type="library" name="Maven: org.jetbrains:annotations:13.0" level="project" />
     <orderEntry type="library" name="Maven: org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.7.10" level="project" />
     <orderEntry type="library" name="Maven: org.jsoup:jsoup:1.15.4" level="project" />
+    <orderEntry type="library" name="Maven: org.slf4j:slf4j-api:2.0.6" level="project" />
   </component>
 </module>
