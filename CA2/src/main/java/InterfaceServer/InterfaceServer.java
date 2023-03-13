@@ -2,7 +2,7 @@ package InterfaceServer;
 
 import Baloot.*;
 import Database.Database;
-import InterfaceServer.HTMLHandler;
+//import InterfaceServer.HTMLHandler;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.type.TypeFactory;
 import io.javalin.Javalin;
@@ -49,8 +49,9 @@ public class InterfaceServer {
 
     private void runServer(final int PORT){
         Javalin app = Javalin.create().start(PORT);
-        app.get("/commodities", new CommoditiesListHandler());
-
+        app.get("/commodities", new CommoditiesListHandler(baloot));
+        // commo page
+        app.get("/providers/:provider_id", new ProviderPageHandler(baloot));
     }
 
 }
