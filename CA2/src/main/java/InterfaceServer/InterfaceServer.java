@@ -1,10 +1,15 @@
 package InterfaceServer;
 
-import Baloot.Baloot;
+import Baloot.*;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.type.TypeFactory;
 import io.javalin.Javalin;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import HTTPRequestHandler.HTTPRequestHandler;
+
+import java.util.List;
 
 @NoArgsConstructor
 @Getter
@@ -22,8 +27,19 @@ public class InterfaceServer {
         }
     }
 
-    private void importBalootDatabase(final String USERS_URI, final String COMMODITIES_URI, final String PROVIDERS_URI, final String COMMENTS_URI){
-//        baloot.setUsers();
+    private void importBalootDatabase(final String USERS_URI, final String COMMODITIES_URI, final String PROVIDERS_URI, final String COMMENTS_URI) throws Exception {
+        System.out.println("Importing...");
+        ObjectMapper objectMapper = new ObjectMapper();
+        TypeFactory typeFactory = objectMapper.getTypeFactory();
+
+        List<User> users = objectMapper.readValue(HTTPRequestHandler.getRequest(USERS_URI), typeFactory.constructCollectionType(List.class, User.class));
+        baloot.getDb().setUsers(users);
+
+        List<Commodity> commodities = objectMapper.readValue(HTTPRequestHandler.getRequest(COMMODITIES_URI), typeFactory.constructCollectionType(List.class, Commodity.class));
+        baloot.getDb().setCommodities(commodities);
+
+        List<Provider> providers = objectMapper.readValue(HTTPRequestHandler.getRequest(PROVIDERS_URI), typeFactory.constructCollectionType(List.class, Provider.class));
+        baloot.getDb().setProviders(providers);
     }
 
     private void runServer(final int PORT){
