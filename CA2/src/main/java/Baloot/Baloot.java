@@ -1,9 +1,6 @@
 package Baloot;
 
-import Baloot.Exceptions.InvalidUsername;
-import Baloot.Exceptions.ProviderAlreadyExists;
-import Baloot.Exceptions.ProviderNotFound;
-import Baloot.Exceptions.UserNotFound;
+import Baloot.Exceptions.*;
 import Database.Database;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -25,9 +22,6 @@ enum ResponseType{
 @Setter
 public class Baloot { //todo db public or private?
     private Database db = new Database();
-//    List<User> users = new ArrayList<>();
-//    List<Commodity> commodities = new ArrayList<>();
-//    List<Provider> providers = new ArrayList<>();
     private ObjectMapper mapper;
     private ObjectNode responseNode;
 
@@ -82,15 +76,16 @@ public class Baloot { //todo db public or private?
         return new Response(success, responseNode);
     }
      public Response addProvider(Provider newProvider) {
-         if (!doesProviderExist(newProvider)){
+        boolean success = true;
+        try{
+            findProviderById(newProvider.getId());
+            setResponseNode(ResponseType.ERROR, new ProviderAlreadyExists().getMessage()); //todo: mikhad asan ino?
+            success = false;
+        } catch (ProviderNotFound providerNotFoundError){
             db.addProvider(newProvider);
-            responseNode.set("Response", mapper.convertValue("Provider Added.", JsonNode.class));
-            return new Response(true, responseNode);
-         }
-         else {
-            responseNode.set("Response", mapper.convertValue("Provider Already Exists.", JsonNode.class));
-            return new Response(false, responseNode);
-         }
+            setResponseNode(ResponseType.RESPONE, "Provider Added");
+        }
+        return new Response(success, responseNode);
      }
 
      public Provider findProviderById(Integer providerId) throws ProviderNotFound {
@@ -102,13 +97,13 @@ public class Baloot { //todo db public or private?
         throw new ProviderNotFound();
      }
 
-    public Commodity findCommodityById(Integer commodityId){
+    public Commodity findCommodityById(Integer commodityId) throws CommodityNotFound {
         for (Commodity commodity : db.getCommodities()){
             if(commodity.isEqual(commodityId)){
                 return commodity;
             }
         }
-        return null;
+        throw new CommodityNotFound();
     }
 
     public List<Commodity> findCommoditiesByCategory(String category){
@@ -122,15 +117,16 @@ public class Baloot { //todo db public or private?
     }
 
      public Response addCommodity(Commodity newCommodity){
-        if(findProviderById(newCommodity.getProviderId()) != null){
+        boolean success = true;
+        try{
+            findProviderById(newCommodity.getProviderId());
             db.addCommodity(newCommodity);
-            responseNode.set("Response", mapper.convertValue("Commodity Added.", JsonNode.class));
-            return new Response(true, responseNode);
+            setResponseNode(ResponseType.RESPONE, "Commodity Added.");
+        } catch (ProviderNotFound providerNotFoundError){
+            setResponseNode(ResponseType.ERROR, providerNotFoundError.getMessage());
+            success = false;
         }
-        else {
-            responseNode.set("Response", mapper.convertValue("Provider does not exist.", JsonNode.class));
-            return new Response(false, responseNode);
-        }
+        return new Response(success, responseNode);
      }
 
      public Response getCommoditiesList() throws Exception{
@@ -147,76 +143,54 @@ public class Baloot { //todo db public or private?
      }
 
      public Response rateCommodity(String username, Integer commodityId, Integer score) {
-        boolean success = false;
-        if(score < 1 || score > 10){
-            responseNode.set("Error", mapper.convertValue("Rating Out of Range", JsonNode.class));
-        }
-         else if(findCommodityById(commodityId) == null){
-             responseNode.set("Error", mapper.convertValue("Commodity does not exist.", JsonNode.class));
-         }
-         else if(findUserByUsername(username) == null) {
-             responseNode.set("Error", mapper.convertValue("User does not exist.", JsonNode.class));
-         }
-         else {
+        boolean success = true;
+        try {
+            findUserByUsername(username);
             findCommodityById(commodityId).addUserRating(username, score);
-            responseNode.set("Response", mapper.convertValue("Rating Added.", JsonNode.class));
-            success = true;
+            setResponseNode(ResponseType.RESPONE, "Rating Added");
+        } catch (Exception e){
+            setResponseNode(ResponseType.ERROR, e.getMessage());
+            success = false;
         }
          return new Response(success, responseNode);
      }
 
-     public Response addToBuyList(String username, Integer commodityId){
-        if (findUserByUsername(username) == null){
-            responseNode.set("Error", mapper.convertValue("User Not Exists.", JsonNode.class));
-            return new Response(false, responseNode);
-        }
-        else if(findCommodityById(commodityId) == null){
-                responseNode.set("Error", mapper.convertValue("Commodity Not Exists.", JsonNode.class));
-                return new Response(false, responseNode);
-            }
-        else if(!findCommodityById(commodityId).isInStock()){
-            responseNode.set("Error", mapper.convertValue("Commodity Out of Stock.", JsonNode.class));
-            return new Response(false, responseNode);
-        }
-        else {
-            try {
-                findUserByUsername(username).addToBuyList(findCommodityById(commodityId));
-                findCommodityById(commodityId).reduceInStock();
-                responseNode.set("Response", mapper.convertValue("Commodity Added to buyList", JsonNode.class));
-                return new Response(true, responseNode);
-            } catch (Exception e){
-                responseNode.set("Error", mapper.convertValue(e.getMessage(), JsonNode.class));
-                return new Response(false, responseNode);
-            }
-        }
 
+     public Response addToBuyList(String username, Integer commodityId){
+        boolean success = true;
+        try{
+            findCommodityById(commodityId).checkInStock(); //todo
+            findUserByUsername(username).addToBuyList(findCommodityById(commodityId));
+            findCommodityById(commodityId).reduceInStock();
+            setResponseNode(ResponseType.RESPONE, "Commodity Added to buyList");
+        } catch(Exception e){
+            setResponseNode(ResponseType.ERROR, e.getMessage());
+            success = false;
+        }
+        return new Response(success, responseNode);
      }
 
      public Response removeFromBuyList(String username, Integer commodityId){
-         if (findUserByUsername(username) == null){
-             responseNode.set("Response", mapper.convertValue("User Not Exists.", JsonNode.class));
-             return new Response(false, responseNode);
-         }
-         else{
-             try{
-                 findUserByUsername(username).removeFromBuyList(findCommodityById(commodityId));
-                 responseNode.set("Response", mapper.convertValue("Commodity removed from buyList.", JsonNode.class));
-                 return new Response(true, responseNode);
-             } catch (Exception e){
-                 responseNode.set("Response", mapper.convertValue(e.getMessage(), JsonNode.class));
-                 return new Response(false, responseNode);
-             }
-         }
+        boolean success = true;
+        try{
+            findUserByUsername(username).removeFromBuyList(findCommodityById(commodityId));
+            setResponseNode(ResponseType.RESPONE, "Commodity Removed From BuyList");
+        } catch (Exception e){
+            setResponseNode(ResponseType.ERROR, e.getMessage());
+            success = false;
+        }
+         return new Response(success, responseNode);
      }
 
     public Response getCommodityById(Integer commodityId){
-        if(findCommodityById(commodityId) == null){
-            responseNode.set("Error", mapper.convertValue("Commodity Not Exists.", JsonNode.class));
+        try{
+            ObjectMapper objectMapper = new ObjectMapper();
+            ObjectNode node = objectMapper.convertValue(findCommodityById(commodityId), ObjectNode.class);
+            return new Response(true, node);
+        } catch (Exception e){
+            setResponseNode(ResponseType.ERROR, e.getMessage());
             return new Response(false, responseNode);
         }
-        ObjectMapper objectMapper = new ObjectMapper();
-        ObjectNode node = objectMapper.convertValue(findCommodityById(commodityId), ObjectNode.class);
-        return new Response(true, node);
     }
 
     public Response getCommoditiesByCategory(String category){
@@ -235,22 +209,23 @@ public class Baloot { //todo db public or private?
     }
 
     public Response getBuyList(String username){
-        if (findUserByUsername(username) == null){
-            responseNode.set("Response", mapper.convertValue("User Not Exists.", JsonNode.class));
+        try{
+            List<Commodity> buyList = findUserByUsername(username).getBuyList();
+            ObjectMapper objectMapper = new ObjectMapper();
+            List<ObjectNode> JsonCommodities = new ArrayList<>();
+            for (Commodity entry : buyList) {
+                ObjectNode node = objectMapper.convertValue(entry, ObjectNode.class);
+                node.remove("inStock");
+                JsonCommodities.add(node);
+            }
+            ArrayNode arrayNode = objectMapper.valueToTree(JsonCommodities);
+            ObjectNode commoditiesList = objectMapper.createObjectNode();
+            commoditiesList.putArray("buyList").addAll(arrayNode);
+            return new Response(true, commoditiesList);
+        } catch (Exception e){
+            setResponseNode(ResponseType.ERROR, e.getMessage());
             return new Response(false, responseNode);
         }
-        List<Commodity> buyList = findUserByUsername(username).getBuyList();
-        ObjectMapper objectMapper = new ObjectMapper();
-        List<ObjectNode> JsonCommodities = new ArrayList<>();
-        for (Commodity entry : buyList) {
-            ObjectNode node = objectMapper.convertValue(entry, ObjectNode.class);
-            node.remove("inStock");
-            JsonCommodities.add(node);
-        }
-        ArrayNode arrayNode = objectMapper.valueToTree(JsonCommodities);
-        ObjectNode commoditiesList = objectMapper.createObjectNode();
-        commoditiesList.putArray("buyList").addAll(arrayNode);
-        return new Response(true, commoditiesList);
     }
 
     public void printData(){

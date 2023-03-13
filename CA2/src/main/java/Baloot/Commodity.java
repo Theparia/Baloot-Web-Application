@@ -1,6 +1,8 @@
 package Baloot;
 
 
+import Baloot.Exceptions.CommodityOutOfStock;
+import Baloot.Exceptions.RatingOutOfRange;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -41,10 +43,13 @@ public class Commodity {
         this.usersRating.put("#initialRating#", rating);
     }
 
-    public Boolean isInStock(){
-        return inStock > 0;
+    public void checkInStock() throws CommodityOutOfStock {
+        if(inStock <= 0)
+            throw new CommodityOutOfStock();
     }
-    public void addUserRating(String username, Integer rating){
+    public void addUserRating(String username, Integer rating) throws RatingOutOfRange {
+        if(rating < 1 || rating > 10)
+            throw new RatingOutOfRange();
         if (usersRating.containsKey(username)){
             usersRating.replace(username, (float) rating);
         }
@@ -75,7 +80,9 @@ public class Commodity {
         return false;
     }
 
-    public void reduceInStock(){
+    public void reduceInStock() throws CommodityOutOfStock {
+        if(inStock <= 0)
+            throw new CommodityOutOfStock();
         inStock -= 1;
     }
 
