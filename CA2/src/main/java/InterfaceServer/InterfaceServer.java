@@ -1,6 +1,8 @@
 package InterfaceServer;
 
 import Baloot.*;
+import Database.Database;
+import InterfaceServer.HTMLHandler;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.type.TypeFactory;
 import io.javalin.Javalin;
@@ -32,19 +34,21 @@ public class InterfaceServer {
         TypeFactory typeFactory = objectMapper.getTypeFactory();
 
         List<User> users = objectMapper.readValue(HTTPRequestHandler.getRequest(USERS_URI), typeFactory.constructCollectionType(List.class, User.class));
-        baloot.getDb().setUsers(users);
+        Database.getInstance().setUsers(users);
 
         List<Commodity> commodities = objectMapper.readValue(HTTPRequestHandler.getRequest(COMMODITIES_URI), typeFactory.constructCollectionType(List.class, Commodity.class));
-        baloot.getDb().setCommodities(commodities);
+        Database.getInstance().setCommodities(commodities);
 
         List<Provider> providers = objectMapper.readValue(HTTPRequestHandler.getRequest(PROVIDERS_URI), typeFactory.constructCollectionType(List.class, Provider.class));
-        baloot.getDb().setProviders(providers);
+        Database.getInstance().setProviders(providers);
 
         List<Comment> comments = objectMapper.readValue(HTTPRequestHandler.getRequest(COMMENTS_URI), typeFactory.constructCollectionType(List.class, Comment.class));
-        baloot.getDb().setComments(comments);
+        Database.getInstance().setComments(comments);
+
     }
 
     private void runServer(final int PORT){
+//        app.get("/commodities/:commodity_id", new HTMLHandler);
 
     }
 

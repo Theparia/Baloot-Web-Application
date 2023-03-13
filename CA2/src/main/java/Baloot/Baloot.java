@@ -6,6 +6,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
+import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -21,7 +22,7 @@ enum ResponseType{
 @Getter
 @Setter
 public class Baloot { //todo db public or private?
-    private Database db = new Database();
+//    private Database db = new Database();
     private ObjectMapper mapper;
     private ObjectNode responseNode;
 
@@ -36,7 +37,7 @@ public class Baloot { //todo db public or private?
     }
 
     public User findUserByUsername(String username) throws UserNotFound {
-        for (User user : db.getUsers()){
+        for (User user : Database.getInstance().getUsers()){
             if (user.getUsername().equals(username)){
                 return user;
             }
@@ -44,14 +45,14 @@ public class Baloot { //todo db public or private?
         throw new UserNotFound();
     }
     private boolean doesUserExist(User newUser) {
-        for (User user : db.getUsers())
+        for (User user : Database.getInstance().getUsers())
             if (user.isEqual(newUser.getUsername()))
                 return true;
         return false;
     }
 
     private boolean doesProviderExist(Provider newProvider) {
-        for (Provider provider : db.getProviders())
+        for (Provider provider : Database.getInstance().getProviders())
             if (provider.isEqual(newProvider.getId()))
                 return true;
         return false;
@@ -66,7 +67,7 @@ public class Baloot { //todo db public or private?
              try{
                  if(!newUser.getUsername().matches("\\w+"))
                      throw new InvalidUsername(); //todo
-                 db.addUser(newUser);
+                 Database.getInstance().addUser(newUser);
                  setResponseNode(ResponseType.RESPONE, "User Added");
              } catch (InvalidUsername invalidUsernameError){
                  setResponseNode(ResponseType.ERROR, invalidUsernameError.getMessage());
@@ -82,14 +83,14 @@ public class Baloot { //todo db public or private?
             setResponseNode(ResponseType.ERROR, new ProviderAlreadyExists().getMessage()); //todo: mikhad asan ino?
             success = false;
         } catch (ProviderNotFound providerNotFoundError){
-            db.addProvider(newProvider);
+            Database.getInstance().addProvider(newProvider);
             setResponseNode(ResponseType.RESPONE, "Provider Added");
         }
         return new Response(success, responseNode);
      }
 
      public Provider findProviderById(Integer providerId) throws ProviderNotFound {
-        for (Provider provider : db.getProviders()){
+        for (Provider provider : Database.getInstance().getProviders()){
             if(provider.isEqual(providerId)){
                 return provider;
             }
@@ -98,7 +99,7 @@ public class Baloot { //todo db public or private?
      }
 
     public Commodity findCommodityById(Integer commodityId) throws CommodityNotFound {
-        for (Commodity commodity : db.getCommodities()){
+        for (Commodity commodity : Database.getInstance().getCommodities()){
             if(commodity.isEqual(commodityId)){
                 return commodity;
             }
@@ -108,7 +109,7 @@ public class Baloot { //todo db public or private?
 
     public List<Commodity> findCommoditiesByCategory(String category){
         List<Commodity> commoditiesInCategory = new ArrayList<>();
-        for (Commodity commodity : db.getCommodities()){
+        for (Commodity commodity : Database.getInstance().getCommodities()){
             if(commodity.isInCategory(category)){
                 commoditiesInCategory.add(commodity);
             }
@@ -120,7 +121,7 @@ public class Baloot { //todo db public or private?
         boolean success = true;
         try{
             findProviderById(newCommodity.getProviderId());
-            db.addCommodity(newCommodity);
+            Database.getInstance().addCommodity(newCommodity);
             setResponseNode(ResponseType.RESPONE, "Commodity Added.");
         } catch (ProviderNotFound providerNotFoundError){
             setResponseNode(ResponseType.ERROR, providerNotFoundError.getMessage());
@@ -132,7 +133,7 @@ public class Baloot { //todo db public or private?
      public Response getCommoditiesList() throws Exception{
          ObjectMapper objectMapper = new ObjectMapper();
          List<ObjectNode> JsonCommodities = new ArrayList<>();
-         for (Commodity entry : db.getCommodities()) {
+         for (Commodity entry : Database.getInstance().getCommodities()) {
              ObjectNode node = objectMapper.convertValue(entry, ObjectNode.class);
              JsonCommodities.add(node);
          }
@@ -230,19 +231,19 @@ public class Baloot { //todo db public or private?
 
     public void printData(){
         System.out.println("Users:");
-        for(User user : db.getUsers()){
+        for(User user : Database.getInstance().getUsers()){
             System.out.println(user.getUsername());
         }
         System.out.println("Providers:");
-        for(Provider provider : db.getProviders()){
+        for(Provider provider : Database.getInstance().getProviders()){
             System.out.println(provider.getId());
         }
         System.out.println("Commodities:");
-        for(Commodity commodity : db.getCommodities()){
+        for(Commodity commodity : Database.getInstance().getCommodities()){
             System.out.println(commodity.getId());
         }
         System.out.println("Comments:");
-        for(Comment comment : db.getComments()){
+        for(Comment comment : Database.getInstance().getComments()){
             System.out.println(comment.getText());
         }
     }

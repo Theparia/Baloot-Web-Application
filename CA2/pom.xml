@@ -55,6 +55,11 @@
             <artifactId>javalin</artifactId>
             <version>5.4.2</version>
         </dependency>
+        <dependency>
+            <groupId>org.jsoup</groupId>
+            <artifactId>jsoup</artifactId>
+            <version>1.15.4</version>
+        </dependency>
     </dependencies>
 
     <build>
