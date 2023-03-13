@@ -1,5 +1,6 @@
 package Database;
 
+import Baloot.Comment;
 import Baloot.Commodity;
 import Baloot.Provider;
 import Baloot.User;
@@ -16,6 +17,7 @@ public class Database {
     private List<User> users = new ArrayList<>();
     private List<Commodity> commodities = new ArrayList<>();
     private List<Provider> providers = new ArrayList<>();
+    private List<Comment> comments = new ArrayList<>();
 
     public void addUser(User user){
         users.add(user);

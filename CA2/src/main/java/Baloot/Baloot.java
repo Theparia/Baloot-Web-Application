@@ -241,6 +241,10 @@ public class Baloot { //todo db public or private?
         for(Commodity commodity : db.getCommodities()){
             System.out.println(commodity.getId());
         }
+        System.out.println("Comments:");
+        for(Comment comment : db.getComments()){
+            System.out.println(comment.getText());
+        }
     }
 
 }

@@ -7,7 +7,6 @@ public class Main {
         final String COMMENTS_URI = "http://5.253.25.110:5000/api/comments";
 
         final int PORT = 5000;
-        System.out.println("HELLLOOOO");
         InterfaceServer interfaceServer = new InterfaceServer();
         interfaceServer.start(USERS_URI, COMMODITIES_URI, PROVIDERS_URI, COMMENTS_URI, PORT);
     }

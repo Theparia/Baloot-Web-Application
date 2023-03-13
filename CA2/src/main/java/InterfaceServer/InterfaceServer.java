@@ -28,7 +28,6 @@ public class InterfaceServer {
     }
 
     private void importBalootDatabase(final String USERS_URI, final String COMMODITIES_URI, final String PROVIDERS_URI, final String COMMENTS_URI) throws Exception {
-        System.out.println("Importing...");
         ObjectMapper objectMapper = new ObjectMapper();
         TypeFactory typeFactory = objectMapper.getTypeFactory();
 
@@ -40,6 +39,9 @@ public class InterfaceServer {
 
         List<Provider> providers = objectMapper.readValue(HTTPRequestHandler.getRequest(PROVIDERS_URI), typeFactory.constructCollectionType(List.class, Provider.class));
         baloot.getDb().setProviders(providers);
+
+        List<Comment> comments = objectMapper.readValue(HTTPRequestHandler.getRequest(COMMENTS_URI), typeFactory.constructCollectionType(List.class, Comment.class));
+        baloot.getDb().setComments(comments);
     }
 
     private void runServer(final int PORT){
