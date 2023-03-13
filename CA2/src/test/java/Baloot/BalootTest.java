@@ -136,7 +136,7 @@ public class BalootTest {
         Response response = baloot.getCommodityById(4);
         assertFalse(response.isSuccess());
         assertEquals("Commodity Not Found", response.getData().get("Error").asText());
-    }User Not Exists.
+    }
 
     @Test
     public void test_get_commodity_by_id_correctly(){
