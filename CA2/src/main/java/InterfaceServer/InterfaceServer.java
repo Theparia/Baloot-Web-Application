@@ -48,7 +48,8 @@ public class InterfaceServer {
     }
 
     private void runServer(final int PORT){
-//        app.get("/commodities/:commodity_id", new HTMLHandler);
+        Javalin app = Javalin.create().start(PORT);
+        app.get("/commodities", new CommoditiesListHandler());
 
     }
 
