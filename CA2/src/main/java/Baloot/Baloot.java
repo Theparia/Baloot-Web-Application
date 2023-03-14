@@ -229,6 +229,15 @@ public class Baloot { //todo db public or private?
         }
     }
 
+    public List<Commodity> findCommoditiesByProvider(Integer proveiderId){
+        List<Commodity> providerCommodities = new ArrayList<>();
+        for(Commodity commodity : Database.getInstance().getCommodities()){
+            if(commodity.getProviderId().equals(proveiderId))
+                providerCommodities.add(commodity);
+        }
+        return providerCommodities;
+    }
+
     public void printData(){
         System.out.println("Users:");
         for(User user : Database.getInstance().getUsers()){
