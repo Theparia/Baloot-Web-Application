@@ -222,12 +222,27 @@ public class Baloot { //todo db public or private?
     }
 
     public List<Commodity> findCommoditiesByProvider(Integer proveiderId){
-        List<Commodity> providerCommodities = new ArrayList<>();
+        List<Commodity> commodities = new ArrayList<>();
         for(Commodity commodity : Database.getInstance().getCommodities()){
             if(commodity.getProviderId().equals(proveiderId))
-                providerCommodities.add(commodity);
+                commodities.add(commodity);
         }
-        return providerCommodities;
+        return commodities;
+    }
+
+    private boolean isPriceIntervalValid(float startPrice, float endPrice){
+        return startPrice >= 0 && endPrice >=0 && startPrice <= endPrice;
+    }
+
+    public List<Commodity> searchCommoditiesByPrice(float startPrice, float endPrice) throws InvalidPriceInterval {
+        if(!isPriceIntervalValid(startPrice, endPrice))
+            throw new InvalidPriceInterval();
+        List<Commodity> commodities = new ArrayList<>();
+        for(Commodity commodity : Database.getInstance().getCommodities()){
+            if(commodity.getPrice() >= startPrice && commodity.getPrice() <= endPrice)
+                commodities.add(commodity);
+        }
+        return commodities;
     }
 
     public void addUserCredit(String username, float credit) throws UserNotFound, NegativeCredit {
