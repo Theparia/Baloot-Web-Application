@@ -3,6 +3,7 @@ package Baloot;
 
 import Baloot.Exceptions.CommodityAlreadyExistsInBuyList;
 import Baloot.Exceptions.CommodityNotInBuyList;
+import Baloot.Exceptions.NegativeCredit;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -69,6 +70,12 @@ public class User {
             throw new CommodityNotInBuyList();
         }
         this.buyList.remove(commodity);
+    }
+
+    public void addCredit(float creditToBeAdded) throws NegativeCredit {
+        if(creditToBeAdded <= 0)
+            throw new NegativeCredit();
+        credit += creditToBeAdded;
     }
 
 }

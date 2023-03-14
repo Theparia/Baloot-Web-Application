@@ -12,12 +12,9 @@ import org.jsoup.nodes.*;
 
 import java.io.File;
 
-class CommoditiesListHandler implements Handler {
+import static java.lang.Float.parseFloat;
 
-    private Baloot baloot; //todo: mikhad?
-    public CommoditiesListHandler(Baloot baloot){
-        this.baloot = baloot;
-    }
+class CommoditiesListHandler implements Handler {
     @Override
     public void handle(@NotNull Context ctx) throws Exception {
         Document doc = Jsoup.parse(new File("CA2/src/main/resources/Templates/Commodities.html"), "UTF-8");
@@ -101,3 +98,35 @@ class ProviderPageHandler implements Handler {
     }
 }
 
+class AddCreditPageHandler implements Handler {
+    Baloot baloot;
+    public AddCreditPageHandler(Baloot baloot){
+        this.baloot = baloot;
+    }
+
+    @Override
+    public void handle(@NotNull Context ctx) throws Exception {
+        String userId = ctx.pathParam("user_id");
+        float credit = parseFloat(ctx.pathParam("credit"));
+        try{
+            baloot.addUserCredit(userId, credit);
+            ctx.redirect("/200");
+        } catch (Exception e){
+            System.out.println(e.getMessage());
+            ctx.redirect("/403");
+        }
+    }
+}
+
+class StatusCodePageHandler implements Handler {
+    private String code;
+    public StatusCodePageHandler(String code){
+        this.code = code;
+    }
+    @Override
+    public void handle(@NotNull Context ctx) throws Exception {
+        Document doc = Jsoup.parse(new File("CA2/src/main/resources/Templates/" + code + ".html"), "UTF-8");
+        ctx.contentType("text/html");
+        ctx.result(doc.toString());
+    }
+}

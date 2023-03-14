@@ -238,6 +238,14 @@ public class Baloot { //todo db public or private?
         return providerCommodities;
     }
 
+    public void addUserCredit(String username, float credit) throws UserNotFound, NegativeCredit {
+        try{
+            findUserByUsername(username).addCredit(credit);
+        } catch (Exception e){
+            throw e;
+        }
+    }
+
     public void printData(){
         System.out.println("Users:");
         for(User user : Database.getInstance().getUsers()){
