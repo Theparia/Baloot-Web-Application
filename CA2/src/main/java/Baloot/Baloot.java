@@ -143,17 +143,9 @@ public class Baloot { //todo db public or private?
          return new Response(true, commoditiesList);
      }
 
-     public Response rateCommodity(String username, Integer commodityId, Integer score) {
-        boolean success = true;
-        try {
-            findUserByUsername(username);
-            findCommodityById(commodityId).addUserRating(username, score);
-            setResponseNode(ResponseType.RESPONE, "Rating Added");
-        } catch (Exception e){
-            setResponseNode(ResponseType.ERROR, e.getMessage());
-            success = false;
-        }
-         return new Response(success, responseNode);
+     public void rateCommodity(String username, Integer commodityId, Integer score) throws UserNotFound, CommodityNotFound, RatingOutOfRange {
+         findUserByUsername(username);
+         findCommodityById(commodityId).addUserRating(username, score);
      }
 
 
@@ -239,11 +231,7 @@ public class Baloot { //todo db public or private?
     }
 
     public void addUserCredit(String username, float credit) throws UserNotFound, NegativeCredit {
-        try{
-            findUserByUsername(username).addCredit(credit);
-        } catch (Exception e){
-            throw e;
-        }
+        findUserByUsername(username).addCredit(credit);
     }
 
     public void printData(){

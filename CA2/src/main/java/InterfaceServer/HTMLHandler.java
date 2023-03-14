@@ -98,18 +98,37 @@ class ProviderPageHandler implements Handler {
     }
 }
 
-class AddCreditPageHandler implements Handler {
+class AddCreditHandler implements Handler {
     Baloot baloot;
-    public AddCreditPageHandler(Baloot baloot){
+    public AddCreditHandler(Baloot baloot){
         this.baloot = baloot;
     }
 
     @Override
     public void handle(@NotNull Context ctx) throws Exception {
-        String userId = ctx.pathParam("user_id");
-        float credit = parseFloat(ctx.pathParam("credit"));
         try{
+            String userId = ctx.pathParam("user_id");
+            float credit = parseFloat(ctx.pathParam("credit"));
             baloot.addUserCredit(userId, credit);
+            ctx.redirect("/200");
+        } catch (Exception e){
+            ctx.redirect("/403");
+        }
+    }
+}
+
+class RateCommodityHandler implements Handler{
+    Baloot baloot;
+    public RateCommodityHandler(Baloot baloot){
+        this.baloot = baloot;
+    }
+    @Override
+    public void handle(@NotNull Context ctx) throws Exception {
+        try {
+            String username = ctx.pathParam("username");
+            Integer commodityId = Integer.valueOf(ctx.pathParam("commodityId"));
+            Integer rate = Integer.valueOf(ctx.pathParam("rate"));
+            baloot.rateCommodity(username, commodityId, rate);
             ctx.redirect("/200");
         } catch (Exception e){
             System.out.println(e.getMessage());
