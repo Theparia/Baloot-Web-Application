@@ -54,6 +54,7 @@ public class InterfaceServer {
         app.get("/providers/{provider_id}", new ProviderPageHandler(baloot));
         app.get("/addCredit/{user_id}/{credit}", new AddCreditHandler(baloot));
         app.get("/rateCommodity/{username}/{commodityId}/{rate}", new RateCommodityHandler(baloot));
+        app.get("/voteComment/{username}/{commentId}/{vote}", new VoteCommentHandler(baloot));
         app.get("/commodities/search/{start_price}/{end_price}", new SearchCommoditiesByPriceHandler(baloot));
         app.get("/commodities/search/{categories}", new SearchCommoditiesByCategoryHandler(baloot));
         app.get("/200", new StatusCodePageHandler("200"));

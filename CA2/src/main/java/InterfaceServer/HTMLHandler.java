@@ -137,6 +137,27 @@ class RateCommodityHandler implements Handler{
     }
 }
 
+class VoteCommentHandler implements Handler {
+    Baloot baloot;
+    public VoteCommentHandler(Baloot baloot){
+        this.baloot = baloot;
+    }
+
+    @Override
+    public void handle(@NotNull Context ctx) throws Exception {
+        try{
+            String username = ctx.pathParam("username");
+            Integer commentId = Integer.valueOf(ctx.pathParam("commentId"));
+            int vote = Integer.valueOf(ctx.pathParam("vote"));
+            baloot.voteComment(commentId, username, vote);
+            ctx.redirect("/200");
+        } catch (Exception e){
+            ctx.redirect("/403");
+        }
+    }
+}
+
+
 class SearchCommoditiesByPriceHandler implements Handler{
     Baloot baloot;
     public SearchCommoditiesByPriceHandler(Baloot baloot){

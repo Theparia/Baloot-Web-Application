@@ -107,6 +107,15 @@ public class Baloot { //todo db public or private?
         throw new CommodityNotFound();
     }
 
+    public Comment findCommentById(Integer commentId) throws CommentNotFound {
+        for (Comment comment : Database.getInstance().getComments()){
+            if(comment.getId().equals(commentId)){
+                return comment;
+            }
+        }
+        throw new CommentNotFound();
+    }
+
     public List<Commodity> findCommoditiesByCategory(String category){
         List<Commodity> commoditiesInCategory = new ArrayList<>();
         for (Commodity commodity : Database.getInstance().getCommodities()){
@@ -144,8 +153,7 @@ public class Baloot { //todo db public or private?
      }
 
      public void rateCommodity(String username, Integer commodityId, Integer score) throws UserNotFound, CommodityNotFound, RatingOutOfRange {
-         findUserByUsername(username);
-         findCommodityById(commodityId).addUserRating(username, score);
+         findCommodityById(commodityId).addUserRating(findUserByUsername(username).getUsername(), score);
      }
 
 
@@ -247,6 +255,16 @@ public class Baloot { //todo db public or private?
 
     public void addUserCredit(String username, float credit) throws UserNotFound, NegativeCredit {
         findUserByUsername(username).addCredit(credit);
+    }
+
+    private boolean isVoteValid(int vote){
+        return vote == 1 || vote == 0 || vote == -1;
+    }
+
+    public void voteComment(Integer commentId, String username, int vote) throws InvalidCommentVote, CommentNotFound, UserNotFound{
+        if(!isVoteValid(vote)) //todo: existing like/dislike
+            throw new InvalidCommentVote();
+        findCommentById(commentId).addVote(findUserByUsername(username).getUsername(), vote);
     }
 
     public void printData(){
