@@ -17,15 +17,19 @@ import java.util.List;
 @Setter
 @NoArgsConstructor
 public class User {
+
     private String username;
     private String password;
     private String email;
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-DD")
-    private Date birthDate;
+    private String birthDate;
     private String address;
     private float credit;
     List<Commodity> buyList = new ArrayList<>();
-    public User(String username, String password, String email, Date birthDate, String address, float credit) {
+
+    List<Commodity> purchasedList = new ArrayList<>();
+
+    public User(String username, String password, String email, String birthDate, String address, float credit) {
         this.username = username;
         this.password = password;
         this.email = email;
@@ -48,6 +52,14 @@ public class User {
         this.buyList = user.getBuyList();
     }
 
+    public void resetBuyList(){
+        this.buyList = new ArrayList<>();
+    }
+
+    public void reduceCredit(float amount){
+        this.credit -= amount;
+    }
+
     public Commodity findCommodity(Commodity commodity){
         for (Commodity commodity1: buyList){
             if(commodity1.isEqual(commodity.getId())){
@@ -62,6 +74,13 @@ public class User {
             throw new CommodityAlreadyExistsInBuyList();
         }
         this.buyList.add(commodity);
+        for(Commodity commodity1: buyList){
+            System.out.println(commodity1.getId() + " - " + commodity1.getName());
+        }
+    }
+
+    public void addToPurchasedList(Commodity commodity) {
+        this.purchasedList.add(commodity);
     }
 
     public void removeFromBuyList(Commodity commodity) throws CommodityNotInBuyList {

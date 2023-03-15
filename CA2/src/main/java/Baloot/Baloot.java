@@ -157,19 +157,37 @@ public class Baloot { //todo db public or private?
      }
 
 
-     public Response addToBuyList(String username, Integer commodityId){
-        boolean success = true;
-        try{
-            findCommodityById(commodityId).checkInStock(); //todo
-            findUserByUsername(username).addToBuyList(findCommodityById(commodityId));
-            findCommodityById(commodityId).reduceInStock();
-            setResponseNode(ResponseType.RESPONE, "Commodity Added to buyList");
-        } catch(Exception e){
-            setResponseNode(ResponseType.ERROR, e.getMessage());
-            success = false;
-        }
-        return new Response(success, responseNode);
+     public void addToBuyList(String username, Integer commodityId) throws CommodityNotFound, UserNotFound, CommodityOutOfStock, CommodityAlreadyExistsInBuyList {
+        findCommodityById(commodityId).checkInStock();
+        findUserByUsername(username).addToBuyList(findCommodityById(commodityId));
      }
+
+//    public Response addToPurchasedList(String username, Integer commodityId){
+//        boolean success = true;
+//        try{
+//            findCommodityById(commodityId).checkInStock();
+//            findUserByUsername(username).addToPurchasedList(findCommodityById(commodityId));
+//            findCommodityById(commodityId).reduceInStock();
+//            setResponseNode(ResponseType.RESPONE, "Commodity Added to PurchasedList");
+//        } catch(Exception e){
+//            setResponseNode(ResponseType.ERROR, e.getMessage());
+//            success = false;
+//        }
+//        return new Response(success, responseNode);
+//    }
+//
+    public void finalizePayment(String userId) throws UserNotFound, CommodityOutOfStock {
+        User user = findUserByUsername(userId);
+        List<Commodity> buyListCommodities = user.getBuyList();
+        for (Commodity commodity : buyListCommodities){
+            commodity.reduceInStock();
+        }
+        for (Commodity commodity : buyListCommodities){
+            user.addToPurchasedList(commodity);
+            user.reduceCredit(commodity.getPrice());
+        }
+        user.resetBuyList();
+    }
 
      public Response removeFromBuyList(String username, Integer commodityId){
         boolean success = true;

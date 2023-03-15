@@ -50,8 +50,13 @@ public class InterfaceServer {
     private void runServer(final int PORT){
         Javalin app = Javalin.create().start(PORT);
         app.get("/commodities", new CommoditiesListHandler(baloot));
-        // commo page
-        app.get("/providers/:provider_id", new ProviderPageHandler(baloot));
+        app.get("/commodities/{commodity_id}", new CommodityPageHandler(baloot));
+        app.get("/users/{user_id}", new UserPageHandler(baloot));
+        app.post("/payment", new UserPaymentHandler(baloot));
+        app.post("/addToBuyList/{commodityId}", new addToBuyListHandler(baloot));
+        app.get("/200", new StatusCodePageHandler("200"));
+        app.get("/403", new StatusCodePageHandler("403"));
+        app.get("/404", new StatusCodePageHandler("404"));
     }
 
 }
