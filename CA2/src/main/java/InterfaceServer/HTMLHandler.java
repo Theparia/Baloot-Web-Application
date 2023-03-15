@@ -18,7 +18,7 @@ import java.util.List;
 
 class CommoditiesListHandler implements Handler {
 
-    private Baloot baloot; //todo: mikhad?
+    private Baloot baloot;
     public CommoditiesListHandler(Baloot baloot){
         this.baloot = baloot;
     }
@@ -82,13 +82,29 @@ class UserPageHandler implements Handler{
 
             doc.getElementById("form_payment_userId").attr("value", userId);
 
-//Add to buyList part:
-            Element table = doc.select("table").first();
+            Element buyListTable = doc.select("table").first();
             List<Commodity> buyList = baloot.findUserByUsername(userId).getBuyList();
-            for (Commodity commodity : buyList) {
-                Element row = getHtmlTableRow(commodity);
-                Element form = constructHTMLForm(commodity, row);
-                Element input = constructHTMLInputTag(commodity);
+            constructHTMLCommodityListTable(buyListTable, buyList, true);
+
+            Element purchasedListTable = doc.getElementById("purchasedList");
+            List<Commodity> purchasedList = baloot.findUserByUsername(userId).getPurchasedList();
+            constructHTMLCommodityListTable(purchasedListTable, purchasedList, false);
+
+        } catch(Exception e){
+            ctx.redirect("/403");
+        }
+        ctx.contentType("text/html");
+        ctx.result(doc.toString());
+    }
+
+
+    private void constructHTMLCommodityListTable(Element table, List<Commodity> commodities, boolean removeButton) {
+        for (Commodity commodity : commodities) {
+            Element row = getHtmlTableRow(commodity);
+            Element form = constructHTMLForm(commodity, row);
+            Element input = constructHTMLInputTag(commodity);
+
+            if(removeButton) {
                 Element button = new Element("button");
                 Element formCell = new Element("td");
                 button.attr("type", "submit");
@@ -99,15 +115,14 @@ class UserPageHandler implements Handler{
                 row.appendChild(formCell);
                 table.appendChild(row);
             }
-
-        } catch(Exception e){
-            ctx.redirect("/403");
+            else{
+                form.appendChild(input);
+                row.appendChild(form);
+                table.appendChild(row);
+            }
         }
-        ctx.contentType("text/html");
-        ctx.result(doc.toString());
+
     }
-
-
 
     private Element constructHTMLForm(Commodity commodity, Element row){
         Element linkCell = new Element("td");
