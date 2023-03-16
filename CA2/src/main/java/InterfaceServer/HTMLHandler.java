@@ -148,7 +148,7 @@ class UserPaymentHandler implements Handler{
             baloot.finalizePayment(userId);
             ctx.redirect("/users/" + userId);
         } catch (UserNotFound | CommodityOutOfStock | NotEnoughCredit exception) {
-            ctx.redirect("/404");
+            ctx.redirect("/403");
         }
     }
 }
@@ -283,7 +283,7 @@ class addToBuyListHandler implements Handler{
             baloot.addToBuyList(userId, Integer.valueOf(commodityId));
             ctx.redirect("/200");
         }catch (Exception e){
-            ctx.redirect("/404");
+            ctx.redirect("/403");
         }
         ctx.contentType("text/html");
     }
@@ -302,7 +302,7 @@ class removeFromBuyListHandler implements Handler{
             baloot.removeFromBuyList(username, Integer.valueOf(commodityId));
             ctx.redirect("/200");
         }catch (Exception e){
-            ctx.redirect("/404");
+            ctx.redirect("/403");
         }
         ctx.contentType("text/html");
     }
@@ -329,7 +329,7 @@ class ProviderPageHandler implements Handler {
             ctx.contentType("text/html");
             ctx.result(doc.toString());
         } catch (Exception e){
-            ctx.redirect("/404");
+            ctx.redirect("/403");
         }
     }
 
