@@ -162,20 +162,6 @@ public class Baloot { //todo db public or private?
         findUserByUsername(username).addToBuyList(findCommodityById(commodityId));
      }
 
-//    public Response addToPurchasedList(String username, Integer commodityId){
-//        boolean success = true;
-//        try{
-//            findCommodityById(commodityId).checkInStock();
-//            findUserByUsername(username).addToPurchasedList(findCommodityById(commodityId));
-//            findCommodityById(commodityId).reduceInStock();
-//            setResponseNode(ResponseType.RESPONE, "Commodity Added to PurchasedList");
-//        } catch(Exception e){
-//            setResponseNode(ResponseType.ERROR, e.getMessage());
-//            success = false;
-//        }
-//        return new Response(success, responseNode);
-//    }
-//
     public void finalizePayment(String userId) throws UserNotFound, CommodityOutOfStock {
         User user = findUserByUsername(userId);
         List<Commodity> buyListCommodities = user.getBuyList();
@@ -189,16 +175,8 @@ public class Baloot { //todo db public or private?
         user.resetBuyList();
     }
 
-     public Response removeFromBuyList(String username, Integer commodityId){
-        boolean success = true;
-        try{
+     public void removeFromBuyList(String username, Integer commodityId) throws UserNotFound, CommodityNotFound, CommodityNotInBuyList {
             findUserByUsername(username).removeFromBuyList(findCommodityById(commodityId));
-            setResponseNode(ResponseType.RESPONE, "Commodity Removed From BuyList");
-        } catch (Exception e){
-            setResponseNode(ResponseType.ERROR, e.getMessage());
-            success = false;
-        }
-         return new Response(success, responseNode);
      }
 
     public Response getCommodityById(Integer commodityId){

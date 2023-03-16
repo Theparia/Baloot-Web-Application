@@ -53,7 +53,9 @@ public class InterfaceServer {
         app.get("/commodities/{commodity_id}", new CommodityPageHandler(baloot));
         app.get("/users/{user_id}", new UserPageHandler(baloot));
         app.post("/payment", new UserPaymentHandler(baloot));
-        app.post("/addToBuyList/{commodityId}", new addToBuyListHandler(baloot));
+        app.post("/addToBuyList/{commodityId}", new addToBuyListRedirectHandler(baloot));
+        app.get("/addToBuyList/{username}/{commodityId}", new addToBuyListHandler(baloot));
+        app.post("/removeFromBuyList/{username}/{commodityId}", new removeFromBuyListHandler(baloot));
         app.get("/200", new StatusCodePageHandler("200"));
         app.get("/403", new StatusCodePageHandler("403"));
         app.get("/404", new StatusCodePageHandler("404"));
