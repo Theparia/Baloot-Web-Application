@@ -1,0 +1,18 @@
+[
+  {
+    "username": "paria" ,
+    "password": "1234" ,
+    "email": "paria.khoshab2019@gmail.com",
+    "birthDate": "2001-09-22",
+    "address": "Tehran",
+    "credit": 2000
+  },
+  {
+    "username": "parnian",
+    "password": "5678",
+    "email": "pr.fazel@gmail.com",
+    "birthDate": "2001-02-25",
+    "address": "Tehran",
+    "credit": 2000
+  }
+]
