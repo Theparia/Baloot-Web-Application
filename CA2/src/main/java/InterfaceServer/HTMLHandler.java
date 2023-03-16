@@ -46,20 +46,6 @@ class CommoditiesListHandler implements Handler {
     }
 }
 
-class ProviderPageHandler implements Handler {
-    private Baloot baloot;
-    public ProviderPageHandler(Baloot baloot){
-        this.baloot = baloot;
-    }
-    @Override
-    public void handle(@NotNull Context ctx) throws Exception {
-        Document doc = Jsoup.parse(new File("CA2/src/main/resources/Templates/Provider.html"), "UTF-8");
-        String provider_id = ctx.pathParam("provider_id");
-        Element ul = doc.selectFirst("ul");
-
-    }
-}
-
 class UserPageHandler implements Handler{
     private Baloot baloot;
     public UserPageHandler(Baloot baloot){
@@ -84,11 +70,11 @@ class UserPageHandler implements Handler{
 
             Element buyListTable = doc.select("table").first();
             List<Commodity> buyList = baloot.findUserByUsername(userId).getBuyList();
-            constructHTMLCommodityListTable(buyListTable, buyList, true);
+            constructHTMLCommodityListTable(buyListTable, buyList, userId, true);
 
             Element purchasedListTable = doc.getElementById("purchasedList");
             List<Commodity> purchasedList = baloot.findUserByUsername(userId).getPurchasedList();
-            constructHTMLCommodityListTable(purchasedListTable, purchasedList, false);
+            constructHTMLCommodityListTable(purchasedListTable, purchasedList, userId, false);
 
         } catch(Exception e){
             ctx.redirect("/403");
@@ -97,14 +83,16 @@ class UserPageHandler implements Handler{
         ctx.result(doc.toString());
     }
 
-
-    private void constructHTMLCommodityListTable(Element table, List<Commodity> commodities, boolean removeButton) {
+    private void constructHTMLCommodityListTable(Element table, List<Commodity> commodities, String userId, boolean removeButton) {
         for (Commodity commodity : commodities) {
             Element row = getHtmlTableRow(commodity);
-            Element form = constructHTMLForm(commodity, row);
-            Element input = constructHTMLInputTag(commodity);
-
-            if(removeButton) {
+            if (!removeButton){
+                table.appendChild(row);
+            }
+            else{
+                Element form = constructHTMLForm(commodity, row);
+                form.attr("action", "/removeFromBuyList/" + userId + "/" + commodity.getId());
+                Element input = constructHTMLInputTag(commodity);
                 Element button = new Element("button");
                 Element formCell = new Element("td");
                 button.attr("type", "submit");
@@ -115,13 +103,7 @@ class UserPageHandler implements Handler{
                 row.appendChild(formCell);
                 table.appendChild(row);
             }
-            else{
-                form.appendChild(input);
-                row.appendChild(form);
-                table.appendChild(row);
-            }
         }
-
     }
 
     private Element constructHTMLForm(Commodity commodity, Element row){
@@ -157,8 +139,6 @@ class UserPageHandler implements Handler{
         return row;
     }
 }
-
-
 
 class UserPaymentHandler implements Handler{
     private Baloot baloot;
@@ -210,6 +190,22 @@ class CommodityPageHandler implements Handler{
 
     }
 }
+
+class addToBuyListRedirectHandler implements Handler{
+    private Baloot baloot;
+    public addToBuyListRedirectHandler(Baloot baloot){
+        this.baloot = baloot;
+    }
+    @Override
+    public void handle(@NotNull Context ctx) {
+        System.out.println("HERE");
+        String commodityId = ctx.pathParam("commodityId");
+        String userId = ctx.formParam("userId");
+        System.out.println("---> /addToBuyList/" + userId + "/" + commodityId);
+        ctx.redirect("/addToBuyList/" + userId + "/" + commodityId);
+    }
+}
+
 class addToBuyListHandler implements Handler{
     private Baloot baloot;
     public addToBuyListHandler(Baloot baloot){
@@ -218,16 +214,35 @@ class addToBuyListHandler implements Handler{
     @Override
     public void handle(@NotNull Context ctx) {
         try {
+            System.out.println("HANDLER");
             String commodityId = ctx.pathParam("commodityId");
-            String userId = ctx.formParam("userId");
-            baloot.addToBuyList(userId, Integer.valueOf(commodityId));
+            String userId = ctx.pathParam("username");
             System.out.println("username: " + userId + " commodity: " + commodityId);
+            baloot.addToBuyList(userId, Integer.valueOf(commodityId));
             ctx.redirect("/200");
         }catch (Exception e){
             ctx.redirect("/404");
         }
         ctx.contentType("text/html");
+    }
+}
 
+class removeFromBuyListHandler implements Handler{
+    private Baloot baloot;
+    public removeFromBuyListHandler(Baloot baloot){
+        this.baloot = baloot;
+    }
+    @Override
+    public void handle(@NotNull Context ctx) {
+        try {
+            String commodityId = ctx.pathParam("commodityId");
+            String username = ctx.pathParam("username");
+            baloot.removeFromBuyList(username, Integer.valueOf(commodityId));
+            ctx.redirect("/200");
+        }catch (Exception e){
+            ctx.redirect("/404");
+        }
+        ctx.contentType("text/html");
     }
 }
 
