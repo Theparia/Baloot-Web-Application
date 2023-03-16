@@ -4,6 +4,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 
@@ -16,11 +17,8 @@ public class Comment {
     private String userEmail;
     private String text;
     private String date;
-    private HashMap<Integer, List<String>> votes = new HashMap<Integer, List<String>>(){{
-        put(1, new ArrayList<>());
-        put(0, new ArrayList<>());
-        put(-1, new ArrayList<>());
-    }}; // <1, 0, -1> ---> [usernames]
+
+    private HashMap<String, Integer> votes = new HashMap<String, Integer>(); // username ---> {-1, 0, 1}
 
     public Comment(Integer commodityId, String userEmail, String text, String date){
         this.id = idGenerator++;
@@ -35,13 +33,22 @@ public class Comment {
     }
 
     public void addVote(String username, Integer vote){
-        votes.get(vote).add(username);
+        if (votes.containsKey(username)){
+            votes.replace(username, vote);
+        }
+        else {
+            votes.put(username, vote);
+        }
+    }
+
+    private Integer countVotes(Integer vote){
+        return Collections.frequency(votes.values(), vote);
     }
 
     public Integer getLikeCount(){
-        return votes.get(1).size();
+        return countVotes(1);
     }
     public Integer getDisLikeCount(){
-        return votes.get(-1).size();
+        return countVotes(-1);
     }
 }

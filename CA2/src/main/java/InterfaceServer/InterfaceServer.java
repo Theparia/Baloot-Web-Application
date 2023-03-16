@@ -56,19 +56,17 @@ public class InterfaceServer {
         app.post("/addToBuyList/{commodityId}", new addToBuyListRedirectHandler(baloot));
         app.get("/addToBuyList/{username}/{commodityId}", new addToBuyListHandler(baloot));
         app.get("/removeFromBuyList/{username}/{commodityId}", new removeFromBuyListHandler(baloot));
-        app.post("/removeFromBuyList/{username}/{commodityId}", new removeFromBuyListHandler(baloot));
         app.get("/providers/{provider_id}", new ProviderPageHandler(baloot));
         app.get("/addCredit/{user_id}/{credit}", new AddCreditHandler(baloot));
         app.post("/rateCommodity/{commodityId}", new rateRedirectHandler(baloot));
         app.get("/rateCommodity/{username}/{commodityId}/{rate}", new RateCommodityHandler(baloot));
-        app.post("/rateCommodity/{username}/{commodityId}/{rate}", new RateCommodityHandler(baloot));
         app.post("/voteComment/{vote}", new voteRedirectHandler(baloot));
         app.get("/voteComment/{username}/{commentId}/{vote}", new VoteCommentHandler(baloot));
-        app.post("/voteComment/{username}/{commentId}/{vote}", new VoteCommentHandler(baloot));
         app.get("/commodities/search/{start_price}/{end_price}", new SearchCommoditiesByPriceHandler(baloot));
         app.get("/commodities/search/{categories}", new SearchCommoditiesByCategoryHandler(baloot));
         app.get("/200", new StatusCodePageHandler("200"));
         app.get("/403", new StatusCodePageHandler("403"));
         app.get("/404", new StatusCodePageHandler("404"));
+        app.error(404, new StatusCodePageHandler("404"));
     }
 }

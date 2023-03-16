@@ -47,7 +47,7 @@ class CommoditiesListHandler implements Handler {
         row.append("<td>" + commodity.getCategories() + "</td>");
         row.append("<td>" + commodity.getRating() + "</td>");
         row.append("<td>" + commodity.getInStock() + "</td>");
-        row.append("<td><a href=\"commodities/" + commodity.getId() +"\">Link</a></td>");
+        row.append("<td><a href=\"/commodities/" + commodity.getId() +"\">Link</a></td>");
         return row;
     }
 }
@@ -59,7 +59,6 @@ class UserPageHandler implements Handler{
     }
     @Override
     public void handle(@NotNull Context ctx) throws Exception {
-
         Document doc = Jsoup.parse(new File("CA2/src/main/resources/Templates/User.html"), "UTF-8");
         String userId = ctx.pathParam("user_id");
         try {
@@ -67,14 +66,14 @@ class UserPageHandler implements Handler{
             doc.getElementById("username").text("Username: " + user.getUsername());
             doc.getElementById("email").text("Email: " + user.getEmail());
             doc.getElementById("birthDate").text("Birth Date: " + user.getBirthDate());
-            doc.getElementById("address").text(user.getBirthDate());
-            doc.getElementById("credit").text("Credit: " + String.valueOf(user.getCredit()));
-            Element paymentForm = doc.select("form").first();
+            doc.getElementById("address").text("Address: " + user.getAddress());
+            doc.getElementById("credit").text("Credit: " + user.getCredit());
+            Element paymentForm = doc.selectFirst("form");
             paymentForm.attr("action", "/payment");
 
             doc.getElementById("form_payment_userId").attr("value", userId);
 
-            Element buyListTable = doc.select("table").first();
+            Element buyListTable = doc.selectFirst("table");
             List<Commodity> buyList = baloot.findUserByUsername(userId).getBuyList();
             constructHTMLCommodityListTable(buyListTable, buyList, userId, true);
 
@@ -92,46 +91,31 @@ class UserPageHandler implements Handler{
     private void constructHTMLCommodityListTable(Element table, List<Commodity> commodities, String userId, boolean removeButton) {
         for (Commodity commodity : commodities) {
             Element row = getHtmlTableRow(commodity);
-            if (!removeButton){
-                table.appendChild(row);
-            }
-            else{
-                Element form = constructHTMLForm(commodity, row);
-                form.attr("action", "/removeFromBuyList/" + userId + "/" + commodity.getId());
-                Element button = new Element("button");
-                Element formCell = new Element("td");
-                button.attr("type", "submit");
-                button.text("Remove");
-                form.appendChild(button);
-                formCell.appendChild(form);
-                row.appendChild(formCell);
-                table.appendChild(row);
-            }
-        }
-    }
+            if(removeButton){
+                Element form = new Element("form")
+                        .attr("method", "GET")
+                        .attr("action", "/removeFromBuyList/" + userId + "/" + commodity.getId());
 
-    private Element constructHTMLForm(Commodity commodity, Element row){
-        Element linkCell = new Element("td");
-        Element link = new Element("a");
-        link.attr("href", "/commodities/" + commodity.getId());
-        link.text("Link");
-        linkCell.appendChild(link);
-        row.appendChild(linkCell);
-        Element form = new Element("form");
-        form.attr("action", "");
-        form.attr("method", "POST");
-        return form;
+                Element button = new Element("button")
+                        .attr("type", "submit")
+                        .text("Remove");
+                form.appendChild(button);
+                row.appendChild(new Element("td").appendChild(form));
+            }
+            table.appendChild(row);
+        }
     }
 
     private Element getHtmlTableRow(Commodity commodity){
         Element row = new Element("tr");
-        row.append("<th>" + commodity.getId() + "</th>");
-        row.append("<th>" + commodity.getName() + "</th>");
-        row.append("<th>" + commodity.getProviderId() + "</th>");
-        row.append("<th>" + commodity.getPrice() + "</th>");
-        row.append("<th>" + commodity.getCategories() + "</th>");
-        row.append("<th>" + commodity.getRating() + "</th>");
-        row.append("<th>" + commodity.getInStock() + "</th>");
+        row.append("<td>" + commodity.getId() + "</td>");
+        row.append("<td>" + commodity.getName() + "</td>");
+        row.append("<td>" + commodity.getProviderId() + "</td>");
+        row.append("<td>" + commodity.getPrice() + "</td>");
+        row.append("<td>" + commodity.getCategories() + "</td>");
+        row.append("<td>" + commodity.getRating() + "</td>");
+        row.append("<td>" + commodity.getInStock() + "</td>");
+        row.append("<td><a href=\"/commodities/" + commodity.getId() +"\">Link</a></td>");
         return row;
     }
 }
@@ -147,7 +131,7 @@ class UserPaymentHandler implements Handler{
             String userId = ctx.formParam("form_payment_userId");
             baloot.finalizePayment(userId);
             ctx.redirect("/users/" + userId);
-        } catch (UserNotFound | CommodityOutOfStock | NotEnoughCredit exception) {
+        } catch (UserNotFound | CommodityOutOfStock | NotEnoughCredit exception) { //todo: exception khali?
             ctx.redirect("/403");
         }
     }
@@ -190,7 +174,7 @@ class CommodityPageHandler implements Handler{
 
     }
 
-    public void constructCommentsTable(Element doc, String commodityId){
+    private void constructCommentsTable(Element doc, String commodityId){ //todo shorten this
         List<Comment> comments = baloot.getCommodityComments(commodityId);
         for (Comment comment : comments) {
             Element commentRow = doc.getElementById("commentsTable").appendElement("tr");
@@ -209,6 +193,14 @@ class CommodityPageHandler implements Handler{
             dislikeButton.appendElement("input").attr("type", "hidden").attr("name", "commentId").attr("value", String.valueOf(comment.getId()));
             dislikeButton.appendElement("button").attr("type", "submit").attr("formaction", "/voteComment/-1").text("dislike");
         }
+    }
+
+    private Element generateVoteButton(String type, int commentId, int count) {
+        return new Element("td")
+                .append("<label>").text(String.valueOf(count))
+                .append("<input type=\"hidden\" name=\"commentId\" value=\"" + commentId + "\">")
+                .append("<button type=\"submit\" formaction=\"/voteComment/" + (type.equals("like") ? "1" : "-1") + "\">")
+                .text(type);
     }
 }
 
@@ -437,7 +429,7 @@ class SearchCommoditiesByPriceHandler implements Handler{
         row.append("<td>" + commodity.getCategories() + "</td>");
         row.append("<td>" + commodity.getRating() + "</td>");
         row.append("<td>" + commodity.getInStock() + "</td>");
-        row.append("<td><a href=\"commodities/" + commodity.getId() +"\">Link</a></td>");
+        row.append("<td><a href=\"/commodities/" + commodity.getId() +"\">Link</a></td>");
         return row;
     }
 }
@@ -473,7 +465,7 @@ class SearchCommoditiesByCategoryHandler implements Handler{
         row.append("<td>" + commodity.getCategories() + "</td>");
         row.append("<td>" + commodity.getRating() + "</td>");
         row.append("<td>" + commodity.getInStock() + "</td>");
-        row.append("<td><a href=\"commodities/" + commodity.getId() +"\">Link</a></td>");
+        row.append("<td><a href=\"/commodities/" + commodity.getId() +"\">Link</a></td>");
         return row;
     }
 }
