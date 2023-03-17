@@ -1,9 +1,9 @@
 package Database;
 
-import Baloot.Comment;
-import Baloot.Commodity;
-import Baloot.Provider;
-import Baloot.User;
+import Domain.Comment;
+import Domain.Commodity;
+import Domain.Provider;
+import Domain.User;
 import lombok.Getter;
 import lombok.Setter;
 
