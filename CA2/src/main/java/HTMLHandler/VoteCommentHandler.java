@@ -14,10 +14,18 @@ public class VoteCommentHandler implements Handler {
     @Override
     public void handle(@NotNull Context ctx) throws Exception {
         try{
-            String username = ctx.pathParam("username");
-            Integer commentId = Integer.valueOf(ctx.pathParam("commentId"));
+            String method = String.valueOf(ctx.method());
             int vote = Integer.valueOf(ctx.pathParam("vote"));
-            baloot.voteComment(commentId, username, vote);
+            String userId = "";
+            Integer commentId = 0;
+            if (method.equals("GET")) {
+                userId = ctx.pathParam("username");
+                commentId = Integer.valueOf(ctx.pathParam("commentId"));
+            } else if (method.equals("POST")) {
+                userId = ctx.formParam("userId");
+                commentId = Integer.valueOf(ctx.formParam("commentId"));
+            }
+            baloot.voteComment(commentId, userId, vote);
             ctx.redirect("/200");
         } catch (Exception e){
             ctx.redirect("/403");

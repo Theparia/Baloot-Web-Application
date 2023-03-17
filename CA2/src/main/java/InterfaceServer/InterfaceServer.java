@@ -53,14 +53,14 @@ public class InterfaceServer {
         app.get("/commodities/{commodity_id}", new CommodityPageHandler(baloot));
         app.get("/users/{user_id}", new UserPageHandler(baloot));
         app.post("/payment", new UserPaymentHandler(baloot));
-        app.post("/addToBuyList/{commodityId}", new AddToBuyListRedirectHandler(baloot));
+        app.post("/addToBuyList/{commodityId}", new AddToBuyListHandler(baloot));
         app.get("/addToBuyList/{username}/{commodityId}", new AddToBuyListHandler(baloot));
         app.get("/removeFromBuyList/{username}/{commodityId}", new RemoveFromBuyListHandler(baloot));
         app.get("/providers/{provider_id}", new ProviderPageHandler(baloot));
         app.get("/addCredit/{user_id}/{credit}", new AddCreditHandler(baloot));
-        app.post("/rateCommodity/{commodityId}", new RateRedirectHandler(baloot));
+        app.post("/rateCommodity/{commodityId}", new RateCommodityHandler(baloot));
         app.get("/rateCommodity/{username}/{commodityId}/{rate}", new RateCommodityHandler(baloot));
-        app.post("/voteComment/{vote}", new VoteRedirectHandler(baloot));
+        app.post("/voteComment/{vote}", new VoteCommentHandler(baloot));
         app.get("/voteComment/{username}/{commentId}/{vote}", new VoteCommentHandler(baloot));
         app.get("/commodities/search/{start_price}/{end_price}", new SearchCommoditiesByPriceHandler(baloot));
         app.get("/commodities/search/{categories}", new SearchCommoditiesByCategoryHandler(baloot));

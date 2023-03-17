@@ -12,14 +12,21 @@ public class RateCommodityHandler implements Handler {
     }
     @Override
     public void handle(@NotNull Context ctx) throws Exception {
-        try {
-            String username = ctx.pathParam("username");
+        try{
+            String method = String.valueOf(ctx.method());
             Integer commodityId = Integer.valueOf(ctx.pathParam("commodityId"));
-            Integer rate = Integer.valueOf(ctx.pathParam("rate"));
-            baloot.rateCommodity(username, commodityId, rate);
+            String userId = "";
+            Integer rate = 0;
+            if (method.equals("GET")) {
+                userId = ctx.pathParam("username");
+                rate = Integer.valueOf(ctx.pathParam("rate"));
+            } else if (method.equals("POST")) {
+                userId = ctx.formParam("userId");
+                rate = Integer.valueOf(ctx.formParam("quantity"));
+            }
+            baloot.rateCommodity(userId, commodityId, rate);
             ctx.redirect("/200");
         } catch (Exception e){
-            System.out.println(e.getMessage());
             ctx.redirect("/403");
         }
     }

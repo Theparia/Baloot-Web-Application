@@ -13,11 +13,17 @@ public class AddToBuyListHandler implements Handler {
     @Override
     public void handle(@NotNull Context ctx) {
         try {
+            String method = String.valueOf(ctx.method());
             String commodityId = ctx.pathParam("commodityId");
-            String userId = ctx.pathParam("username");
+            String userId = "";
+            if (method.equals("GET")) {
+                userId = ctx.pathParam("username");
+            } else if (method.equals("POST")) {
+                userId = ctx.formParam("userId");
+            }
             baloot.addToBuyList(userId, Integer.valueOf(commodityId));
             ctx.redirect("/200");
-        }catch (Exception e){
+        } catch (Exception e){
             ctx.redirect("/403");
         }
         ctx.contentType("text/html");
