@@ -61,5 +61,12 @@
     <orderEntry type="library" name="Maven: org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.7.10" level="project" />
     <orderEntry type="library" name="Maven: org.jsoup:jsoup:1.15.4" level="project" />
     <orderEntry type="library" name="Maven: org.slf4j:slf4j-simple:2.0.6" level="project" />
+    <orderEntry type="library" name="Maven: com.mashape.unirest:unirest-java:1.4.5" level="project" />
+    <orderEntry type="library" name="Maven: org.apache.httpcomponents:httpasyncclient:4.0.2" level="project" />
+    <orderEntry type="library" name="Maven: org.apache.httpcomponents:httpmime:4.3.6" level="project" />
+    <orderEntry type="library" name="Maven: org.json:json:20140107" level="project" />
+    <orderEntry type="library" name="Maven: com.konghq:unirest-java:3.14.2" level="project" />
+    <orderEntry type="library" name="Maven: org.apache.httpcomponents:httpcore-nio:4.4.13" level="project" />
+    <orderEntry type="library" name="Maven: com.google.code.gson:gson:2.10" level="project" />
   </component>
 </module>

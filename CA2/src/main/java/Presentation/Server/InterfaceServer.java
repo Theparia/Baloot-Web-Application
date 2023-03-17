@@ -32,7 +32,7 @@ public class InterfaceServer {
         }
     }
 
-    private void importBalootDatabase(final String USERS_URI, final String COMMODITIES_URI, final String PROVIDERS_URI, final String COMMENTS_URI) throws Exception {
+    public void importBalootDatabase(final String USERS_URI, final String COMMODITIES_URI, final String PROVIDERS_URI, final String COMMENTS_URI) throws Exception {
         ObjectMapper objectMapper = new ObjectMapper();
         TypeFactory typeFactory = objectMapper.getTypeFactory();
 
