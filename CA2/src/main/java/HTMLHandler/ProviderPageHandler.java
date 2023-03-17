@@ -9,6 +9,7 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 
 import java.io.File;
+import java.util.List;
 
 public class ProviderPageHandler implements Handler {
     private Baloot baloot;
@@ -21,11 +22,18 @@ public class ProviderPageHandler implements Handler {
             Document doc = Jsoup.parse(new File("CA2/src/main/resources/Templates/Provider.html"), "UTF-8");
             String providerId = ctx.pathParam("provider_id");
             Provider provider = baloot.findProviderById(Integer.valueOf(providerId));
+            List<Commodity> providedCommodities = baloot.findCommoditiesByProvider(Integer.valueOf(providerId));
             doc.getElementById("id").text("Id: " + providerId);
             doc.getElementById("name").text("Name: " + provider.getName());
             doc.getElementById("registryDate").text("Registry Date: " + provider.getRegistryDate().toString());
+            double averageRating = providedCommodities.stream() //todo: function?
+                    .mapToDouble(commodity -> commodity.getRating())
+                    .average()
+                    .orElse(Double.NaN);
+            doc.getElementById("averageRating").text("Average Rating of Provided Commodities: " + averageRating);
+
             Element table = doc.selectFirst("table");
-            for(Commodity commodity : baloot.findCommoditiesByProvider(Integer.valueOf(providerId))){
+            for(Commodity commodity : providedCommodities){
                 table.appendChild(getHtmlTableRow(commodity));
             }
             ctx.contentType("text/html");
