@@ -2,6 +2,7 @@ package Presentation.HTMLHandler;
 
 import Domain.Commodity;
 import Service.Baloot;
+import com.google.common.io.Resources;
 import io.javalin.http.Context;
 import io.javalin.http.Handler;
 import org.jetbrains.annotations.NotNull;
@@ -22,7 +23,7 @@ public class SearchCommoditiesByPriceHandler implements Handler {
     @Override
     public void handle(@NotNull Context ctx) throws Exception {
         try{
-            Document doc = Jsoup.parse(new File("src/main/resources/Templates/Commodities.html"), "UTF-8");
+            Document doc = Jsoup.parse(new File(Resources.getResource("Templates/Commodities.html").toURI()), "UTF-8");
             float startPrice = parseFloat(ctx.pathParam("start_price"));
             float endPrice = parseFloat(ctx.pathParam("end_price"));
             Element table = doc.selectFirst("table");

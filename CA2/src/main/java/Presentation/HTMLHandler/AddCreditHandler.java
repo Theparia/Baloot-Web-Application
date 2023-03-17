@@ -16,8 +16,14 @@ public class AddCreditHandler implements Handler {
     @Override
     public void handle(@NotNull Context ctx) throws Exception {
         try{
+            String method = String.valueOf(ctx.method());
             String userId = ctx.pathParam("user_id");
-            float credit = parseFloat(ctx.pathParam("credit"));
+            float credit = 0;
+            if (method.equals("GET")) {
+                credit = parseFloat(ctx.pathParam("credit"));
+            } else if (method.equals("POST")) {
+                credit = parseFloat(ctx.formParam("creditAmount"));
+            }
             baloot.addUserCredit(userId, credit);
             ctx.redirect("/200");
         } catch (Exception e){

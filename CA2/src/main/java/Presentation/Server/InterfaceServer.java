@@ -61,6 +61,7 @@ public class InterfaceServer {
         app.get("/removeFromBuyList/{username}/{commodityId}", new RemoveFromBuyListHandler(baloot));
         app.get("/providers/{provider_id}", new ProviderPageHandler(baloot));
         app.get("/addCredit/{user_id}/{credit}", new AddCreditHandler(baloot));
+        app.post("/addCredit/{user_id}", new AddCreditHandler(baloot));
         app.post("/rateCommodity/{commodityId}", new RateCommodityHandler(baloot));
         app.get("/rateCommodity/{username}/{commodityId}/{rate}", new RateCommodityHandler(baloot));
         app.post("/voteComment/{vote}", new VoteCommentHandler(baloot));

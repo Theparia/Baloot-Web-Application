@@ -19,7 +19,7 @@ public class UserPaymentHandler implements Handler {
             String userId = ctx.formParam("form_payment_userId");
             baloot.finalizePayment(userId);
             ctx.redirect("/users/" + userId);
-        } catch (UserNotFound | CommodityOutOfStock | NotEnoughCredit exception) { //todo: exception khali?
+        } catch (Exception e) {
             ctx.redirect("/403");
         }
     }

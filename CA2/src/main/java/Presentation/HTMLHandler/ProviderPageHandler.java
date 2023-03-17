@@ -3,6 +3,7 @@ package Presentation.HTMLHandler;
 import Domain.Commodity;
 import Domain.Provider;
 import Service.Baloot;
+import com.google.common.io.Resources;
 import io.javalin.http.Context;
 import io.javalin.http.Handler;
 import org.jetbrains.annotations.NotNull;
@@ -21,7 +22,7 @@ public class ProviderPageHandler implements Handler {
     @Override
     public void handle(@NotNull Context ctx) throws Exception {
         try {
-            Document doc = Jsoup.parse(new File("CA2/src/main/resources/Templates/Provider.html"), "UTF-8");
+            Document doc = Jsoup.parse(new File(Resources.getResource("Templates/Provider.html").toURI()), "UTF-8");
             String providerId = ctx.pathParam("provider_id");
             Provider provider = baloot.findProviderById(Integer.valueOf(providerId));
             List<Commodity> providedCommodities = baloot.findCommoditiesByProvider(Integer.valueOf(providerId));

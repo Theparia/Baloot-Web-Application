@@ -2,6 +2,7 @@ package Presentation.HTMLHandler;
 
 import Domain.Commodity;
 import Service.Baloot;
+import com.google.common.io.Resources;
 import io.javalin.http.Context;
 import io.javalin.http.Handler;
 import org.jetbrains.annotations.NotNull;
@@ -20,7 +21,7 @@ public class SearchCommoditiesByCategoryHandler implements Handler {
     @Override
     public void handle(@NotNull Context ctx) throws Exception {
         try{
-            Document doc = Jsoup.parse(new File("CA2/src/main/resources/Templates/Commodities.html"), "UTF-8");
+            Document doc = Jsoup.parse(new File(Resources.getResource("Templates/Commodities.html").toURI()), "UTF-8");
             String category = ctx.pathParam("categories");
             Element table = doc.selectFirst("table");
             for(Commodity commodity : baloot.findCommoditiesByCategory(category))

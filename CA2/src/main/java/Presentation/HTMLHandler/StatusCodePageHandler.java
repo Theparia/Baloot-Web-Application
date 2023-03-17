@@ -1,5 +1,6 @@
 package Presentation.HTMLHandler;
 
+import com.google.common.io.Resources;
 import io.javalin.http.Context;
 import io.javalin.http.Handler;
 import io.javalin.http.HttpStatus;
@@ -17,7 +18,8 @@ public class StatusCodePageHandler implements Handler {
     @Override
     public void handle(@NotNull Context ctx) throws Exception {
         ctx.status(Integer.valueOf(code));
-        Document doc = Jsoup.parse(new File("src/main/resources/Templates/" + code + ".html"), "UTF-8");
+
+        Document doc = Jsoup.parse(new File( Resources.getResource("Templates/" + code + ".html").toURI()), "UTF-8");
         ctx.contentType("text/html");
         ctx.result(doc.toString());
     }

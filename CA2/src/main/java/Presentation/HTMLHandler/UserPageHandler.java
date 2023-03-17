@@ -3,6 +3,7 @@ package Presentation.HTMLHandler;
 import Domain.Commodity;
 import Domain.User;
 import Service.Baloot;
+import com.google.common.io.Resources;
 import io.javalin.http.Context;
 import io.javalin.http.Handler;
 import org.jetbrains.annotations.NotNull;
@@ -20,7 +21,7 @@ public class UserPageHandler implements Handler {
     }
     @Override
     public void handle(@NotNull Context ctx) throws Exception {
-        Document doc = Jsoup.parse(new File("CA2/src/main/resources/Templates/User.html"), "UTF-8");
+        Document doc = Jsoup.parse(new File(Resources.getResource("Templates/User.html").toURI()), "UTF-8");
         String userId = ctx.pathParam("user_id");
         try {
             User user = baloot.findUserByUsername(userId);
@@ -29,10 +30,9 @@ public class UserPageHandler implements Handler {
             doc.getElementById("birthDate").text("Birth Date: " + user.getBirthDate());
             doc.getElementById("address").text("Address: " + user.getAddress());
             doc.getElementById("credit").text("Credit: " + user.getCredit());
-            Element paymentForm = doc.selectFirst("form");
-            paymentForm.attr("action", "/payment");
-
+            doc.getElementById("PaymentForm").attr("action", "/payment");
             doc.getElementById("form_payment_userId").attr("value", userId);
+            doc.getElementById("AddCreditForm").attr("action", "/addCredit/" + userId);
 
             Element buyListTable = doc.selectFirst("table");
             List<Commodity> buyList = baloot.findUserByUsername(userId).getBuyList();

@@ -4,6 +4,7 @@ import Service.Exceptions.UserNotFound;
 import Domain.Comment;
 import Domain.Commodity;
 import Service.Baloot;
+import com.google.common.io.Resources;
 import io.javalin.http.Context;
 import io.javalin.http.Handler;
 import org.jetbrains.annotations.NotNull;
@@ -21,10 +22,9 @@ public class CommodityPageHandler implements Handler {
         this.baloot = baloot;
     }
     @Override
-    public void handle(@NotNull Context ctx) throws IOException {
-        Document doc = Jsoup.parse(new File("CA2/src/main/resources/Templates/Commodity.html"), "UTF-8");
+    public void handle(@NotNull Context ctx) throws Exception {
+        Document doc = Jsoup.parse(new File(Resources.getResource("Templates/Commodity.html").toURI()), "UTF-8");
         String commodityId = ctx.pathParam("commodity_id");
-
         try {
             Commodity commodity = baloot.findCommodityById(Integer.valueOf(commodityId));
             doc.getElementById("id").text("Id: " + commodity.getId());
@@ -51,7 +51,7 @@ public class CommodityPageHandler implements Handler {
 
     }
 
-    private void constructCommentsTable(Element doc, String commodityId) throws UserNotFound { //todo shorten this
+    private void constructCommentsTable(Element doc, String commodityId) throws UserNotFound {
         List<Comment> comments = baloot.getCommodityComments(commodityId);
         for (Comment comment : comments) {
             Element commentRow = doc.getElementById("commentsTable").appendElement("tr");
@@ -70,13 +70,5 @@ public class CommodityPageHandler implements Handler {
             dislikeButton.appendElement("input").attr("type", "hidden").attr("name", "commentId").attr("value", String.valueOf(comment.getId()));
             dislikeButton.appendElement("button").attr("type", "submit").attr("formaction", "/voteComment/-1").text("dislike");
         }
-    }
-
-    private Element generateVoteButton(String type, int commentId, int count) {
-        return new Element("td")
-                .append("<label>").text(String.valueOf(count))
-                .append("<input type=\"hidden\" name=\"commentId\" value=\"" + commentId + "\">")
-                .append("<button type=\"submit\" formaction=\"/voteComment/" + (type.equals("like") ? "1" : "-1") + "\">")
-                .text(type);
     }
 }
