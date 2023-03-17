@@ -22,7 +22,7 @@ public class SearchCommoditiesByPriceHandler implements Handler {
     @Override
     public void handle(@NotNull Context ctx) throws Exception {
         try{
-            Document doc = Jsoup.parse(new File("CA2/src/main/resources/Templates/Commodities.html"), "UTF-8");
+            Document doc = Jsoup.parse(new File("src/main/resources/Templates/Commodities.html"), "UTF-8");
             float startPrice = parseFloat(ctx.pathParam("start_price"));
             float endPrice = parseFloat(ctx.pathParam("end_price"));
             Element table = doc.selectFirst("table");

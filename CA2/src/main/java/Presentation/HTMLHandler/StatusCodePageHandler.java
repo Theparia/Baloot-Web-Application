@@ -2,6 +2,7 @@ package Presentation.HTMLHandler;
 
 import io.javalin.http.Context;
 import io.javalin.http.Handler;
+import io.javalin.http.HttpStatus;
 import org.jetbrains.annotations.NotNull;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.*;
@@ -15,7 +16,8 @@ public class StatusCodePageHandler implements Handler {
     }
     @Override
     public void handle(@NotNull Context ctx) throws Exception {
-        Document doc = Jsoup.parse(new File("CA2/src/main/resources/Templates/" + code + ".html"), "UTF-8");
+        ctx.status(Integer.valueOf(code));
+        Document doc = Jsoup.parse(new File("src/main/resources/Templates/" + code + ".html"), "UTF-8");
         ctx.contentType("text/html");
         ctx.result(doc.toString());
     }
