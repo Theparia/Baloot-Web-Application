@@ -22,10 +22,11 @@ import java.util.List;
 public class Baloot {
 
     private static Baloot instance = null;
+    private User loggedInUser = null;
 
     private Baloot(){
         try {
-            importBalootDatabase();
+            importDatabase();
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }
@@ -37,7 +38,7 @@ public class Baloot {
         }
         return instance;
     }
-    public void importBalootDatabase() throws Exception {
+    public void importDatabase() throws Exception {
         final String USERS_URI = "http://5.253.25.110:5000/api/users";
         final String COMMODITIES_URI = "http://5.253.25.110:5000/api/commodities";
         final String PROVIDERS_URI = "http://5.253.25.110:5000/api/providers";
@@ -58,6 +59,26 @@ public class Baloot {
         List<Comment> comments = objectMapper.readValue(HTTPRequestHandler.getRequest(COMMENTS_URI), typeFactory.constructCollectionType(List.class, Comment.class));
         Database.getInstance().setComments(comments);
     }
+
+    public boolean isUserLoggedIn() {
+        if (loggedInUser == null)
+            return false;
+        return true;
+    }
+
+    public void login(String username, String password) throws UserNotFound, InvalidCredentials {
+        User user = findUserByUsername(username);
+        if(user.getPassword().equals(password))
+            loggedInUser = user;
+        else
+            throw new InvalidCredentials();
+    }
+
+    public void logout(){
+        loggedInUser = null;
+    }
+
+
 
     public User findUserByUsername(String username) throws UserNotFound {
         for (User user : Database.getInstance().getUsers()){

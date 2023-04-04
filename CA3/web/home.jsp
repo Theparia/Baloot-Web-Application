@@ -1,4 +1,4 @@
-<%--
+<%@ page import="Service.Baloot" %><%--
   Created by IntelliJ IDEA.
   User: paria
   Date: 4/4/23
@@ -12,7 +12,7 @@
 </head>
 <body>
 <ul>
-  <li id="email">username: siri</li>
+  <li id="username">username: <%= Baloot.getInstance().getLoggedInUser().getUsername() %></li>
   <li>
     <a href="/commodities">Commodities</a>
   </li>

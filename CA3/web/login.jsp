@@ -16,10 +16,10 @@
 <body>
 <form method="post" action="">
   <label>Username:</label>
-  <input name="uesrname" type="text" />
+  <input name="username" type="text" />
   <br>
   <label>Password:</label>
-  <input name="Password" type="text" />
+  <input name="password" type="text" />
   <br>
   <button type="submit">Login!</button>
 </form>
