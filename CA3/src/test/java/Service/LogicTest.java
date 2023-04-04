@@ -23,7 +23,7 @@ public class LogicTest {
     public void setUp() throws Exception {
         InterfaceServer interfaceServer = new InterfaceServer();
         interfaceServer.importBalootDatabase(USERS_URI, COMMODITIES_URI, PROVIDERS_URI, COMMENTS_URI);
-        baloot = new Baloot();
+        baloot = Baloot.getInstance();
         validUsername = Database.getInstance().getUsers().get(0).getUsername();
     }
 

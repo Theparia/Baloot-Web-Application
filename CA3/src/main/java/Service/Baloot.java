@@ -5,7 +5,10 @@ import Domain.Comment;
 import Domain.Commodity;
 import Domain.Provider;
 import Domain.User;
+import Presentation.Server.HTTPRequestHandler;
 import Service.Exceptions.*;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.type.TypeFactory;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -16,8 +19,46 @@ import java.util.List;
 
 @Getter
 @Setter
-@NoArgsConstructor
 public class Baloot {
+
+    private static Baloot instance = null;
+
+    private Baloot(){
+        try {
+            importBalootDatabase();
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+    }
+
+    public static Baloot getInstance() {
+        if (instance == null) {
+            instance = new Baloot();
+        }
+        return instance;
+    }
+    public void importBalootDatabase() throws Exception {
+        final String USERS_URI = "http://5.253.25.110:5000/api/users";
+        final String COMMODITIES_URI = "http://5.253.25.110:5000/api/commodities";
+        final String PROVIDERS_URI = "http://5.253.25.110:5000/api/providers";
+        final String COMMENTS_URI = "http://5.253.25.110:5000/api/comments";
+
+        ObjectMapper objectMapper = new ObjectMapper();
+        TypeFactory typeFactory = objectMapper.getTypeFactory();
+
+        List<User> users = objectMapper.readValue(HTTPRequestHandler.getRequest(USERS_URI), typeFactory.constructCollectionType(List.class, User.class));
+        Database.getInstance().setUsers(users);
+
+        List<Commodity> commodities = objectMapper.readValue(HTTPRequestHandler.getRequest(COMMODITIES_URI), typeFactory.constructCollectionType(List.class, Commodity.class));
+        Database.getInstance().setCommodities(commodities);
+
+        List<Provider> providers = objectMapper.readValue(HTTPRequestHandler.getRequest(PROVIDERS_URI), typeFactory.constructCollectionType(List.class, Provider.class));
+        Database.getInstance().setProviders(providers);
+
+        List<Comment> comments = objectMapper.readValue(HTTPRequestHandler.getRequest(COMMENTS_URI), typeFactory.constructCollectionType(List.class, Comment.class));
+        Database.getInstance().setComments(comments);
+    }
+
     public User findUserByUsername(String username) throws UserNotFound {
         for (User user : Database.getInstance().getUsers()){
             if (user.getUsername().equals(username)){
@@ -26,6 +67,7 @@ public class Baloot {
         }
         throw new UserNotFound();
     }
+
 
     public void addUser(User newUser) throws InvalidUsername {
         try{

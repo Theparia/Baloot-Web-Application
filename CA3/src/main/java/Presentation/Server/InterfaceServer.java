@@ -20,7 +20,7 @@ import java.util.List;
 @Getter
 @Setter
 public class InterfaceServer {
-    private Baloot baloot = new Baloot();
+    private Baloot baloot = Baloot.getInstance();
     private Javalin app;
 
     public void start(final String USERS_URI, final String COMMODITIES_URI, final String PROVIDERS_URI, final String COMMENTS_URI, final int PORT){
