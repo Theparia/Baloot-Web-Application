@@ -55,7 +55,7 @@
     <td><%=String.join(", ", commodity.getCategories())%></td>
     <td><%=commodity.getRating()%></td>
     <td><%=commodity.getInStock()%></td>
-    <td><a href="commodities/" + <%=commodity.getId()%>>Link</a></td></tr>
+    <td><a href="<%= "/commodities/" + commodity.getId()%>">Link</a></td>
   </tr>
   <% } %>
 </table>

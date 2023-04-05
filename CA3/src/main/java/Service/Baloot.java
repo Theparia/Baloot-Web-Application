@@ -195,10 +195,10 @@ public class Baloot {
             findUserByUsername(username).removeFromBuyList(findCommodityById(commodityId));
      }
 
-     public List<Comment> getCommodityComments(String commodityId){
+     public List<Comment> getCommodityComments(Integer commodityId){
         List<Comment> comments = new ArrayList<>();
         for (Comment comment : Database.getInstance().getComments()){
-            if (String.valueOf(comment.getCommodityId()).equals(commodityId)){
+            if (comment.getCommodityId().equals(commodityId)){
                 comments.add(comment);
             }
         }
@@ -254,6 +254,8 @@ public class Baloot {
     public void addUserCredit(String username, float credit) throws UserNotFound, NegativeCredit {
         findUserByUsername(username).addCredit(credit);
     }
+
+
 
     private boolean isVoteValid(int vote){
         return vote == 1 || vote == 0 || vote == -1;

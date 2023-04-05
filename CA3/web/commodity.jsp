@@ -1,11 +1,10 @@
-<%--
-  Created by IntelliJ IDEA.
-  User: paria
-  Date: 4/4/23
-  Time: 6:47 PM
-  To change this template use File | Settings | File Templates.
---%>
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ page import="Domain.Commodity" %>
+<%@ page import="Service.Baloot" %>
+<%@ page import="Domain.Comment" %>
+
+<% Commodity commodity = (Commodity) request.getAttribute("commodity"); %>
+
+<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
@@ -21,32 +20,32 @@
   </style>
 </head>
 <body>
-<span>username: Siri</span>
+<span>username: <%=Baloot.getInstance().getLoggedInUser().getUsername()%></span>
 <br>
 <ul>
-  <li id="id">Id: 2341</li>
-  <li id="name">Name: Galaxy S21</li>
-  <li id="providerName">Provider Name: Phone Provider</li>
-  <li id="price">Price: 21000000</li>
-  <li id="categories">Categories: Technology, Phone</li>
-  <li id="rating">Rating: 8.3</li>
-  <li id="inStock">In Stock: 17</li>
+  <li id="id">Id: <%=commodity.getId()%></li>
+  <li id="name">Name: <%=commodity.getName()%></li>
+  <li id="providerName">Provider Name: <%=Baloot.getInstance().findProviderById(commodity.getProviderId()).getName()%></li>
+  <li id="price">Price: <%=commodity.getPrice()%></li>
+  <li id="categories">Categories: <%=String.join(", ", commodity.getCategories())%></li>
+  <li id="rating">Rating: <%=commodity.getRating()%></li>
+  <li id="inStock">In Stock: <%=commodity.getInStock()%></li>
 </ul>
 
 <label>Add Your Comment:</label>
 <form action="" method="post">
   <input type="text" name="comment" value="" />
-  <button type="submit">submit</button>
+  <button type="submit" name="action" value="addComment">submit</button>
 </form>
 <br>
 <form action="" method="POST">
   <label>Rate(between 1 and 10):</label>
-  <input type="number" id="quantity" name="quantity" min="1" max="10">
-  <button type="submit">Rate</button>
+  <input type="number" id="rate" name="rate" min="1" max="10">
+  <button type="submit" name="action" value="addRating">Rate</button>
 </form>
 <br>
 <form action="" method="POST">
-  <button type="submit">Add to BuyList</button>
+  <button type="submit" name="action" value="addToBuyList">Add to BuyList</button>
 </form>
 <br />
 <table>
@@ -58,35 +57,59 @@
     <th>likes</th>
     <th>dislikes</th>
   </tr>
+  <% for(Comment comment: Baloot.getInstance().getCommodityComments(commodity.getId())) {%>
   <tr>
-    <td>user1</td>
-    <td>Good</td>
-    <td>2022-07-25</td>
+    <td><%=Baloot.getInstance().getUsernameByEmail(comment.getUserEmail())%>></td>
+    <td><%=comment.getText()%>></td>
+    <td><%=comment.getDate()%></td>
     <td>
       <form action="" method="POST">
-        <label for="">2</label>
-        <input
-                id="form_comment_id"
-                type="hidden"
-                name="comment_id"
-                value="1"
-        />
-        <button type="submit">like</button>
+        <label><%=comment.getLikeCount()%></label>
+        <input type="hidden" name="voteLike" value="1"/>
+        <input type="hidden" name="commentId" value=<%=comment.getId()%>/>
+        <button type="submit" name="action" value="likeComment">like</button>
       </form>
     </td>
     <td>
       <form action="" method="POST">
-        <label for="">1</label>
-        <input
-                id="form_comment_id"
-                type="hidden"
-                name="comment_id"
-                value="-1"
-        />
-        <button type="submit">dislike</button>
+        <label><%=comment.getDisLikeCount()%></label>
+        <input type="hidden" name="voteDislike" value="-1"/>
+        <input type="hidden" name="commentId" value=<%=comment.getId()%>/>
+        <button type="submit" name="action" value="dislikeComment">dislike</button>
       </form>
     </td>
   </tr>
+  <% } %>
+
+<%--  <tr>--%>
+<%--    <td>user1</td>--%>
+<%--    <td>Good</td>--%>
+<%--    <td>2022-07-25</td>--%>
+<%--    <td>--%>
+<%--      <form action="" method="POST">--%>
+<%--        <label for="">2</label>--%>
+<%--        <input--%>
+<%--                id="form_comment_id"--%>
+<%--                type="hidden"--%>
+<%--                name="comment_id"--%>
+<%--                value="1"--%>
+<%--        />--%>
+<%--        <button type="submit" name="action" value="likeComment">like</button>--%>
+<%--      </form>--%>
+<%--    </td>--%>
+<%--    <td>--%>
+<%--      <form action="" method="POST">--%>
+<%--        <label for="">1</label>--%>
+<%--        <input--%>
+<%--                id="form_comment_id"--%>
+<%--                type="hidden"--%>
+<%--                name="comment_id"--%>
+<%--                value="-1"--%>
+<%--        />--%>
+<%--        <button type="submit" name="action" value="dislikeComment">dislike</button>--%>
+<%--      </form>--%>
+<%--    </td>--%>
+<%--  </tr>--%>
 </table>
 <br><br>
 <table>
