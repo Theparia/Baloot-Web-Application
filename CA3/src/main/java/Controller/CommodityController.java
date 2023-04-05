@@ -48,7 +48,6 @@ public class CommodityController extends HttpServlet {
                     break;
                 case "likeComment":
                     int commentId = Integer.parseInt(request.getParameter("commentIdLike"));
-                    System.out.println("----------->" + commentId);
                     Baloot.getInstance().voteComment(commentId, Baloot.getInstance().getLoggedInUser().getUsername(), 1);
                     break;
                 case "dislikeComment":
