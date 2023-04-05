@@ -1,10 +1,7 @@
 package Domain;
 
 
-import Service.Exceptions.CommodityAlreadyExistsInBuyList;
-import Service.Exceptions.CommodityNotInBuyList;
-import Service.Exceptions.NegativeCredit;
-import Service.Exceptions.NotEnoughCredit;
+import Service.Exceptions.*;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -26,10 +23,10 @@ public class User {
     private String birthDate;
     private String address;
     private float credit;
-    List<Commodity> buyList = new ArrayList<>();
-
-    List<Commodity> purchasedList = new ArrayList<>();
-
+    private List<Commodity> buyList = new ArrayList<>();
+    private List<Commodity> purchasedList = new ArrayList<>();
+    private List<Discount> usedDiscounts = new ArrayList<>();
+    private Discount currentDiscount = null;
     public User(String username, String password, String email, String birthDate, String address, float credit) {
         this.username = username;
         this.password = password;
@@ -38,6 +35,8 @@ public class User {
         this.address = address;
         this.credit = credit;
         this.buyList = new ArrayList<>();
+        this.usedDiscounts = new ArrayList<>();
+        this.currentDiscount = null;
     }
 
     public boolean isEqual(String username) {
@@ -51,6 +50,38 @@ public class User {
         this.address = user.getAddress();
         this.birthDate = user.getBirthDate();
         this.buyList = user.getBuyList();
+        this.usedDiscounts = user.getUsedDiscounts();
+        this.currentDiscount = null;
+    }
+
+    public float getCurrentBuyListPrice(){
+        float totalPrice = 0;
+        for (Commodity commodity: this.buyList){
+            totalPrice += commodity.getPrice();
+        }
+        if (this.currentDiscount == null) return totalPrice;
+        return totalPrice * (100 - this.currentDiscount.getDiscount()) / 100;
+    }
+
+    public void setCurrentDiscount(Discount discount) throws ExpiredDiscount {
+        if (isDiscountCodeExpired(discount.getDiscountCode())){
+            throw new ExpiredDiscount();
+        }
+        this.currentDiscount = discount;
+    }
+
+    public void useDiscount(){
+        this.usedDiscounts.add(this.currentDiscount);
+        this.currentDiscount = null;
+    }
+
+    public boolean isDiscountCodeExpired(String code){
+        for (Discount discount: this.usedDiscounts){
+            if(discount.getDiscountCode().equals(code)){
+                return true;
+            }
+        }
+        return false;
     }
 
     public void resetBuyList(){

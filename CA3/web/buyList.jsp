@@ -1,10 +1,7 @@
-<%--
-  Created by IntelliJ IDEA.
-  User: paria
-  Date: 4/4/23
-  Time: 6:45 PM
-  To change this template use File | Settings | File Templates.
---%>
+<%@ page import="Domain.User" %>
+<%@ page import="Service.Baloot" %>
+<%@ page import="java.util.List" %>
+<%@ page import="Domain.Commodity" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html lang="en"><head>
     <meta charset="UTF-8">
@@ -20,21 +17,24 @@
     </style>
 </head>
 <body>
+<%
+    User loggedInUser = Baloot.getInstance().getLoggedInUser();
+%>
 <ul>
-    <li id="username">Username: Farhad</li>
-    <li id="email">Email: Farhad@gmail.com</li>
-    <li id="birthDate">Birth Date: 2000/07/21</li>
-    <li id="address">Tehran, North Karegar, No 10</li>
-    <li id="credit">Credit: 700000</li>
-    <li>Current Buy List Price: 64000000</li>
+    <li id="username">Username: <%=loggedInUser.getUsername()%></li>
+    <li id="email">Email: <%=loggedInUser.getEmail()%></li>
+    <li id="birthDate">Birth Date: <%=loggedInUser.getBirthDate()%></li>
+    <li id="address"><%=loggedInUser.getAddress()%></li>
+    <li id="credit">Credit: <%=loggedInUser.getCredit()%></li>
+    <li>Current Buy List Price: <%=loggedInUser.getCurrentBuyListPrice()%></li>
     <li>
         <a href="/credit">Add Credit</a>
     </li>
     <li>
         <form action="" method="POST">
             <label>Submit & Pay</label>
-            <input id="form_payment" type="hidden" name="userId" value="Farhad">
-            <button type="submit">Payment</button>
+            <input id="form_payment" type="hidden" name="userId" value="">
+            <button type="submit" name="action" value="payment">Payment</button>
         </form>
     </li>
 </ul>
@@ -53,37 +53,69 @@
         <th></th>
         <th></th>
     </tr>
+    <%
+        List<Commodity> buyList = loggedInUser.getBuyList();
+        for (Commodity commodity: buyList){
+    %>
     <tr>
-        <td>4231</td>
-        <td>Galaxy S22 Plus</td>
-        <td>Phone Provider No.1</td>
-        <td>43000000</td>
-        <td>Technology, Phone</td>
-        <td>8.7</td>
-        <td>12</td>
-        <td><a href="/commodities/4231">Link</a></td>
+        <td><%=commodity.getId()%></td>
+        <td><%=commodity.getName()%></td>
+        <td><%=Baloot.getInstance().findProviderById(commodity.getProviderId()).getName()%></td>
+        <td><%=commodity.getPrice()%></td>
+        <td><%=commodity.getCategories()%></td>
+        <td><%=commodity.getRating()%></td>
+        <td><%=commodity.getInStock()%></td>
+        <td><a href="<%= "/commodities/" + commodity.getId()%>">Link</a></td>
         <td>
             <form action="" method="POST">
-                <input id="form_commodity_id" type="hidden" name="commodityId" value="4231">
-                <button type="submit">Remove</button>
+                <input id="form_commodity_id" type="hidden" name="removeCommodityId" value="<%= String.valueOf(commodity.getId()) %>">
+                <button type="submit" name="action" value="removeCommodityFromBuyList">Remove</button>
             </form>
         </td>
     </tr>
-    <tr>
-        <th>2341</th>
-        <th>Galaxy S21</th>
-        <th>Phone Provider No.2</th>
-        <th>21000000</th>
-        <th>Technology, Phone</th>
-        <th>8.3</th>
-        <th>17</th>
-        <td><a href="/commodities/2341">Link</a></td>
-        <td>
-            <form action="" method="POST">
-                <input id="form_commodity_id" type="hidden" name="commodityId" value="2341">
-                <button type="submit">Remove</button>
-            </form>
-        </td>
-    </tr>
+    <%
+        }
+    %>
     </tbody></table>
+
+<table>
+    <caption>
+        <h2>Purchased List</h2>
+    </caption>
+    <tbody><tr>
+        <th>Id</th>
+        <th>Name</th>
+        <th>Provider Name</th>
+        <th>Price</th>
+        <th>Categories</th>
+        <th>Rating</th>
+        <th>In Stock</th>
+        <th></th>
+        <th></th>
+    </tr>
+    <%
+        List<Commodity> purchasedList = loggedInUser.getPurchasedList();
+        for (Commodity commodity: purchasedList){
+    %>
+    <tr>
+        <td><%=commodity.getId()%></td>
+        <td><%=commodity.getName()%></td>
+        <td><%=Baloot.getInstance().findProviderById(commodity.getProviderId()).getName()%></td>
+        <td><%=commodity.getPrice()%></td>
+        <td><%=commodity.getCategories()%></td>
+        <td><%=commodity.getRating()%></td>
+        <td><%=commodity.getInStock()%></td>
+        <td><a href="<%= "/commodities/" + commodity.getId()%>">Link</a></td>
+    </tr>
+    <%
+        }
+    %>
+    </tbody></table>
+
+    <form action="" method="POST">
+        <label for="discountCode">Discount Code</label>
+        <input type="text" id="discountCode" name="discountCode">
+        <button type="submit" name="action" value="applyDiscountCode">Apply Discount Code</button>
+    </form>
+
 </body></html>

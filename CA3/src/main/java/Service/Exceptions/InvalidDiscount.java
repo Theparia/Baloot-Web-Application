@@ -1,2 +1,7 @@
-package Service.Exceptions;public class InvalidDiscount {
+package Service.Exceptions;
+
+public class InvalidDiscount extends Exception {
+    public String getMessage() {
+        return "Invalid Discount";
+    }
 }

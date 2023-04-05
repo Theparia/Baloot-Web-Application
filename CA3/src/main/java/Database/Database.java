@@ -1,9 +1,6 @@
 package Database;
 
-import Domain.Comment;
-import Domain.Commodity;
-import Domain.Provider;
-import Domain.User;
+import Domain.*;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -32,7 +29,7 @@ public class Database {
     private List<Commodity> commodities = new ArrayList<>();
     private List<Provider> providers = new ArrayList<>();
     private List<Comment> comments = new ArrayList<>();
-
+    private List<Discount> discounts = new ArrayList<>();
     public void addUser(User user){
         users.add(user);
     }
