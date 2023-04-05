@@ -8,11 +8,12 @@ import javax.servlet.http.*;
 import java.io.IOException;
 
 @WebServlet("/credit")
-public class CreditHandler extends HttpServlet {
-
+public class CreditController extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        request.getRequestDispatcher("credit.jsp").forward(request, response);
+        if(Baloot.getInstance().isUserLoggedIn())
+            request.getRequestDispatcher("credit.jsp").forward(request, response);
+        else response.sendRedirect("/login");
     }
 
     @Override
@@ -27,5 +28,4 @@ public class CreditHandler extends HttpServlet {
             request.getRequestDispatcher("error.jsp").forward(request, response); //todo: baraye error controller joda mikhad?
         }
     }
-
 }
