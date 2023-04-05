@@ -18,11 +18,9 @@ public class Baloot {
     List<Commodity> commodities = new ArrayList<>();
     List<Provider> providers = new ArrayList<>();
     ObjectMapper mapper;
-    ObjectNode responseNode;
 
     public Baloot(){
         mapper = new ObjectMapper();
-        responseNode = mapper.createObjectNode();
     }
 
     public User findUserByUsername(String username){
@@ -48,6 +46,7 @@ public class Baloot {
     }
 
     public Response addUser(User newUser){
+        ObjectNode responseNode = mapper.createObjectNode();
         boolean success = true;
         if (doesUserExist(newUser)) {
             findUserByUsername(newUser.getUsername()).update(newUser);
@@ -66,6 +65,7 @@ public class Baloot {
         return new Response(success, responseNode);
     }
      public Response addProvider(Provider newProvider) {
+         ObjectNode responseNode = mapper.createObjectNode();
          if (!doesProviderExist(newProvider)){
             providers.add(newProvider);
             responseNode.set("Response", mapper.convertValue("Provider Added.", JsonNode.class));
@@ -106,6 +106,7 @@ public class Baloot {
     }
 
      public Response addCommodity(Commodity newCommodity){
+         ObjectNode responseNode = mapper.createObjectNode();
         if(findProviderById(newCommodity.getProviderId()) != null){
             commodities.add(newCommodity);
             responseNode.set("Response", mapper.convertValue("Commodity Added.", JsonNode.class));
@@ -131,6 +132,7 @@ public class Baloot {
      }
 
      public Response rateCommodity(String username, Integer commodityId, Integer score) {
+         ObjectNode responseNode = mapper.createObjectNode();
         boolean success = false;
         if(score < 1 || score > 10){
             responseNode.set("Error", mapper.convertValue("Rating Out of Range", JsonNode.class));
@@ -150,6 +152,7 @@ public class Baloot {
      }
 
      public Response addToBuyList(String username, Integer commodityId){
+         ObjectNode responseNode = mapper.createObjectNode();
         if (findUserByUsername(username) == null){
             responseNode.set("Error", mapper.convertValue("User Not Exists.", JsonNode.class));
             return new Response(false, responseNode);
@@ -177,6 +180,7 @@ public class Baloot {
      }
 
      public Response removeFromBuyList(String username, Integer commodityId){
+         ObjectNode responseNode = mapper.createObjectNode();
          if (findUserByUsername(username) == null){
              responseNode.set("Response", mapper.convertValue("User Not Exists.", JsonNode.class));
              return new Response(false, responseNode);
@@ -194,6 +198,7 @@ public class Baloot {
      }
 
     public Response getCommodityById(Integer commodityId){
+        ObjectNode responseNode = mapper.createObjectNode();
         if(findCommodityById(commodityId) == null){
             responseNode.set("Error", mapper.convertValue("Commodity Not Exists.", JsonNode.class));
             return new Response(false, responseNode);
@@ -219,6 +224,7 @@ public class Baloot {
     }
 
     public Response getBuyList(String username){
+        ObjectNode responseNode = mapper.createObjectNode();
         if (findUserByUsername(username) == null){
             responseNode.set("Response", mapper.convertValue("User Not Exists.", JsonNode.class));
             return new Response(false, responseNode);
