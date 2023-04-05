@@ -15,7 +15,9 @@ import lombok.Setter;
 
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Getter
 @Setter
@@ -23,6 +25,7 @@ public class Baloot {
 
     private static Baloot instance = null;
     private User loggedInUser = null;
+
 
     private Baloot(){
         try {
@@ -120,6 +123,24 @@ public class Baloot {
             }
         }
         throw new CommodityNotFound();
+    }
+
+
+    public List<Commodity> searchCommoditiesByName(String name, List<Commodity> commodities) {
+        return commodities.stream()
+                .filter(commodity -> commodity.getName().toLowerCase().contains(name.toLowerCase()))
+                .collect(Collectors.toList());
+    }
+
+    public List<Commodity> searchCommoditiesByCategory(String category, List<Commodity> commodities) {
+        return commodities.stream()
+                .filter(commodity -> commodity.getCategories().contains(category))
+                .collect(Collectors.toList());
+    }
+    public List<Commodity> sortCommoditiesByPrice(List<Commodity> commodities){
+        return commodities.stream()
+                .sorted(Comparator.comparing(Commodity::getPrice))
+                .collect(Collectors.toList());
     }
 
     public List<Commodity> findCommoditiesByCategory(String category){
