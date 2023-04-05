@@ -1,14 +1,12 @@
 package Service;
 
 import Database.Database;
-import Domain.Comment;
-import Domain.Commodity;
-import Domain.Provider;
-import Domain.User;
+import Domain.*;
 import Presentation.Server.HTTPRequestHandler;
 import Service.Exceptions.*;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.type.TypeFactory;
+import lombok.Data;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -46,6 +44,7 @@ public class Baloot {
         final String COMMODITIES_URI = "http://5.253.25.110:5000/api/commodities";
         final String PROVIDERS_URI = "http://5.253.25.110:5000/api/providers";
         final String COMMENTS_URI = "http://5.253.25.110:5000/api/comments";
+        final String DISCOUNT_URI = "http://5.253.25.110:5000/api/discount";
 
         ObjectMapper objectMapper = new ObjectMapper();
         TypeFactory typeFactory = objectMapper.getTypeFactory();
@@ -61,6 +60,9 @@ public class Baloot {
 
         List<Comment> comments = objectMapper.readValue(HTTPRequestHandler.getRequest(COMMENTS_URI), typeFactory.constructCollectionType(List.class, Comment.class));
         Database.getInstance().setComments(comments);
+
+        List<Discount> discounts = objectMapper.readValue(HTTPRequestHandler.getRequest(DISCOUNT_URI), typeFactory.constructCollectionType(List.class, Discount.class));
+        Database.getInstance().setDiscounts(discounts);
     }
 
     public boolean isUserLoggedIn() {
@@ -81,8 +83,6 @@ public class Baloot {
         loggedInUser = null;
     }
 
-
-
     public User findUserByUsername(String username) throws UserNotFound {
         for (User user : Database.getInstance().getUsers()){
             if (user.getUsername().equals(username)){
@@ -91,7 +91,6 @@ public class Baloot {
         }
         throw new UserNotFound();
     }
-
 
     public void addUser(User newUser) throws InvalidUsername {
         try{
@@ -153,6 +152,20 @@ public class Baloot {
         return commoditiesInCategory;
     }
 
+    public Discount findDiscountByCode(String code) throws InvalidDiscount {
+        for(Discount discount : Database.getInstance().getDiscounts()){
+            if(discount.getDiscountCode().equals(code)){
+                return discount;
+            }
+        }
+        throw new InvalidDiscount();
+    }
+
+    public void applyDiscountCode(String username, String discountCode) throws UserNotFound, ExpiredDiscount, InvalidDiscount {
+        User user = findUserByUsername(username);
+        user.setCurrentDiscount(findDiscountByCode(discountCode));
+    }
+
      public void addCommodity(Commodity newCommodity) throws ProviderNotFound {
         findProviderById(newCommodity.getProviderId());
         Database.getInstance().addCommodity(newCommodity);
@@ -169,11 +182,12 @@ public class Baloot {
         for (Commodity commodity : buyListCommodities){
             commodity.checkInStock();
         }
+        user.reduceCredit(user.getCurrentBuyListPrice());
         for (Commodity commodity : buyListCommodities){
-            user.reduceCredit(commodity.getPrice());
             user.addToPurchasedList(commodity);
             commodity.reduceInStock();
         }
+        user.useDiscount();
         user.resetBuyList();
     }
 
