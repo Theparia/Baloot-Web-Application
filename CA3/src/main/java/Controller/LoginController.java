@@ -15,6 +15,11 @@ public class LoginController extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         request.getRequestDispatcher("login.jsp").forward(request, response);
+        try {
+            Baloot.getInstance().addToBuyList("amir", 1);
+        }catch (Exception e){
+
+        }
     }
 
     @Override

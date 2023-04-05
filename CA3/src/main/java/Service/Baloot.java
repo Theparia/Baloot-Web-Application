@@ -2,15 +2,13 @@ package Service;
 
 import Database.Database;
 import Domain.*;
-import Presentation.Server.HTTPRequestHandler;
 import Service.Exceptions.*;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.type.TypeFactory;
 import lombok.Data;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.Setter;
-
+import HTTPRequestHandler.HTTPRequestHandler;
 
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -79,8 +77,10 @@ public class Baloot {
             throw new InvalidCredentials();
     }
 
-    public void logout(){
-        loggedInUser = null;
+    public void logout() throws InvalidLogout {
+        if(isUserLoggedIn())
+            loggedInUser = null;
+        else throw new InvalidLogout();
     }
 
     public User findUserByUsername(String username) throws UserNotFound {

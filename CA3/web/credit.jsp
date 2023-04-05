@@ -1,3 +1,4 @@
+<%@ page import="Service.Baloot" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html lang="en">
 
@@ -7,6 +8,8 @@
 </head>
 
 <body>
+<a href="/">Home</a>
+<p id="username">username: <%= Baloot.getInstance().getLoggedInUser().getUsername()%></p>
 <form method="post" action="">
   <label>Credits:</label>
   <input name="credit" type="text" />

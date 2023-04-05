@@ -17,6 +17,7 @@
     </style>
 </head>
 <body>
+<a href="/">Home</a>
 <%
     User loggedInUser = Baloot.getInstance().getLoggedInUser();
 %>
@@ -24,7 +25,7 @@
     <li id="username">Username: <%=loggedInUser.getUsername()%></li>
     <li id="email">Email: <%=loggedInUser.getEmail()%></li>
     <li id="birthDate">Birth Date: <%=loggedInUser.getBirthDate()%></li>
-    <li id="address"><%=loggedInUser.getAddress()%></li>
+    <li id="address">Address: <%=loggedInUser.getAddress()%></li>
     <li id="credit">Credit: <%=loggedInUser.getCredit()%></li>
     <li>Current Buy List Price: <%=loggedInUser.getCurrentBuyListPrice()%></li>
     <li>
