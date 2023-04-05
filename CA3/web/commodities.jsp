@@ -1,11 +1,11 @@
-<%--
-  Created by IntelliJ IDEA.
-  User: paria
-  Date: 4/4/23
-  Time: 6:46 PM
-  To change this template use File | Settings | File Templates.
---%>
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ page import="Service.Baloot" %>
+<%@ page import="Domain.Commodity" %>
+<%@ page import="java.util.List" %>
+
+<%
+  List<Commodity> commodities = (List<Commodity>)request.getSession().getAttribute("commodities");
+%>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -20,7 +20,7 @@
 </head>
 <body>
 <a href="/">Home</a>
-<p id="username">username: siri</p>
+<p id="username">username: <%= Baloot.getInstance().getLoggedInUser().getUsername()%></p>
 <br><br>
 <form action="" method="POST">
   <label>Search:</label>
@@ -32,7 +32,7 @@
 <br><br>
 <form action="" method="POST">
   <label>Sort By:</label>
-  <button type="submit" name="action" value="sort_by_rate">Rate</button>
+  <button type="submit" name="action" value="sort_by_price">Price</button>
 </form>
 <br><br>
 <table>
@@ -46,26 +46,18 @@
     <th>In Stock</th>
     <th>Links</th>
   </tr>
+  <% for(Commodity commodity: commodities){ %>
   <tr>
-    <td>2341</td>
-    <td>Galaxy S21</td>
-    <td>Phone Provider</td>
-    <td>21000000</td>
-    <td>Technology, Phone</td>
-    <td>8.3</td>
-    <td>17</td>
-    <td><a href="/commodities/2341">Link</a></td>
+    <td><%=commodity.getId()%></td>
+    <td><%=commodity.getName()%></td>
+    <td><%=Baloot.getInstance().findProviderById(commodity.getProviderId()).getName()%></td>
+    <td><%=commodity.getPrice()%></td>
+    <td><%=String.join(", ", commodity.getCategories())%></td>
+    <td><%=commodity.getRating()%></td>
+    <td><%=commodity.getInStock()%></td>
+    <td><a href="commodities/" + <%=commodity.getId()%>>Link</a></td></tr>
   </tr>
-  <tr>
-    <td>4231</td>
-    <td>Onion</td>
-    <td>Vegetables Provider</td>
-    <td>3000</td>
-    <td>Vegetables</td>
-    <td>7.6</td>
-    <td>29</td>
-    <td><a href="/commodities/4231">Link</a></td>
-  </tr>
+  <% } %>
 </table>
 </body>
 </html>
