@@ -22,7 +22,7 @@ public class BuyListController extends HttpServlet {
     }
 
     @Override
-    public void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String action = request.getParameter("action");
         switch (action) {
             case "removeCommodityFromBuyList":
@@ -44,7 +44,7 @@ public class BuyListController extends HttpServlet {
             response.sendRedirect("/buyList");
         } catch (Exception e){
             request.setAttribute("errorMessage", e.getMessage());
-            request.getRequestDispatcher("error.jsp").forward(request, response);//todo: baraye error controller joda mikhad?
+            request.getRequestDispatcher("error.jsp").forward(request, response);
         }
     }
 
@@ -54,7 +54,7 @@ public class BuyListController extends HttpServlet {
             response.sendRedirect("/buyList");
         } catch (Exception e){
             request.setAttribute("errorMessage", e.getMessage());
-            request.getRequestDispatcher("error.jsp").forward(request, response);//todo: baraye error controller joda mikhad?
+            request.getRequestDispatcher("error.jsp").forward(request, response);
         }
     }
 
@@ -64,7 +64,7 @@ public class BuyListController extends HttpServlet {
             response.sendRedirect("/buyList");
         } catch (Exception e){
             request.setAttribute("errorMessage", e.getMessage());
-            request.getRequestDispatcher("error.jsp").forward(request, response);//todo: baraye error controller joda mikhad?
+            request.getRequestDispatcher("error.jsp").forward(request, response);
         }
     }
 }

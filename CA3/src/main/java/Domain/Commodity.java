@@ -80,6 +80,15 @@ public class Commodity {
         return false;
     }
 
+    public boolean isInSimilarCategory(List<String> categories1){
+        for(String cat: categories){
+            if (categories1.contains(cat)){
+                return true;
+            }
+        }
+        return false;
+    }
+
     public void reduceInStock() throws CommodityOutOfStock {
         if(inStock <= 0)
             throw new CommodityOutOfStock();

@@ -23,7 +23,7 @@ public class CommodityController extends HttpServlet {
                 request.getServletContext().getRequestDispatcher("/commodity.jsp").forward(request, response);
             } catch (Exception e){
                 request.setAttribute("errorMessage", e.getMessage());
-                request.getServletContext().getRequestDispatcher("/error.jsp").forward(request, response);//todo: baraye error controller joda mikhad?
+                request.getServletContext().getRequestDispatcher("/error.jsp").forward(request, response);
             }
 
         }
@@ -31,19 +31,35 @@ public class CommodityController extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException{
-        int commodityId = Integer.parseInt(request.getPathInfo().substring(1));
-        String action = request.getParameter("action");
-        switch (action){
-            case "addComment":
-                break;
-            case "addRating":
-                break;
-            case "addToBuyList":
-                break;
-            case "likeComment":
-                break;
-            case "dislikeComment":
-                break;
+        try {
+            int commodityId = Integer.parseInt(request.getPathInfo().substring(1));
+            String action = request.getParameter("action");
+            switch (action) {
+                case "addComment":
+                    String text = request.getParameter("comment");
+                    Baloot.getInstance().addComment(Baloot.getInstance().getLoggedInUser().getEmail(), commodityId, text);
+                    break;
+                case "addRating":
+                    String rate = request.getParameter("rate");
+                    Baloot.getInstance().rateCommodity(Baloot.getInstance().getLoggedInUser().getUsername(), commodityId, Integer.parseInt(rate));
+                    break;
+                case "addToBuyList":
+                    Baloot.getInstance().addToBuyList(Baloot.getInstance().getLoggedInUser().getUsername(), commodityId);
+                    break;
+                case "likeComment":
+                    int commentId = Integer.parseInt(request.getParameter("commentIdLike"));
+                    System.out.println("----------->" + commentId);
+                    Baloot.getInstance().voteComment(commentId, Baloot.getInstance().getLoggedInUser().getUsername(), 1);
+                    break;
+                case "dislikeComment":
+                    commentId = Integer.parseInt(request.getParameter("commentIdDisLike"));
+                    Baloot.getInstance().voteComment(commentId, Baloot.getInstance().getLoggedInUser().getUsername(), -1);
+                    break;
+            }
+            response.sendRedirect("/commodities/" + commodityId);
+        } catch (Exception e){
+            request.setAttribute("errorMessage", e.getMessage());
+            request.getServletContext().getRequestDispatcher("/error.jsp").forward(request, response);
         }
     }
 }

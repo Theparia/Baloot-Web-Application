@@ -21,7 +21,6 @@
 <body>
 <a href="/">Home</a>
 <p id="username">username: <%= Baloot.getInstance().getLoggedInUser().getUsername()%></p>
-<br><br>
 <form action="" method="POST">
   <label>Search:</label>
   <input type="text" name="search" value="">

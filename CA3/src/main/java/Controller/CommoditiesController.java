@@ -16,7 +16,7 @@ import java.util.List;
 @WebServlet("/commodities")
 public class CommoditiesController extends HttpServlet {
     @Override
-    public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         if(Baloot.getInstance().isUserLoggedIn()) {
             HttpSession session = request.getSession();
 
@@ -30,12 +30,9 @@ public class CommoditiesController extends HttpServlet {
     }
 
     @Override
-    public void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-
+    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String searchedName = request.getParameter("search");
         HttpSession session = request.getSession();
-//        if(request.getAttribute("commodities") == null)
-//            request.setAttribute("commodities", Database.getInstance().getCommodities());
         List<Commodity> commodities = (List<Commodity>)request.getSession().getAttribute("commodities");
         String action = request.getParameter("action");
         switch (action) {

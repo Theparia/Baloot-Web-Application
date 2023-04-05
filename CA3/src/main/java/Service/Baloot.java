@@ -9,7 +9,7 @@ import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 import HTTPRequestHandler.HTTPRequestHandler;
-
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
@@ -166,6 +166,11 @@ public class Baloot {
         user.setCurrentDiscount(findDiscountByCode(discountCode));
     }
 
+    public void addComment(String userEmail, Integer commodityId, String text){
+        Comment comment = new Comment(commodityId, userEmail, text, LocalDate.now().toString());
+        Database.getInstance().addComment(comment);
+    }
+
      public void addCommodity(Commodity newCommodity) throws ProviderNotFound {
         findProviderById(newCommodity.getProviderId());
         Database.getInstance().addCommodity(newCommodity);
@@ -274,6 +279,16 @@ public class Baloot {
                 .average()
                 .orElse(Double.NaN);
         return averageRating;
+    }
+
+    public List<Commodity> getSuggestedCommodities(Integer commodityId) throws CommodityNotFound {
+        Commodity commodity = findCommodityById(commodityId);
+
+        return Database.getInstance().getCommodities().stream()
+                .sorted(Comparator.comparing(c -> 11 * (commodity.isInSimilarCategory(c.getCategories()) ? 1 : 0) + c.getRating(), Comparator.reverseOrder()))
+                .limit(5)
+                .collect(Collectors.toList());
+
     }
 
     public void printData(){

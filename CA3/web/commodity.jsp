@@ -1,6 +1,7 @@
 <%@ page import="Domain.Commodity" %>
 <%@ page import="Service.Baloot" %>
 <%@ page import="Domain.Comment" %>
+<%@ page import="java.util.List" %>
 
 <% Commodity commodity = (Commodity) request.getAttribute("commodity"); %>
 
@@ -20,8 +21,8 @@
   </style>
 </head>
 <body>
-<span>username: <%=Baloot.getInstance().getLoggedInUser().getUsername()%></span>
-<br>
+<a href="/">Home</a>
+<p id="username">username: <%= Baloot.getInstance().getLoggedInUser().getUsername()%></p>
 <ul>
   <li id="id">Id: <%=commodity.getId()%></li>
   <li id="name">Name: <%=commodity.getName()%></li>
@@ -34,7 +35,7 @@
 
 <label>Add Your Comment:</label>
 <form action="" method="post">
-  <input type="text" name="comment" value="" />
+  <input type="text" name="comment" value="" >
   <button type="submit" name="action" value="addComment">submit</button>
 </form>
 <br>
@@ -59,57 +60,27 @@
   </tr>
   <% for(Comment comment: Baloot.getInstance().getCommodityComments(commodity.getId())) {%>
   <tr>
-    <td><%=Baloot.getInstance().getUsernameByEmail(comment.getUserEmail())%>></td>
-    <td><%=comment.getText()%>></td>
+    <td><%=Baloot.getInstance().getUsernameByEmail(comment.getUserEmail())%></td>
+    <td><%=comment.getText()%></td>
     <td><%=comment.getDate()%></td>
     <td>
       <form action="" method="POST">
         <label><%=comment.getLikeCount()%></label>
-        <input type="hidden" name="voteLike" value="1"/>
-        <input type="hidden" name="commentId" value=<%=comment.getId()%>/>
+<%--        <input type="hidden" name="voteLike" value="1"/>--%>
+        <input type="hidden" name="commentIdLike" value=<%=comment.getId()%> >
         <button type="submit" name="action" value="likeComment">like</button>
       </form>
     </td>
     <td>
       <form action="" method="POST">
         <label><%=comment.getDisLikeCount()%></label>
-        <input type="hidden" name="voteDislike" value="-1"/>
-        <input type="hidden" name="commentId" value=<%=comment.getId()%>/>
+<%--        <input type="hidden" name="voteDislike" value="-1"/>--%>
+        <input type="hidden" name="commentIdDisLike" value=<%=comment.getId()%> >
         <button type="submit" name="action" value="dislikeComment">dislike</button>
       </form>
     </td>
   </tr>
   <% } %>
-
-<%--  <tr>--%>
-<%--    <td>user1</td>--%>
-<%--    <td>Good</td>--%>
-<%--    <td>2022-07-25</td>--%>
-<%--    <td>--%>
-<%--      <form action="" method="POST">--%>
-<%--        <label for="">2</label>--%>
-<%--        <input--%>
-<%--                id="form_comment_id"--%>
-<%--                type="hidden"--%>
-<%--                name="comment_id"--%>
-<%--                value="1"--%>
-<%--        />--%>
-<%--        <button type="submit" name="action" value="likeComment">like</button>--%>
-<%--      </form>--%>
-<%--    </td>--%>
-<%--    <td>--%>
-<%--      <form action="" method="POST">--%>
-<%--        <label for="">1</label>--%>
-<%--        <input--%>
-<%--                id="form_comment_id"--%>
-<%--                type="hidden"--%>
-<%--                name="comment_id"--%>
-<%--                value="-1"--%>
-<%--        />--%>
-<%--        <button type="submit" name="action" value="dislikeComment">dislike</button>--%>
-<%--      </form>--%>
-<%--    </td>--%>
-<%--  </tr>--%>
 </table>
 <br><br>
 <table>
@@ -124,46 +95,21 @@
     <th>In Stock</th>
     <th>Links</th>
   </tr>
+  <%
+    List<Commodity> suggestedCommodities = Baloot.getInstance().getSuggestedCommodities(commodity.getId());
+    for (Commodity suggestedCommodity: suggestedCommodities){
+  %>
   <tr>
-    <td>2341</td>
-    <td>Galaxy S22</td>
-    <td>Phone Provider No.1</td>
-    <td>34000000</td>
-    <td>Technology, Phone</td>
-    <td>8.3</td>
-    <td>17</td>
-    <td><a href="/commodities/2341">Link</a></td>
+    <td><%=suggestedCommodity.getId()%></td>
+    <td><%=suggestedCommodity.getName()%></td>
+    <td><%=Baloot.getInstance().findProviderById(suggestedCommodity.getProviderId()).getName()%></td>
+    <td><%=suggestedCommodity.getPrice()%></td>
+    <td><%=String.join(", ", suggestedCommodity.getCategories())%></td>
+    <td><%=suggestedCommodity.getRating()%></td>
+    <td><%=suggestedCommodity.getInStock()%></td>
+    <td><a href=<%="/commodities/" + suggestedCommodity.getId()%>>Link</a></td>
   </tr>
-  <tr>
-    <td>4231</td>
-    <td>Galaxy S22 Plus</td>
-    <td>Phone Provider No.1</td>
-    <td>43000000</td>
-    <td>Technology, Phone</td>
-    <td>8.7</td>
-    <td>12</td>
-    <td><a href="/commodities/4231">Link</a></td>
-  </tr>
-  <tr>
-    <td>1234</td>
-    <td>Galaxy S22 Ultra</td>
-    <td>Phone Provider No.2</td>
-    <td>50000000</td>
-    <td>Technology, Phone</td>
-    <td>8.9</td>
-    <td>5</td>
-    <td><a href="/commodities/1234">Link</a></td>
-  </tr>
-  <tr>
-    <td>4321</td>
-    <td>Galaxy A53</td>
-    <td>Phone Provider No.2</td>
-    <td>16000000</td>
-    <td>Technology, Phone</td>
-    <td>8.7</td>
-    <td>11</td>
-    <td><a href="/commodities/4321">Link</a></td>
-  </tr>
+  <% } %>
 </table>
 </body>
 </html>

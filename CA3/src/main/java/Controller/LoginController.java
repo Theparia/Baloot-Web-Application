@@ -8,18 +8,13 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.io.PrintWriter;
+
 @WebServlet("/login")
 public class LoginController extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         request.getRequestDispatcher("login.jsp").forward(request, response);
-        try {
-            Baloot.getInstance().addToBuyList("amir", 1);
-        }catch (Exception e){
-
-        }
     }
 
     @Override
@@ -31,8 +26,7 @@ public class LoginController extends HttpServlet {
             response.sendRedirect("/");
         } catch (Exception e){
             request.setAttribute("errorMessage", e.getMessage());
-            request.getRequestDispatcher("error.jsp").forward(request, response); //TODO Controller joda mikhad?
-//            response.sendRedirect("/error");
+            request.getRequestDispatcher("error.jsp").forward(request, response);
         }
     }
 

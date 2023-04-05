@@ -17,7 +17,7 @@ public class CreditController extends HttpServlet {
     }
 
     @Override
-    public void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         float amount = Float.parseFloat(request.getParameter("credit"));
         try {
             Baloot.getInstance().addUserCredit(Baloot.getInstance().getLoggedInUser().getUsername(), amount);
@@ -25,7 +25,7 @@ public class CreditController extends HttpServlet {
             response.sendRedirect("/");
         } catch (Exception e){
             request.setAttribute("errorMessage", e.getMessage());
-            request.getRequestDispatcher("error.jsp").forward(request, response); //todo: baraye error controller joda mikhad?
+            request.getRequestDispatcher("error.jsp").forward(request, response);
         }
     }
 }

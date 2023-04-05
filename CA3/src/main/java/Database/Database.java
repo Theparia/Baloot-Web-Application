@@ -41,4 +41,5 @@ public class Database {
     public void addProvider(Provider provider){
         providers.add(provider);
     }
+    public void addComment(Comment comment) {comments.add(comment);}
 }

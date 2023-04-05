@@ -1,9 +1,6 @@
 package Controller;
 
 import Service.Baloot;
-import Service.Exceptions.ExpiredDiscount;
-import Service.Exceptions.InvalidDiscount;
-
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -21,7 +18,7 @@ public class LogoutController extends HttpServlet {
             response.sendRedirect("/login");
         }catch (Exception e){
             request.setAttribute("errorMessage", e.getMessage());
-            request.getRequestDispatcher("error.jsp").forward(request, response);//todo: baraye error controller joda mikhad?
+            request.getRequestDispatcher("error.jsp").forward(request, response);
         }
     }
 }
