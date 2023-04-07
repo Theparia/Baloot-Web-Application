@@ -19,11 +19,9 @@ public class CommoditiesController extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         if(Baloot.getInstance().isUserLoggedIn()) {
             HttpSession session = request.getSession();
-
             if(session.getAttribute("commodities") == null)
                 session.setAttribute("commodities", Database.getInstance().getCommodities());
-
-            request.getRequestDispatcher("commodities.jsp").forward(request, response);
+            request.getRequestDispatcher("View/commodities.jsp").forward(request, response);
         }
         else
             response.sendRedirect("/login");
@@ -36,16 +34,16 @@ public class CommoditiesController extends HttpServlet {
         List<Commodity> commodities = (List<Commodity>)request.getSession().getAttribute("commodities");
         String action = request.getParameter("action");
         switch (action) {
-            case "search_by_category":
+            case "searchByCategory":
                 session.setAttribute("commodities", Baloot.getInstance().searchCommoditiesByCategory(searchedName, commodities));
                 break;
-            case "search_by_name":
+            case "searchByName":
                 session.setAttribute("commodities", Baloot.getInstance().searchCommoditiesByName(searchedName, commodities));
                 break;
             case "clear":
                 session.removeAttribute("commodities");
                 break;
-            case "sort_by_price":
+            case "sortByPrice":
                 session.setAttribute("commodities", Baloot.getInstance().sortCommoditiesByPrice(commodities));
                 break;
         }

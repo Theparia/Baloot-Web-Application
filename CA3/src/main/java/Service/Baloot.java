@@ -5,7 +5,6 @@ import Domain.*;
 import Service.Exceptions.*;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.type.TypeFactory;
-import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 import HTTPRequestHandler.HTTPRequestHandler;
@@ -136,6 +135,7 @@ public class Baloot {
                 .filter(commodity -> commodity.getCategories().contains(category))
                 .collect(Collectors.toList());
     }
+
     public List<Commodity> sortCommoditiesByPrice(List<Commodity> commodities){
         return commodities.stream()
                 .sorted(Comparator.comparing(Commodity::getPrice))
@@ -259,8 +259,6 @@ public class Baloot {
     public void addUserCredit(String username, float credit) throws UserNotFound, NegativeCredit {
         findUserByUsername(username).addCredit(credit);
     }
-
-
 
     private boolean isVoteValid(int vote){
         return vote == 1 || vote == 0 || vote == -1;

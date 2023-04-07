@@ -13,7 +13,7 @@ import java.io.IOException;
 public class LoginController extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        request.getRequestDispatcher("login.jsp").forward(request, response);
+        request.getRequestDispatcher("View/login.jsp").forward(request, response);
     }
 
     @Override
@@ -25,7 +25,7 @@ public class LoginController extends HttpServlet {
             response.sendRedirect("/");
         } catch (Exception e){
             request.setAttribute("errorMessage", e.getMessage());
-            request.getRequestDispatcher("error.jsp").forward(request, response);
+            request.getRequestDispatcher("View/error.jsp").forward(request, response);
         }
     }
 }

@@ -1,9 +1,6 @@
 package Controller;
 
 import Service.Baloot;
-import Service.Exceptions.ExpiredDiscount;
-import Service.Exceptions.InvalidDiscount;
-
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -17,7 +14,7 @@ public class BuyListController extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         if(Baloot.getInstance().isUserLoggedIn())
-            request.getRequestDispatcher("buyList.jsp").forward(request, response);
+            request.getRequestDispatcher("View/buyList.jsp").forward(request, response);
         else response.sendRedirect("/login");
     }
 
@@ -44,7 +41,7 @@ public class BuyListController extends HttpServlet {
             response.sendRedirect("/buyList");
         } catch (Exception e){
             request.setAttribute("errorMessage", e.getMessage());
-            request.getRequestDispatcher("error.jsp").forward(request, response);
+            request.getRequestDispatcher("View/error.jsp").forward(request, response);
         }
     }
 
@@ -54,7 +51,7 @@ public class BuyListController extends HttpServlet {
             response.sendRedirect("/buyList");
         } catch (Exception e){
             request.setAttribute("errorMessage", e.getMessage());
-            request.getRequestDispatcher("error.jsp").forward(request, response);
+            request.getRequestDispatcher("View/error.jsp").forward(request, response);
         }
     }
 
@@ -64,7 +61,7 @@ public class BuyListController extends HttpServlet {
             response.sendRedirect("/buyList");
         } catch (Exception e){
             request.setAttribute("errorMessage", e.getMessage());
-            request.getRequestDispatcher("error.jsp").forward(request, response);
+            request.getRequestDispatcher("View/error.jsp").forward(request, response);
         }
     }
 }

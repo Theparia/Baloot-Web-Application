@@ -12,7 +12,7 @@ public class CreditController extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         if(Baloot.getInstance().isUserLoggedIn())
-            request.getRequestDispatcher("credit.jsp").forward(request, response);
+            request.getRequestDispatcher("View/credit.jsp").forward(request, response);
         else response.sendRedirect("/login");
     }
 
@@ -25,7 +25,7 @@ public class CreditController extends HttpServlet {
             response.sendRedirect("/");
         } catch (Exception e){
             request.setAttribute("errorMessage", e.getMessage());
-            request.getRequestDispatcher("error.jsp").forward(request, response);
+            request.getRequestDispatcher("View/error.jsp").forward(request, response);
         }
     }
 }

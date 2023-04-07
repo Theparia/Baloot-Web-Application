@@ -10,6 +10,7 @@ import lombok.Setter;
 public class Discount {
     private String discountCode;
     private float discount;
+
     public Discount(String discountCode, float discount){
         this.discount = discount;
         this.discountCode = discountCode;

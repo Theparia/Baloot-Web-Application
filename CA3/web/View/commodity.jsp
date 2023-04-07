@@ -66,7 +66,6 @@
     <td>
       <form action="" method="POST">
         <label><%=comment.getLikeCount()%></label>
-<%--        <input type="hidden" name="voteLike" value="1"/>--%>
         <input type="hidden" name="commentIdLike" value=<%=comment.getId()%> >
         <button type="submit" name="action" value="likeComment">like</button>
       </form>
@@ -74,7 +73,6 @@
     <td>
       <form action="" method="POST">
         <label><%=comment.getDisLikeCount()%></label>
-<%--        <input type="hidden" name="voteDislike" value="-1"/>--%>
         <input type="hidden" name="commentIdDisLike" value=<%=comment.getId()%> >
         <button type="submit" name="action" value="dislikeComment">dislike</button>
       </form>

@@ -20,10 +20,10 @@ public class CommodityController extends HttpServlet {
             try{
                 int commodityId = Integer.parseInt(request.getPathInfo().substring(1));
                 request.setAttribute("commodity", Baloot.getInstance().findCommodityById(commodityId));
-                request.getServletContext().getRequestDispatcher("/commodity.jsp").forward(request, response);
+                request.getServletContext().getRequestDispatcher("/View/commodity.jsp").forward(request, response);
             } catch (Exception e){
                 request.setAttribute("errorMessage", e.getMessage());
-                request.getServletContext().getRequestDispatcher("/error.jsp").forward(request, response);
+                request.getServletContext().getRequestDispatcher("/View/error.jsp").forward(request, response);
             }
 
         }
@@ -58,7 +58,7 @@ public class CommodityController extends HttpServlet {
             response.sendRedirect("/commodities/" + commodityId);
         } catch (Exception e){
             request.setAttribute("errorMessage", e.getMessage());
-            request.getServletContext().getRequestDispatcher("/error.jsp").forward(request, response);
+            request.getServletContext().getRequestDispatcher("/View/error.jsp").forward(request, response);
         }
     }
 }

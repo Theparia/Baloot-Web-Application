@@ -18,6 +18,7 @@ public class Provider {
     private String name;
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-DD")
     private Date registryDate;
+
     public Provider(Integer id, String name, Date registryDate) {
         this.id = id;
         this.name = name;

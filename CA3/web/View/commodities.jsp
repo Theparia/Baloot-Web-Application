@@ -24,14 +24,14 @@
 <form action="" method="POST">
   <label>Search:</label>
   <input type="text" name="search" value="">
-  <button type="submit" name="action" value="search_by_category">Search By Cagtegory</button>
-  <button type="submit" name="action" value="search_by_name">Search By Name</button>
+  <button type="submit" name="action" value="searchByCategory">Search By Cagtegory</button>
+  <button type="submit" name="action" value="searchByName">Search By Name</button>
   <button type="submit" name="action" value="clear">Clear Search</button>
 </form>
 <br><br>
 <form action="" method="POST">
   <label>Sort By:</label>
-  <button type="submit" name="action" value="sort_by_price">Price</button>
+  <button type="submit" name="action" value="sortByPrice">Price</button>
 </form>
 <br><br>
 <table>
