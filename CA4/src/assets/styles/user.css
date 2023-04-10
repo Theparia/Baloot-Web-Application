@@ -4,11 +4,13 @@ body{
     background: #F5F5F5;
 }
 
+
 main{
     position: absolute;
     top: 20%;
     left: 8%;
     width: 82%;
+    /*min-height: calc(100vh - 100px);*/
 }
 
 .user-section{
@@ -63,7 +65,7 @@ main{
     font-family: 'Inter';
     font-style: normal;
     font-weight: 600;
-    font-size: 20px;
+    font-size: 18px;
     line-height: 29px;
     color: #FFFFFF;
 }

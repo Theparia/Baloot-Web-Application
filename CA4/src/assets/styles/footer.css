@@ -1,6 +1,7 @@
 .f {
-    background-color: #A97B47;
+    background-color: red;
     width: 100%;
     position: absolute;
     bottom: 0;
+    left: 0;
 }
