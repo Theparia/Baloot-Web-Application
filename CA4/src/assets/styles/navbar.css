@@ -78,5 +78,8 @@
 
     color: #FFFFFF;
 
-    /*display: inline;*/
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    align-items: center;
 }
