@@ -1,0 +1,82 @@
+.navbar{
+    position: absolute;
+    width: 1920px;
+    height: 116px;
+    left: 0px;
+    top: 0px;
+
+    background: #FFFFFF;
+    box-shadow: 0px 4px 4px rgba(208, 208, 208, 0.25);
+}
+
+.baloot-icon{
+    position: absolute;
+    width: 102px;
+    height: 94px;
+    left: 56px;
+    top: 10px;
+
+    /*background: url(image.png);*/
+    border-radius: 47px;
+}
+
+.baloot-text{
+    position: absolute;
+    width: 183px;
+    height: 72px;
+    left: 138px;
+    top: 33px;
+
+    font-family: 'Inter';
+    font-style: normal;
+    font-weight: 600;
+    font-size: 42px;
+    line-height: 51px;
+    text-align: center;
+
+    color: #A97B47;
+}
+
+.username{
+    position: absolute;
+    width: 127px;
+    height: 34px;
+    left: 1527px;
+    top: 38px;
+
+    font-family: 'Inter';
+    font-style: normal;
+    font-weight: 600;
+    font-size: 28px;
+    line-height: 34px;
+    /* identical to box height */
+
+    text-align: center;
+
+    color: #593C1C;
+}
+
+.cart{
+    position: absolute;
+    width: 160px;
+    height: 68px;
+    left: 1718px;
+    top: 24px;
+
+    background: #593C1C;
+    mix-blend-mode: normal;
+    border-radius: 15px;
+
+    font-family: 'Inter';
+    font-style: normal;
+    font-weight: 600;
+    font-size: 28px;
+    line-height: 34px;
+    /* identical to box height */
+
+    text-align: center;
+
+    color: #FFFFFF;
+
+    /*display: inline;*/
+}
