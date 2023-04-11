@@ -1,0 +1,96 @@
+@import "navbar.css";
+@import "switch.css";
+
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@200;300;400;500;600;700;800&display=swap');
+body{
+    background: #F5F5F5;
+}
+
+.sort-section{
+    position: absolute;
+    width: 82%;
+    height: 13%;
+    left: 12%;
+    top: 19%;
+
+    background: #F7F0E9;
+    box-shadow: 0px 4px 4px rgba(208, 208, 208, 0.25);
+    border-radius: 15px;
+
+    display: flex;
+    flex-direction: row;
+}
+
+
+.available-commodities{
+    color: #593C1C;
+    display: flex;
+    flex-direction: row;
+    margin: auto 3% auto;
+
+    font-family: 'Inter';
+    font-style: normal;
+    font-weight: 600;
+    font-size: 1.5em;
+    line-height: 39px;
+    text-align: center;
+}
+
+.sort-by{
+    font-family: 'Inter';
+    font-style: normal;
+    font-weight: 600;
+    font-size: 1.3em;
+    line-height: 39px;
+}
+
+#sort-by-text{
+    position: absolute;
+    top: 27%;
+    left: 60%;
+
+    color: #593C1C;
+}
+
+.sort-options{
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    list-style-type: none;
+    cursor: pointer;
+}
+
+.sort-options li{
+    width: 9%;
+    height: 55%;
+    align-items: center;
+    /*margin: 5% 5% auto;*/
+}
+
+.sort-options li a{
+    align-items: center;
+    display: block;
+    text-align: center;
+    padding: 5%;
+    text-decoration: none;
+}
+
+#name-sort-option{
+    background: #A97B47;
+    border-radius: 15px;
+    position: absolute;
+    left: 72%;
+}
+
+#name-sort-option a{
+    color: #FFFFFF;
+}
+
+#price-sort-option{
+    position: absolute;
+    left: 85%;
+}
+
+#price-sort-option a{
+    color: #919191;
+}
