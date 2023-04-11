@@ -3,7 +3,7 @@
 
 .form-container {
     position: absolute;
-    top: 50%;
+    top: 55%;
     left: 50%;
     margin-right: -50%;
     transform: translate(-50%, -50%);
@@ -11,7 +11,7 @@
 }
 
 .form-container h2 {
-    left: 37%;
+    left: 12%;
     position: relative;
     font-family: 'Inter';
     font-style: normal;
@@ -22,7 +22,7 @@
 
 .form-container input {
     border: none;
-    margin: 7px;
+    margin: 3px;
     padding: 10px;
     background: #eeeeee;
     width: 100%;
@@ -39,12 +39,13 @@
 }
 
 .form-container input:invalid {
-    background: #734f37;
+    background: #F7F0E9;
 }
+
 
 .form-container button {
     position: relative;
-    left: 33%;
+    left: 28%;
     margin: 10px;
     background-color: #A97B47;
     border-radius: 3px;
@@ -57,20 +58,12 @@
 }
 
 .form-container button:hover {
-    background: #182e49;
-}
-
-#frgt-psw a {
-    position: relative;
-    left: 25%;
-    margin: 10px;
-    color: #A97B47;
-    text-decoration: none;
+    background: #734f37;
 }
 
 #rtn-str {
     position: relative;
-    left: 30%;
+    left: 25%;
     margin: 10px;
 }
 

@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>Login</title>
+    <link rel="stylesheet" href="../assets/styles/navbar.css">
+    <link rel="stylesheet" href="../assets/styles/signup.css">
+</head>
+
+<header>
+    <nav class="mr-auto navbar">
+        <div class="baloot">
+            <div class="baloot-icon">
+                <a href="home.html"><img src="../assets/images/BalootLogo.png" alt="BalootLogo"></a>
+            </div>
+            <div class="baloot-text">
+                Baloot
+            </div>
+        </div>
+        <button class="register button">Register</button>
+        <button class="login button">Login</button>
+    </nav>
+</header>
+
+<body>
+<div class="form-container">
+    <h2>Create Account</h2>
+    <form action="signup.html" method="post" id="signup-form">
+        <label>
+            <input name="firstName" type="text" placeholder="First Name" required/>
+        </label><br/>
+        <label>
+            <input name="lastName" type="text" placeholder="Last Name" required/>
+        </label><br/>
+        <label>
+            <input name="password" type="password" placeholder="Password" required/>
+        </label><br/>
+        <label>
+            <input name="email" type="email" placeholder="Email" required/>
+        </label><br/>
+        <label>
+            <input name="phoneNumber" type="tel" placeholder="Phone Number" required/>
+        </label><br/>
+        <label>
+            <input name="address" type="text" placeholder="Address" required/>
+        </label><br/>
+        <button type="submit">Create</button>
+    </form><br/>
+    <label id="rtn-str">
+        <span>or </span><a href="/">Return to Store</a>
+    </label>
+</div>
+
+</body>
+
+</html>
