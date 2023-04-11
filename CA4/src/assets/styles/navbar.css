@@ -1,6 +1,6 @@
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@200;300;400;500;600;700;800&display=swap');
 
-.navbar{
+.customized-navbar{
     position: fixed;
     top: 0;
     left:0;
@@ -120,7 +120,7 @@
 
 /******************/
 
-.search-form {
+.customized-search-form {
     display: inline;
 }
 
@@ -157,7 +157,7 @@
     color: #000000;
 }
 
-.search-box{
+.customized-search-box{
     position: absolute;
     width: 25%;
     height: 55%;
@@ -186,7 +186,7 @@
     background: #F7F0E9;
 }
 
-.button{
+.customized-navbar-button{
     position: absolute;
     width: 9%;
     height: 60%;
