@@ -39,7 +39,7 @@
 }
 
 .form-container input:invalid {
-    background: #734f37;
+    background: #F7F0E9;
 }
 
 .form-container button {
@@ -57,7 +57,7 @@
 }
 
 .form-container button:hover {
-    background: #182e49;
+    background: #734f37;
 }
 
 #frgt-psw a {
