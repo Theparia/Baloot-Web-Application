@@ -1,0 +1,86 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@200;300;400;500;600;700;800&display=swap');
+
+
+.form-container {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    margin-right: -50%;
+    transform: translate(-50%, -50%);
+    width: 20%;
+}
+
+.form-container h2 {
+    left: 37%;
+    position: relative;
+    font-family: 'Inter';
+    font-style: normal;
+    font-weight: 700;
+    font-size: 31px;
+    color: #A97B47;
+}
+
+.form-container input {
+    border: none;
+    margin: 7px;
+    padding: 10px;
+    background: #eeeeee;
+    width: 100%;
+    box-sizing: border-box;
+    border-radius: 13px;
+
+
+    font-family: 'Inter';
+    font-style: normal;
+    font-weight: 300;
+    font-size: 15px;
+}
+
+.form-container input:valid {
+    background: #F7F0E9;
+}
+
+.form-container input:invalid {
+    background: #F7F0E9;
+}
+
+.form-container button {
+    position: relative;
+    left: 33%;
+    margin: 10px;
+    background-color: #A97B47;
+    border-radius: 3px;
+    border: none;
+    width: 35%;
+    padding: 10px;
+    text-align: center;
+    font-size: 15px;
+    color: white;
+}
+
+.form-container button:hover {
+    background: #182e49;
+}
+
+#frgt-psw a {
+    position: relative;
+    left: 25%;
+    margin: 10px;
+    color: #A97B47;
+    text-decoration: none;
+}
+
+#rtn-str {
+    position: relative;
+    left: 30%;
+    margin: 10px;
+}
+
+#rtn-str a {
+    color: #A97B47;
+    text-decoration: none;
+}
+
+#rtn-str span {
+    color: #4a4a4a;
+}
