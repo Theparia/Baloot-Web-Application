@@ -1,23 +1,18 @@
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@200;300;400;500;600;700;800&display=swap');
-
-body{
-    top: 1087px;
-    background: #F5F5F5;
-}
+@import "root.css";
 
 .form-container {
     position: relative;
     width: 20%;
     margin-top: 10%;
     margin-left: 40%;
-    font-family: 'Inter';
 }
 
 .form-container input {
     border: none;
     margin-bottom: 20px;
     padding: 10px;
-    background: #eeeeee;
+    background: var(--light_theme);
     width: 100%;
     box-sizing: border-box;
     border-radius: 13px;
@@ -27,25 +22,25 @@ body{
 }
 
 .form-container input:valid {
-    background: #F7F0E9;
+    background: var(--light_theme);
 }
 
 .form-container input:invalid {
-    background: #F7F0E9;
+    background: var(--light_theme);
 }
 
 .form-container button {
     position: relative;
     left: 28%;
     margin: 10px;
-    background-color: #A97B47;
+    background-color: var(--medium_theme);
     border-radius: 3px;
     border: none;
     width: 35%;
     padding: 10px;
     text-align: center;
     font-size: 15px;
-    color: white;
+    color: var(--white);
 }
 
 .form-container button:hover {
@@ -59,7 +54,7 @@ body{
 }
 
 #rtn-str a {
-    color: #A97B47;
+    color: var(--medium_theme);
     text-decoration: none;
 }
 

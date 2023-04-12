@@ -2,6 +2,7 @@
 @import "normalize.css";
 @import "login_form.css";
 @import "footer.css";
+@import "root.css";
 
 .form-container h2 {
     left: 10%;
@@ -9,5 +10,5 @@
     font-style: normal;
     font-weight: 700;
     font-size: 31px;
-    color: #A97B47;
+    color: var(--medium_theme);
 }

@@ -2,6 +2,7 @@
 @import "navbar.css";
 @import "normalize.css";
 @import "login_form.css";
+@import "root.css";
 
 .form-container {
     margin-bottom: 14%;
@@ -10,18 +11,15 @@
 .form-container h2 {
     left: 32%;
     position: relative;
-    font-family: 'Inter';
-    font-style: normal;
     font-weight: 700;
     font-size: 31px;
-    color: #A97B47;
+    color: var(--medium_theme);
 }
 
 #frgt-psw a {
     position: relative;
     left: 18%;
     margin: 10px;
-    color: #A97B47;
+    color: var(--medium_theme);
     text-decoration: none;
-    font-family: 'Inter';
 }
