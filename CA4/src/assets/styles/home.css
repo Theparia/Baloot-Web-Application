@@ -1,6 +1,7 @@
 @import "switch.css";
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@200;300;400;500;600;700;800&display=swap');
 body{
+    top: 1087px;
     background: #F5F5F5;
 }
 
