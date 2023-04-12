@@ -22,7 +22,6 @@ body{
     flex-direction: row;
 }
 
-
 .available-commodities{
     color: var(--dark_theme);
     display: flex;
@@ -44,7 +43,6 @@ body{
     position: relative;
     top: 27%;
     left: 25rem;
-
     color: var(--dark_theme);
 }
 
@@ -94,9 +92,6 @@ body{
     margin-top: -2rem;
 }
 
-/*--------------------------------*/
-
-
 .main-container{
     position: relative;
     top: 35%;
@@ -112,7 +107,6 @@ body{
     justify-content: left;
     margin-bottom: 3rem;
 }
-
 
 .product {
     width: 3em;
@@ -164,7 +158,6 @@ body{
     display: flex;
     justify-content: space-around;
 }
-
 
 .add-to-cart-button {
     width: 7em;

@@ -1,6 +1,6 @@
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@200;300;400;500;600;700;800&display=swap');
 
-.customized-navbar{
+.navbar{
     position: fixed;
     top: 0;
     left:0;
@@ -79,8 +79,6 @@
     line-height: 34px;
 }
 
-/******************/
-
 .customized-search-form {
     display: inline;
 }
@@ -102,16 +100,6 @@
     padding-left: 1%;
     color: var(--dark_theme);
     border: none;
-}
-
-.select-option-box option{
-    font-weight: 400;
-    font-size: 20px;
-    line-height: 29px;
-    background: #D8C1A8;
-    border-radius: 21px;
-    text-align: center;
-    color: #000000;
 }
 
 .customized-search-box{

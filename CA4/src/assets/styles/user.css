@@ -41,7 +41,7 @@ main{
     color: var(--dark_theme);
 }
 
-.amount-input{
+#amount-input{
     width: 550px;
     height: 40px;
     box-sizing: border-box;
@@ -50,9 +50,10 @@ main{
     box-shadow: 0px 4px 4px rgba(208, 208, 208, 0.25);
     border-radius: 15px;
     text-align: center;
+    color: black;
 }
 
-.amount-input::placeholder{
+#amount-input::placeholder{
     color: var(--dark-gray);
 }
 
