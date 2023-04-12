@@ -2,15 +2,11 @@ footer {
     width: 100%;
     bottom: 0;
     left: 0;
-    background: #593C1C;
+    background: var(--dark_theme);
     height: 4%;
-
-    font-family: 'Inter';
-    font-style: normal;
     font-weight: 600;
     font-size: 16px;
     line-height: 29px;
     text-align: center;
-
-    color: #FFFFFF;
+    color: var(--white);
 }
