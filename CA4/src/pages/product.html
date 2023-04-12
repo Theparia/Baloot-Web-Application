@@ -2,13 +2,13 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <link rel="stylesheet" href="../assets/styles/user.css">
+    <link rel="stylesheet" href="../assets/styles/product.css">
     <link rel="stylesheet" href="../assets/styles/footer.css">
     <title>Product</title>
 </head>
-
+<body>
 <header>
-    <nav class="navbar">
+    <nav class="customized-navbar">
         <div class="baloot">
             <div class="baloot-icon">
                 <a href="home.html">
@@ -20,9 +20,9 @@
             </div>
         </div>
         <div class="username font">
-            #Marshal
+            #username
         </div>
-        <div class="cart font">
+        <div id="empty-cart" class="cart font">
             <div>
                 Cart
             </div>
@@ -32,62 +32,80 @@
         </div>
     </nav>
 </header>
-
-
-<body>
-
-    <section class="product">
-        <div class="info">
-            <img id="image" style="width: 25em; height: 25em;">
-            <div class="right-col">
-                <h1 id="title"></h1>
-                <h2 id="price"></h2>
-                <h3 id="rating"></h3>
-                <input type="button" id="add-to-cart" value="ADD TO CART" onclick="addToCart()"><br>
-                <div id="show-quantity" style="margin-top: -2%">
-                    <input type="button" id="increase" value="+" onclick="increase()">
-                    <span id="quantity">&nbsp 2 &nbsp</span>
-                    <input type="button" id="decrease" value="-" onclick="decrease()">
+<main>
+    <div class="product">
+        <div class="product-img">
+            <img src="../assets/images/mobile.png">
+        </div>
+        <div class="product-info">
+            <div class="category-part">
+                <div>
+                    <div id="product-name">
+                        Huawei nova 9
+                    </div>
+                    <div id="stock" class="product-info-font">
+                        5 left in stock
+                    </div>
+                    <div class="provider-name product-info-font">
+                        by <a href="#">Huawei</a>
+                    </div>
+                    <div id="categories" class="product-info-font">
+                        Category(s)
+                        <ul>
+                            <li>
+                                Technologhy
+                            </li>
+                            <li>
+                                IT
+                            </li>
+                        </ul>
+                    </div>
                 </div>
-                <h3 id="description-title" style="margin-top:8.8em; font-size: 1.5em;">DESCRIPTION</h3>
-                <hr>
-                <div id="description">
+                <div id="rating">
+                    <img src="../assets/images/star.png">
+                    <div id="rating-font" class="product-info-font">
+                        4.1
+                    </div>
+                    <div id="number-of-ratings" class="product-info-font">
+                        (12)
+                    </div>
                 </div>
             </div>
-            <div class="reviews">
-                <hr>
-                <h2>CUSTOMER REVIEWS</h2>
-                <table id="write-review">
-                    <tr>
-                        <td id="total-rating"></td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <form id="review-form">
-                                <label for="message">Message</label>
-                                <textarea name="message" id="message" cols="49%" rows="12%"></textarea>
-                                <label for="rating-val">Rating</label><br>
-                                <input list="ratings" name="rating-val" id="rating-val" style="width: 98%">
-                                <datalist id="ratings">
-                                    <option value="1">
-                                    <option value="2">
-                                    <option value="3">
-                                    <option value="4">
-                                    <option value="5">
-                                </datalist><br>
-                                <input type="submit" id="write-review-btn" value="Write a review">
-                            </form>
-                        </td>
-                    </tr>
-                </table>
-                <table id="comments">
-                    <col style="width: 70%">
-                </table>
+            <div class="cart-part">
+                <div id="price" class="product-info-font">
+                    300$
+                </div>
+                <button id="add-to-cart-btn" class="product-info-font">
+                    add to cart
+                </button>
+            </div>
+            <div class="submit-part">
+                <div>
+                    <div class="provider-name product-info-font">
+                        rate now
+                    </div>
+                    <div class="stars">
+                        <img src="../assets/images/star.png">
+                        <img src="../assets/images/star.png">
+                        <img src="../assets/images/star.png">
+                        <img src="../assets/images/star.png">
+                        <img src="../assets/images/star.png">
+                        <img src="../assets/images/star.png">
+                        <img src="../assets/images/star.png">
+                        <img src="../assets/images/star.png">
+                        <img src="../assets/images/star.png">
+                        <img src="../assets/images/star.png">
+                    </div>
+                </div>
+                <button>submit</button>
             </div>
         </div>
-    </section>
-
-
-
+    </div>
+</main>
+<footer class="f">
+    <div>
+        This is the footer content
+    </div>
+</footer>
 </body>
 </html>
