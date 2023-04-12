@@ -1,4 +1,7 @@
 @import "navbar.css";
+@import "home.css";
+@import "normalize.css";
+@import "footer.css";
 
 body{
     background: #F5F5F5;

@@ -1,5 +1,6 @@
 @import "navbar.css";
-
+@import "normalize.css";
+@import "footer.css";
 body{
     background: #F5F5F5;
 }
@@ -77,6 +78,7 @@ main{
     border-radius: 15px;
     text-align: center;
     margin: 10px;
+    cursor: pointer;
 }
 
 .credit{
@@ -180,6 +182,10 @@ main{
     line-height: 29px;
     text-align: center;
     color: #000000;
+}
+
+.in-cart-btn a{
+    text-decoration: none;
 }
 
 .pay-btn{
