@@ -1,0 +1,21 @@
+body{
+    background: #F5F5F5;
+}
+
+
+main{
+    position: relative;
+    left: 8%;
+    width: 82%;
+    padding-top: 10em;
+    text-align: center;
+}
+
+.error-font{
+    font-family: 'Inter';
+    font-style: normal;
+    font-weight: 550;
+    font-size: 20px;
+    line-height: 39px;
+    color: #593C1C;
+}
