@@ -5,11 +5,10 @@ body{
 }
 
 main{
-    position: absolute;
-    top: 20%;
+    position: relative;
     left: 10%;
     width: 80%;
-    /*min-height: calc(100vh - 100px);*/
+    margin-top: 10em;
 }
 
 .product-img img{
