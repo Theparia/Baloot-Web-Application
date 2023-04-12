@@ -8,7 +8,7 @@ main{
     position: absolute;
     top: 20%;
     left: 10%;
-    width: 82%;
+    width: 80%;
     /*min-height: calc(100vh - 100px);*/
 }
 
@@ -25,6 +25,11 @@ main{
 .product{
     display: flex;
     flex-direction: row;
+    justify-content: flex-start;
+}
+
+.product-info{
+    width: 100%;
 }
 
 
@@ -52,10 +57,10 @@ main{
     flex-direction: row;
 }
 
-/*.stars img{*/
-/*    width: 20px;*/
-/*    height: 20px;*/
-/*}*/
+.stars img{
+    width: 20px;
+    height: 20px;
+}
 
 
 #product-name{
