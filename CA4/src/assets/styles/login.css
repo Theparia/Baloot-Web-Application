@@ -36,6 +36,7 @@
 
 .form-container input:valid {
     background: #F7F0E9;
+
 }
 
 .form-container input:invalid {
@@ -54,6 +55,7 @@
     text-align: center;
     font-size: 15px;
     color: white;
+    font-family: 'Inter';
 }
 
 .form-container button:hover {
@@ -66,12 +68,14 @@
     margin: 10px;
     color: #A97B47;
     text-decoration: none;
+    font-family: 'Inter';
 }
 
 #rtn-str {
     position: relative;
     left: 30%;
     margin: 10px;
+    font-family: 'Inter';
 }
 
 #rtn-str a {

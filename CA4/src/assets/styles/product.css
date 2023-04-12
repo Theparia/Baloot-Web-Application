@@ -22,7 +22,7 @@ main{
     background: #F7F0E9;
 }
 
-.product{
+.product-info-section{
     display: flex;
     flex-direction: row;
     justify-content: flex-start;
@@ -159,6 +159,7 @@ main{
     font-size: 16px;
     line-height: 44px;
     color: #593C1C;
+    cursor: pointer;
 }
 
 /**********************************/
@@ -324,9 +325,31 @@ main{
     font-size: 18px;
     line-height: 34px;
     text-align: center;
-    color: #F7F0E9
+    color: #F7F0E9;
+    cursor: pointer;
 }
 
 #submit-comment-section {
     padding-bottom: 0;
+}
+
+.product-container {
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+div.suggested-product {
+    margin: 0 0 5% 0;
+}
+
+.suggested-product-topic{
+    font-family: 'Inter';
+    font-style: normal;
+    font-weight: 550;
+    font-size: 25px;
+    line-height: 39px;
+    color: #593C1C;
+    padding: 2em 0 2em;
 }
