@@ -1,10 +1,7 @@
 @import "navbar.css";
 @import "normalize.css";
 @import "footer.css";
-body{
-    background: #F5F5F5;
-}
-
+@import "root.css";
 
 main{
     position: relative;
@@ -14,7 +11,7 @@ main{
 }
 
 .user-section{
-    background: #FFFFFF;
+    background: var(--white);
     box-shadow: 0px 4px 4px rgba(208, 208, 208, 0.25);
     border-radius: 15px;
 
@@ -26,7 +23,7 @@ main{
 }
 
 .info{
-    color: #593C1C;
+    color: var(--dark_theme);
     display: flex;
     flex-direction: column;
     justify-content: flex-start;
@@ -38,42 +35,38 @@ main{
 }
 
 #font{
-    font-family: 'Inter';
-    font-style: normal;
     font-weight: 600;
     font-size: 90px;
     line-height: 140px;
-    color: #593C1C;
+    color: var(--dark_theme);
 }
 
 .amount-input{
     width: 550px;
     height: 40px;
     box-sizing: border-box;
-    background: #FFFFFF;
-    border: 1px solid #919191;
+    background: var(--white);
+    border: 1px solid var(--dark-gray);
     box-shadow: 0px 4px 4px rgba(208, 208, 208, 0.25);
     border-radius: 15px;
     text-align: center;
 }
 
 .amount-input::placeholder{
-    color: #919191;
+    color: var(--dark-gray);
 }
 
 .btn-font{
-    font-family: 'Inter';
-    font-style: normal;
     font-weight: 600;
     font-size: 18px;
     line-height: 29px;
-    color: #FFFFFF;
+    color: var(--white);
 }
 
 .btn{
     width: 550px;
     height: 40px;
-    background: #593C1C;
+    background: var(--dark_theme);
     box-shadow: 0px 4px 4px rgba(208, 208, 208, 0.25);
     border-radius: 15px;
     text-align: center;
@@ -96,14 +89,11 @@ main{
 
 
 .topic-font{
-    font-family: 'Inter';
-    font-style: normal;
     font-weight: 600;
     font-size: 35px;
     line-height: 48px;
     text-align: center;
-
-    color: #593C1C;
+    color: var(--dark_theme);
 }
 
 .cart-table{
@@ -115,14 +105,12 @@ main{
 .table-row{
     width: 100%;
     height: auto;
-
-    background: #FFFFFF;
+    background: var(--white);
     box-shadow: 0px 4px 4px rgba(208, 208, 208, 0.25);
     border-radius: 15px;
     padding: 5px;
     margin-top: 15px;
     margin-bottom: 15px;
-
     display: flex;
     flex-direction: row;
     justify-content: space-between;
@@ -135,53 +123,42 @@ main{
 }
 
 .col-header-font{
-    font-family: 'Inter';
-    font-style: normal;
     font-weight: 600;
-    /*font-size: 25px;*/
     font-size: 20px;
     line-height: 34px;
-
     text-align: center;
-
-    color: #000000;
-
+    color: var(--black);
     flex: 1;
     padding: 10px;
-    /*flex-grow: 4;*/
 }
 
 .col-rating-font{
-    color: #FFC700;
+    color: var(--yellow);
 }
 
 .col-in-stock-font{
-    color: #C82525;
+    color: var(--red);
 }
 
 .col-font{
-    color: #919191;
+    color: var(--dark-gray);
 }
 
 .in-cart-btn{
-    background: #FFFFFF;
+    background: var(--white);
     height: 50px;
-    border: 1px solid #593C1C;
+    border: 1px solid var(--dark_theme);
     border-radius: 15px;
     margin: 20px;
-
     display: flex;
     flex-direction: row;
     justify-content: space-around;
     align-items: center;
-
-    font-family: 'Inter';
-    font-style: normal;
     font-weight: 400;
     font-size: 18px;
     line-height: 29px;
     text-align: center;
-    color: #000000;
+    color: var(--black);
 }
 
 .in-cart-btn a{
