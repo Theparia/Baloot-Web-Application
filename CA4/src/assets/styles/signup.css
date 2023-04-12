@@ -1,19 +1,20 @@
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@200;300;400;500;600;700;800&display=swap');
 
-
 .form-container {
-    position: absolute;
-    top: 55%;
-    left: 50%;
-    margin-right: -50%;
-    transform: translate(-50%, -50%);
+    position: relative;
     width: 20%;
+    /*left: 50%;*/
+    margin-top: 10%;
+    margin-left: 40%;
+    /*margin-bottom: 0;*/
+    /*transform: translate(-50%, -50%);*/
+
+    font-family: 'Inter';
 }
 
 .form-container h2 {
-    left: 12%;
+    left: 10%;
     position: relative;
-    font-family: 'Inter';
     font-style: normal;
     font-weight: 700;
     font-size: 31px;
@@ -22,13 +23,12 @@
 
 .form-container input {
     border: none;
-    margin: 3px;
+    margin-bottom: 20px;
     padding: 10px;
     background: #eeeeee;
     width: 100%;
     box-sizing: border-box;
     border-radius: 13px;
-    font-family: 'Inter';
     font-style: normal;
     font-weight: 300;
     font-size: 15px;
@@ -63,14 +63,13 @@
 
 #rtn-str {
     position: relative;
-    left: 25%;
-    margin: 10px;
+    left: 27%;
+    bottom: 10%;
 }
 
 #rtn-str a {
     color: #A97B47;
     text-decoration: none;
-    font-family: 'Inter';
 }
 
 #rtn-str span {
