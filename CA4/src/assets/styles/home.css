@@ -153,6 +153,10 @@ body{
     border-radius: 15px;
 }
 
+.product a{
+    cursor: pointer;
+}
+
 .product-price{
     /*height: 4em;*/
     font-family: 'Inter';
@@ -161,16 +165,14 @@ body{
     font-size: 20px;
     line-height: 29px;
     color: #593C1C;
-    /*horiz-align: center;*/
-    /*vertical-align: center;*/
-    /*padding-left: 30px;*/
-    /*display: inline;*/
+    display: flex;
+    justify-content: space-around;
 }
 
 
-.add-to-cart-button{
-    width: 6em;
-    height: 3em;
+.add-to-cart-button {
+    width: 7em;
+    height: 2.7em;
 
     background: #FFFFFF;
     border: 1px solid #593C1C;
@@ -184,7 +186,5 @@ body{
     text-align: center;
     cursor: pointer;
     color: #593C1C;
-    /*float: right;*/
-    /*margin-right: 1em;*/
-    /*margin-bottom: 1em;*/
+    margin-top: -1em;
 }
