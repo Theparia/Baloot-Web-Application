@@ -13,23 +13,22 @@
 
     display: flex;
     flex-direction: row;
-    /*justify-content: space-between;*/
     align-items: center;
 }
 
 .baloot{
     display: flex;
     flex-direction: row;
-    /*justify-content: flex-start;*/
+    justify-content: flex-start;
     align-items: center;
-    margin-left: 2%;
-    /*position: absolute;*/
+    position: relative;
+    left: 2%;
     /*left: 2%;*/
 }
 
 .baloot-icon a img{
-    width: 60px;
-    height: 60px;
+    width: 80%;
+    height: 80%;
 }
 
 .baloot-text{
@@ -47,40 +46,11 @@
     padding-right: 3px;
 }
 
-/*.baloot-icon{*/
-/*    position: absolute;*/
-/*    width: 102px;*/
-/*    height: 94px;*/
-/*    left: 1%;*/
-/*    top: 10px;*/
-
-/*    !*background: url(image.png);*!*/
-/*    border-radius: 47px;*/
-/*}*/
-
-
-/*.baloot-text{*/
-/*    position: absolute;*/
-/*    width: 183px;*/
-/*    height: 72px;*/
-/*    left: 138px;*/
-/*    top: 33px;*/
-
-/*    font-family: 'Inter';*/
-/*    font-style: normal;*/
-/*    font-weight: 600;*/
-/*    font-size: 42px;*/
-/*    line-height: 51px;*/
-/*    text-align: center;*/
-
-/*    color: #A97B47;*/
-/*}*/
-
 .username{
-    /*position: absolute;*/
+    position: relative;
     width: 127px;
     height: 34px;
-    /*left: 80%;*/
+    left: 62%;
     /*top: 38px;*/
 
     text-align: center;
@@ -89,10 +59,10 @@
 }
 
 .cart{
-    /*position: absolute;*/
+    position: relative;
     width: 100px;
     height: 50px;
-    /*left: 90%;*/
+    left: 65%;
     padding-left: 10px;
     padding-right: 10px;
     /*top: 24px;*/
@@ -128,7 +98,7 @@
 .select-option-box{
     position: absolute;
     width: 8%;
-    height: 58%;
+    height: 60%;
     left: 35%;
     top: 20%;
     background: #D8C1A8;
@@ -138,7 +108,7 @@
     font-family: 'Inter';
     font-style: normal;
     font-weight: 400;
-    font-size: 1.3em;
+    font-size: 18px;
     line-height: 29px;
     text-align: left;
     padding-left: 1%;
@@ -170,7 +140,7 @@
     font-family: 'Inter';
     font-style: normal;
     font-weight: 400;
-    font-size: 1.3em;
+    font-size: 20px;
     line-height: 29px;
     text-align: left;
     color: #919191;
@@ -196,7 +166,7 @@
     font-family: 'Inter';
     font-style: normal;
     font-weight: 600;
-    font-size: 1.2em;
+    font-size: 23px;
     text-align: center;
     color: #A97B47;
 
