@@ -20,15 +20,16 @@
 .baloot{
     display: flex;
     flex-direction: row;
-    justify-content: flex-start;
+    /*justify-content: flex-start;*/
     align-items: center;
-    position: absolute;
-    left: 2%;
+    margin-left: 2%;
+    /*position: absolute;*/
+    /*left: 2%;*/
 }
 
 .baloot-icon a img{
-    width: 80%;
-    height: 80%;
+    width: 60px;
+    height: 60px;
 }
 
 .baloot-text{
@@ -76,10 +77,10 @@
 /*}*/
 
 .username{
-    position: absolute;
+    /*position: absolute;*/
     width: 127px;
     height: 34px;
-    left: 80%;
+    /*left: 80%;*/
     /*top: 38px;*/
 
     text-align: center;
@@ -88,10 +89,10 @@
 }
 
 .cart{
-    position: absolute;
+    /*position: absolute;*/
     width: 100px;
     height: 50px;
-    left: 90%;
+    /*left: 90%;*/
     padding-left: 10px;
     padding-right: 10px;
     /*top: 24px;*/
@@ -127,7 +128,7 @@
 .select-option-box{
     position: absolute;
     width: 8%;
-    height: 60%;
+    height: 58%;
     left: 35%;
     top: 20%;
     background: #D8C1A8;
@@ -137,7 +138,7 @@
     font-family: 'Inter';
     font-style: normal;
     font-weight: 400;
-    font-size: 18px;
+    font-size: 1.3em;
     line-height: 29px;
     text-align: left;
     padding-left: 1%;
@@ -169,7 +170,7 @@
     font-family: 'Inter';
     font-style: normal;
     font-weight: 400;
-    font-size: 20px;
+    font-size: 1.3em;
     line-height: 29px;
     text-align: left;
     color: #919191;
@@ -195,7 +196,7 @@
     font-family: 'Inter';
     font-style: normal;
     font-weight: 600;
-    font-size: 23px;
+    font-size: 1.2em;
     text-align: center;
     color: #A97B47;
 

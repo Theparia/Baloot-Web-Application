@@ -337,11 +337,11 @@ main{
     display: flex;
     flex-wrap: wrap;
     flex-direction: row;
-    justify-content: space-between;
+    justify-content: flex-start;
 }
 
 div.suggested-product {
-    margin: 0 0 5% 0;
+    margin: 0 0 8% 1%;
 }
 
 .suggested-product-topic{
