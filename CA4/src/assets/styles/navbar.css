@@ -142,6 +142,7 @@
     text-align: left;
     padding-left: 1%;
     color: #593C1C;
+    border: none;
 }
 
 .select-option-box option{ /*TODO: border-radius does not work in the dropdown options*/
@@ -174,6 +175,7 @@
     color: #919191;
     caret-color: #919191;
     text-decoration: none;
+    border: none;
 }
 
 .glass-pic{
@@ -199,7 +201,7 @@
 
     background: #F7F0E9;
     border-radius: 15px;
-
+    border: none;
     cursor: pointer;
 }
 

@@ -32,6 +32,8 @@
         </div>
     </nav>
 </header>
+
+
 <main>
     <div class="product">
         <div class="product-img">
@@ -103,11 +105,78 @@
             </div>
         </div>
     </div>
-</main>
-<footer class="f">
+
     <div>
-        This is the footer content
+        <div class="comment-section-title comment-section-title-font">
+            Comments &nbsp;
+            <div class="comment-count">
+                (<span>2</span>)
+            </div>
+        </div>
+        <div class="cart-table">
+            <div class="comment-row">
+                <div class="comment-text">
+                    This was awesome!!!
+                </div>
+                <div class="comment-details">
+                    <span>2023-03-20</span>&emsp;&emsp;&#x2022;&emsp;&emsp;#<span>username</span>
+                </div>
+                <div class="comment-voting">
+                    Is this comment helpful?
+                    &nbsp;
+                    <span class="vote-count-text">1</span>
+                    <a href="">
+                        <img src="../assets/images/thumbsUp.png" alt="thumbsUp img">
+                    </a>
+                    &nbsp;
+                    <span class="vote-count-text">1</span>
+                    <a href="">
+                        <img src="../assets/images/thumbsDown.png" alt="thumbsDown img">
+                    </a>
+                </div>
+            </div>
+            <div class="comment-row">
+                <div class="comment-text">
+                    This was awfulllllllllllllllllll!!!!
+                </div>
+                <div class="comment-details">
+                    <span>2023-03-20</span>&emsp;&emsp;&#x2022;&emsp;&emsp;#<span>username</span>
+                </div>
+                <div class="comment-voting">
+                    Is this comment helpful?
+                    &nbsp;
+                    <span class="vote-count-text">1</span>
+                    <a href="">
+                        <img src="../assets/images/thumbsUp.png" alt="thumbsUp img">
+                    </a>
+                    &nbsp;
+                    <span class="vote-count-text">1</span>
+                    <a href="">
+                        <img src="../assets/images/thumbsDown.png" alt="thumbsDown img">
+                    </a>
+                </div>
+            </div>
+            <div class="comment-row" id="submit-comment-section">
+                <div class="comment-section-title-font">
+                    Submit your opinion
+                </div>
+                <div class="submit-comment-form">
+                    <form action="/submit-comment" method="POST">
+                        <textarea name="comment"></textarea>
+                        <button type="submit">Post</button>
+                    </form>
+                </div>
+            </div>
+        </div>
     </div>
-</footer>
+
+
+</main>
+
+<!--<footer class="f">-->
+<!--    <div>-->
+<!--        This is the footer content-->
+<!--    </div>-->
+<!--</footer>-->
 </body>
 </html>
