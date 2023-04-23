@@ -8,5 +8,14 @@ Baloot is a system for purchasing required supplies. In this system, the user ca
 * Maven
 * Unit Testing
 ## CA2
+* Simple Web Server
+* Javalin
+* Jsoup
 ## CA3
+* Tomcat
+* Servlet
+* JSP
+* MVC
 ## CA4
+* html
+* CSS
