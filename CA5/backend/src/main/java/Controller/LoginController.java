@@ -1,31 +1,21 @@
 package Controller;
 
-import Service.Baloot;
 
-import javax.servlet.ServletException;
-import javax.servlet.annotation.WebServlet;
-import javax.servlet.http.HttpServlet;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
-@WebServlet("/login")
-public class LoginController extends HttpServlet {
-    @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        request.getRequestDispatcher("View/login.jsp").forward(request, response);
+//@CrossOrigin(origins = "http://localhost:8080")
+//@CrossOrigin(origins = "http://localhost:3000")
+@RestController
+@RequestMapping("/x")
+public class LoginController {
+
+
+//    @ResponseStatus(value = HttpStatus.OK)
+    @GetMapping
+    public String getUsers() {
+        return "1234";
     }
 
-    @Override
-    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException{
-        String username = request.getParameter("username");
-        String password = request.getParameter("password");
-        try{
-            Baloot.getInstance().login(username, password);
-            response.sendRedirect("/");
-        } catch (Exception e){
-            request.setAttribute("errorMessage", e.getMessage());
-            request.getRequestDispatcher("View/error.jsp").forward(request, response);
-        }
-    }
 }
