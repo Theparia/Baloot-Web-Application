@@ -1,21 +1,21 @@
 package Controller;
 
-
-import org.springframework.http.HttpStatus;
+import Domain.User;
+import Service.Baloot;
+import Service.Exceptions.InvalidCredentials;
+import Service.Exceptions.UserNotFound;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-//@CrossOrigin(origins = "http://localhost:8080")
+import java.util.Map;
+
 //@CrossOrigin(origins = "http://localhost:3000")
 @RestController
-@RequestMapping("/x")
+@RequestMapping
 public class LoginController {
-
-
-//    @ResponseStatus(value = HttpStatus.OK)
-    @GetMapping
-    public String getUsers() {
-        return "1234";
+    @RequestMapping(value = "/login", method = RequestMethod.POST)
+    protected ResponseEntity<User> login(@RequestBody Map<String, String> info) throws UserNotFound, InvalidCredentials {
+        Baloot.getInstance().login(info.get("username"), info.get("password"));
+        return ResponseEntity.ok(Baloot.getInstance().findUserByUsername(info.get("username")));
     }
-
 }
