@@ -16,9 +16,5 @@ import java.util.Map;
 @RestController
 @RequestMapping
 public class MovieController {
-    @RequestMapping(value = "/", method = RequestMethod.POST)
-    protected ResponseEntity<User> login(@RequestBody Map<String, String> info) throws UserNotFound, InvalidCredentials {
-        Baloot.getInstance().login(info.get("username"), info.get("password"));
-        return ResponseEntity.ok(Baloot.getInstance().findUserByUsername(info.get("username")));
-    }
+
 }
