@@ -9,20 +9,21 @@ function Login() {
     // const [user, setUser] = useState({});
 
 
-    function handleLogin() {
+    function handleLogin(e) {
+        e.preventDefault();
         console.log("handle loginnnn");
         const user = { "username" :  username, "password" :  password};
         console.log(user);
         getLoggedInUser(user)
             .then(response => {
-            // if(response.status === 200) {
+            if(response.status === 200) {
                 console.log(response.data.username);
                 console.log(response.data.password);
                 // window.location.replace("/")
-            // }
-            // else {
-            //     alert("نام کاربری یا رمز عبور اشتباه است. دوباره تلاش کنید!")
-            // }
+            }
+            else {
+                alert("نام کاربری یا رمز عبور اشتباه است. دوباره تلاش کنید!")
+            }
 
         })
     }
