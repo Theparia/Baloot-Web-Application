@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
-import {getLoggedInUser} from "../../apis/loginRequest.js";
+import {login} from "../../apis/AuthRequest.js";
 import "./Login.css"
 
-function Login() {
+const Login = () => {
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
 
@@ -11,21 +11,19 @@ function Login() {
 
     function handleLogin(e) {
         e.preventDefault();
-        console.log("handle loginnnn");
         const user = { "username" :  username, "password" :  password};
-        console.log(user);
-        getLoggedInUser(user)
+        login(user)
             .then(response => {
+                console.log("Statussss " + response.status);
             if(response.status === 200) {
-                console.log(response.data.username);
-                console.log(response.data.password);
-                // window.location.replace("/")
+                console.log("handle Login: " + response.data);
+                // window.location.replace("/");
             }
             else {
                 alert("نام کاربری یا رمز عبور اشتباه است. دوباره تلاش کنید!")
             }
 
-        })
+        }).catch((error) => console.log(error))
     }
     //
     // const eee = {

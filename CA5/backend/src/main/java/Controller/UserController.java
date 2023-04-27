@@ -3,16 +3,23 @@ package Controller;
 import Database.Database;
 import Domain.User;
 import Service.Baloot;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-
+@CrossOrigin(origins = "http://localhost:3000")
 @RestController
-@RequestMapping("/users")
+@RequestMapping
 public class UserController {
-    @GetMapping("")
-    public ResponseEntity<List<User>> getUsers() {
-        return ResponseEntity.ok(Database.getInstance().getUsers());
+    @RequestMapping(value = "/users/{username}", method = RequestMethod.GET)
+    public ResponseEntity<User> getUser(@PathVariable String username) {
+        try {
+            User user = Baloot.getInstance().findUserByUsername(username);
+            return ResponseEntity.ok(user);
+        } catch (Exception e){
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).body(null);
+        }
     }
+
 }

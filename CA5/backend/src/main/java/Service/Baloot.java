@@ -12,6 +12,7 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 @Getter
@@ -41,7 +42,7 @@ public class Baloot {
     }
     public void importDatabase() throws Exception {
         final String USERS_URI = "http://5.253.25.110:5000/api/users";
-        final String COMMODITIES_URI = "http://5.253.25.110:5000/api/commodities";
+        final String COMMODITIES_URI = "http://5.253.25.110:5000/api/v2/commodities";
         final String PROVIDERS_URI = "http://5.253.25.110:5000/api/providers";
         final String COMMENTS_URI = "http://5.253.25.110:5000/api/comments";
         final String DISCOUNT_URI = "http://5.253.25.110:5000/api/discount";
@@ -49,20 +50,22 @@ public class Baloot {
         ObjectMapper objectMapper = new ObjectMapper();
         TypeFactory typeFactory = objectMapper.getTypeFactory();
 
-        List<User> users = objectMapper.readValue(HTTPRequestHandler.getRequest(USERS_URI), typeFactory.constructCollectionType(List.class, User.class));
+        List <User> users = new ArrayList<>();
+        users.add(new User("paria", "1234", "@", "2000-01-01", "tehran", 100));
+//        List<User> users = objectMapper.readValue(HTTPRequestHandler.getRequest(USERS_URI), typeFactory.constructCollectionType(List.class, User.class));
         Database.getInstance().setUsers(users);
 
-        List<Commodity> commodities = objectMapper.readValue(HTTPRequestHandler.getRequest(COMMODITIES_URI), typeFactory.constructCollectionType(List.class, Commodity.class));
-        Database.getInstance().setCommodities(commodities);
-
-        List<Provider> providers = objectMapper.readValue(HTTPRequestHandler.getRequest(PROVIDERS_URI), typeFactory.constructCollectionType(List.class, Provider.class));
-        Database.getInstance().setProviders(providers);
-
-        List<Comment> comments = objectMapper.readValue(HTTPRequestHandler.getRequest(COMMENTS_URI), typeFactory.constructCollectionType(List.class, Comment.class));
-        Database.getInstance().setComments(comments);
-
-        List<Discount> discounts = objectMapper.readValue(HTTPRequestHandler.getRequest(DISCOUNT_URI), typeFactory.constructCollectionType(List.class, Discount.class));
-        Database.getInstance().setDiscounts(discounts);
+//        List<Commodity> commodities = objectMapper.readValue(HTTPRequestHandler.getRequest(COMMODITIES_URI), typeFactory.constructCollectionType(List.class, Commodity.class));
+//        Database.getInstance().setCommodities(commodities);
+//
+//        List<Provider> providers = objectMapper.readValue(HTTPRequestHandler.getRequest(PROVIDERS_URI), typeFactory.constructCollectionType(List.class, Provider.class));
+//        Database.getInstance().setProviders(providers);
+//
+//        List<Comment> comments = objectMapper.readValue(HTTPRequestHandler.getRequest(COMMENTS_URI), typeFactory.constructCollectionType(List.class, Comment.class));
+//        Database.getInstance().setComments(comments);
+//
+//        List<Discount> discounts = objectMapper.readValue(HTTPRequestHandler.getRequest(DISCOUNT_URI), typeFactory.constructCollectionType(List.class, Discount.class));
+//        Database.getInstance().setDiscounts(discounts);
     }
 
     public boolean isUserLoggedIn() {
@@ -185,7 +188,7 @@ public class Baloot {
 
     public void finalizePayment(String userId) throws UserNotFound, CommodityOutOfStock, NotEnoughCredit {
         User user = findUserByUsername(userId);
-        List<Commodity> buyListCommodities = user.getBuyList();
+        Set<Commodity> buyListCommodities = user.getBuyList().keySet();
         for (Commodity commodity : buyListCommodities){
             commodity.checkInStock();
         }

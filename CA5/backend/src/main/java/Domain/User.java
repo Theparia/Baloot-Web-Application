@@ -8,6 +8,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 
@@ -23,8 +24,8 @@ public class User {
     private String birthDate;
     private String address;
     private float credit;
-    private List<Commodity> buyList = new ArrayList<>();
-    private List<Commodity> purchasedList = new ArrayList<>();
+    private HashMap<Commodity, Integer> buyList = new HashMap<>();
+    private HashMap<Commodity, Integer> purchasedList = new HashMap<>();
     private List<Discount> usedDiscounts = new ArrayList<>();
     private Discount currentDiscount = null;
     public User(String username, String password, String email, String birthDate, String address, float credit) {
@@ -34,7 +35,6 @@ public class User {
         this.birthDate = birthDate;
         this.address = address;
         this.credit = credit;
-        this.buyList = new ArrayList<>();
         this.usedDiscounts = new ArrayList<>();
         this.currentDiscount = null;
     }
@@ -56,9 +56,11 @@ public class User {
 
     public float getCurrentBuyListPrice(){
         float totalPrice = 0;
-        for (Commodity commodity: this.buyList){
-            totalPrice += commodity.getPrice();
+
+        for (var entry : this.buyList.entrySet()) {
+            totalPrice += entry.getValue() * entry.getKey().getPrice();
         }
+
         if (this.currentDiscount == null) return totalPrice;
         return totalPrice * (100 - this.currentDiscount.getDiscount()) / 100;
     }
@@ -85,7 +87,7 @@ public class User {
     }
 
     public void resetBuyList(){
-        this.buyList = new ArrayList<>();
+        this.buyList = new HashMap<>();
     }
 
     public void reduceCredit(float amount) throws NotEnoughCredit {
@@ -95,36 +97,36 @@ public class User {
         this.credit -= amount;
     }
 
-    public Commodity findCommodity(Commodity commodity){
-        for (Commodity commodity1: buyList){
-            if(commodity1.isEqual(commodity.getId())){
-                return commodity1;
-            }
-        }
-        return null;
-    }
-
-    public void addToBuyList(Commodity commodity) throws CommodityAlreadyExistsInBuyList {
-        if(findCommodity(commodity) != null){
-            throw new CommodityAlreadyExistsInBuyList();
-        }
-        this.buyList.add(commodity);
+    public void addToBuyList(Commodity commodity) {
+        if(buyList.containsKey(commodity))
+            buyList.replace(commodity, buyList.get(commodity) + 1);
+        else
+            buyList.put(commodity, 1);
     }
 
     public void addToPurchasedList(Commodity commodity) {
-        this.purchasedList.add(commodity);
+        if(purchasedList.containsKey(commodity))
+            purchasedList.replace(commodity, buyList.get(commodity) + purchasedList.get(commodity));
+        else
+            purchasedList.put(commodity, buyList.get(commodity));
     }
 
     public void removeFromBuyList(Commodity commodity) throws CommodityNotInBuyList {
-        if(findCommodity(commodity) == null){
+        if(!buyList.containsKey(commodity))
             throw new CommodityNotInBuyList();
-        }
-        this.buyList.remove(commodity);
+        if(buyList.get(commodity) == 1)
+            buyList.remove(commodity);
+        else
+            buyList.replace(commodity, buyList.get(commodity) - 1);
     }
 
     public void addCredit(float creditToBeAdded) throws NegativeCredit {
         if(creditToBeAdded <= 0)
             throw new NegativeCredit();
         credit += creditToBeAdded;
+    }
+
+    public int getNumberOfBuyListItems(){
+        return buyList.size();
     }
 }

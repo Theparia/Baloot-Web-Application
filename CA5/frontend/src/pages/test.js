@@ -1,4 +1,4 @@
-import {getLoggedInUser} from "../apis/loginRequest.js";
+import {getLoggedInUser} from "../apis/AuthRequest.js";
 
 const eee = {
     "username" :  "amir",
