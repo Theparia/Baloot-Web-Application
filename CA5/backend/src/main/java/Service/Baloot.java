@@ -36,6 +36,9 @@ public class Baloot {
         }
         return instance;
     }
+    public List<Commodity> getCommodities(){
+        return Database.getInstance().getCommodities();
+    }
     public void importDatabase() throws Exception {
         final String USERS_URI = "http://5.253.25.110:5000/api/users";
         final String COMMODITIES_URI = "http://5.253.25.110:5000/api/commodities";
@@ -122,7 +125,6 @@ public class Baloot {
         }
         throw new CommodityNotFound();
     }
-
 
     public List<Commodity> searchCommoditiesByName(String name, List<Commodity> commodities) {
         return commodities.stream()
