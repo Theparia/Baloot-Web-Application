@@ -26,6 +26,7 @@ public class Baloot {
     private Baloot(){
         try {
             importDatabase();
+            printData();
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }
@@ -50,19 +51,19 @@ public class Baloot {
         ObjectMapper objectMapper = new ObjectMapper();
         TypeFactory typeFactory = objectMapper.getTypeFactory();
 
-        List <User> users = new ArrayList<>();
-        users.add(new User("paria", "1234", "@", "2000-01-01", "tehran", 100));
-//        List<User> users = objectMapper.readValue(HTTPRequestHandler.getRequest(USERS_URI), typeFactory.constructCollectionType(List.class, User.class));
+//        List <User> users = new ArrayList<>();
+//        users.add(new User("paria", "1234", "@", "2000-01-01", "tehran", 100));
+        List<User> users = objectMapper.readValue(HTTPRequestHandler.getRequest(USERS_URI), typeFactory.constructCollectionType(List.class, User.class));
         Database.getInstance().setUsers(users);
 
-//        List<Commodity> commodities = objectMapper.readValue(HTTPRequestHandler.getRequest(COMMODITIES_URI), typeFactory.constructCollectionType(List.class, Commodity.class));
-//        Database.getInstance().setCommodities(commodities);
-//
-//        List<Provider> providers = objectMapper.readValue(HTTPRequestHandler.getRequest(PROVIDERS_URI), typeFactory.constructCollectionType(List.class, Provider.class));
-//        Database.getInstance().setProviders(providers);
-//
-//        List<Comment> comments = objectMapper.readValue(HTTPRequestHandler.getRequest(COMMENTS_URI), typeFactory.constructCollectionType(List.class, Comment.class));
-//        Database.getInstance().setComments(comments);
+        List<Commodity> commodities = objectMapper.readValue(HTTPRequestHandler.getRequest(COMMODITIES_URI), typeFactory.constructCollectionType(List.class, Commodity.class));
+        Database.getInstance().setCommodities(commodities);
+
+        List<Provider> providers = objectMapper.readValue(HTTPRequestHandler.getRequest(PROVIDERS_URI), typeFactory.constructCollectionType(List.class, Provider.class));
+        Database.getInstance().setProviders(providers);
+
+        List<Comment> comments = objectMapper.readValue(HTTPRequestHandler.getRequest(COMMENTS_URI), typeFactory.constructCollectionType(List.class, Comment.class));
+        Database.getInstance().setComments(comments);
 //
 //        List<Discount> discounts = objectMapper.readValue(HTTPRequestHandler.getRequest(DISCOUNT_URI), typeFactory.constructCollectionType(List.class, Discount.class));
 //        Database.getInstance().setDiscounts(discounts);

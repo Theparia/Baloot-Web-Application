@@ -18,7 +18,6 @@ import java.util.List;
 @NoArgsConstructor
 
 public class Commodity {
-    //@Id
     private Integer id;
     private String name; //unique validation + handling !@#
     private Integer providerId;
@@ -28,11 +27,12 @@ public class Commodity {
     private HashMap<String, Float> usersRating = new HashMap<>();
     private Float rating;
     private int inStock;
+    String image;
 
     @JsonCreator
     public Commodity(@JsonProperty("id") Integer id, @JsonProperty("name") String name, @JsonProperty("providerId")  Integer providerId,
                      @JsonProperty("price")  Float price, @JsonProperty("categories")  List<String> categories,
-                     @JsonProperty("rating")  Float rating, @JsonProperty("inStock")  int inStock) {
+                     @JsonProperty("rating")  Float rating, @JsonProperty("inStock")  int inStock, @JsonProperty("image") String image) {
         this.id = id;
         this.name = name;
         this.providerId = providerId;
@@ -41,6 +41,7 @@ public class Commodity {
         this.rating = rating;
         this.inStock = inStock;
         this.usersRating.put("#initialRating#", rating);
+        this.image = image;
     }
 
     public void checkInStock() throws CommodityOutOfStock {

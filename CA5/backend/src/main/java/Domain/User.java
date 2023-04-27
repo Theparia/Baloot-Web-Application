@@ -3,6 +3,7 @@ package Domain;
 
 import Service.Exceptions.*;
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -24,9 +25,13 @@ public class User {
     private String birthDate;
     private String address;
     private float credit;
+    @JsonIgnore
     private HashMap<Commodity, Integer> buyList = new HashMap<>();
+    @JsonIgnore
     private HashMap<Commodity, Integer> purchasedList = new HashMap<>();
+    @JsonIgnore
     private List<Discount> usedDiscounts = new ArrayList<>();
+    @JsonIgnore
     private Discount currentDiscount = null;
     public User(String username, String password, String email, String birthDate, String address, float credit) {
         this.username = username;
@@ -35,8 +40,6 @@ public class User {
         this.birthDate = birthDate;
         this.address = address;
         this.credit = credit;
-        this.usedDiscounts = new ArrayList<>();
-        this.currentDiscount = null;
     }
 
     public boolean isEqual(String username) {
