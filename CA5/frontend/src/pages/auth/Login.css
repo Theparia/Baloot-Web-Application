@@ -4,13 +4,14 @@
     margin-bottom: 14%;
 }
 
-.form-container h2 {
-    left: 50%;
+#login-title{
+    left: 32%;
     position: relative;
     font-weight: 700;
     font-size: 31px;
     color: var(--medium_theme);
 }
+
 
 #frgt-psw a {
     position: relative;
