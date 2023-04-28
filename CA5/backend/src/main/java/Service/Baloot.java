@@ -51,8 +51,6 @@ public class Baloot {
         ObjectMapper objectMapper = new ObjectMapper();
         TypeFactory typeFactory = objectMapper.getTypeFactory();
 
-//        List <User> users = new ArrayList<>();
-//        users.add(new User("paria", "1234", "@", "2000-01-01", "tehran", 100));
         List<User> users = objectMapper.readValue(HTTPRequestHandler.getRequest(USERS_URI), typeFactory.constructCollectionType(List.class, User.class));
         Database.getInstance().setUsers(users);
 
@@ -112,13 +110,13 @@ public class Baloot {
          Database.getInstance().addProvider(newProvider);
      }
 
-     public Provider findProviderById(Integer providerId) throws ProviderNotFound {
+     public Provider findProviderById(Integer providerId) {
         for (Provider provider : Database.getInstance().getProviders()){
             if(provider.isEqual(providerId)){
                 return provider;
             }
         }
-        throw new ProviderNotFound();
+        return null;
      }
 
     public Commodity findCommodityById(Integer commodityId) throws CommodityNotFound {
@@ -139,6 +137,12 @@ public class Baloot {
     public List<Commodity> searchCommoditiesByCategory(String category) {
         return Database.getInstance().getCommodities().stream()
                 .filter(commodity -> commodity.getCategories().contains(category))
+                .collect(Collectors.toList());
+    }
+
+    public List<Commodity> searchCommoditiesByProviderName(String name) {
+        return Database.getInstance().getCommodities().stream()
+                .filter(commodity -> findProviderById(commodity.getProviderId()).getName().toLowerCase().contains(name.toLowerCase()))
                 .collect(Collectors.toList());
     }
 

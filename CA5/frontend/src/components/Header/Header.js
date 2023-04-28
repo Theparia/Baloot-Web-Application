@@ -1,5 +1,6 @@
-import React, { useState } from 'react';
+import React, {useEffect, useState} from 'react';
 import './Header.css';
+import {getBuyList} from "../../apis/UserRequest.js";
 
 const BalootLogo = () => {
     return (
@@ -24,6 +25,28 @@ const Username = ({username}) => {
     )
 }
 
+const CartButton = ({username}) => {
+    const [itemCount, setItemCount] = useState(0);
+    useEffect(() => { // TODO: hook other than useEffect?
+        getBuyList(username).then(response => {
+                setItemCount(Object.keys(response.data).length)
+            }
+        )
+    }, []);
+
+    return (
+        <a className={`cart ${itemCount > 0 ? 'cart-on' : 'cart-off'} font`} href={"/users/" + username}>
+            <div>
+                <div>
+                    Cart
+                </div>
+                <div>
+                    {itemCount}
+                </div>
+            </div>
+        </a>
+    )
+}
 
 
 const CommoditiesSearchFrom = ({searchFunc}) => {
@@ -42,23 +65,32 @@ const CommoditiesSearchFrom = ({searchFunc}) => {
             <select className="select-option-box mr-auto" onChange={(event) => {setSearchMethod(event.target.value)}} name="select_option">
                 <option value="name">name</option>
                 <option value="category">category</option>
+                <option value="provider">provider</option>
             </select>
             <input className="glass-pic mr-auto" type="image" src="/images/searchGlass.png" alt="Submit" value="submit" onClick={(e) => performSearch(e)} />
         </form>
     )
 }
 
+const RegisterLoginButtons = () => {
+    return (
+        <div>
+            <button className="register customized-navbar-button m-4" onClick={() => window.location.replace("/signup")}>Register</button>
+            <button className="login customized-navbar-button m-4" onClick={() => window.location.replace("/login")}>Login</button>
+        </div>
+
+    )
+}
 
 const Header = (props) => {
-
-    const username = sessionStorage.getItem('username');
-
     return(
         <header>
             <nav className="navbar">
                 <BalootLogo />
-                {username!=null && <Username username={username}/>}
+                {props.username!=null && <Username username={props.username}/>}
                 {props.searchBar && <CommoditiesSearchFrom searchFunc={props.searchFunc}/>}
+                {props.username!=null && <CartButton username={props.username}/>}
+                {props.username==null && <RegisterLoginButtons/>}
             </nav>
         </header>
     )

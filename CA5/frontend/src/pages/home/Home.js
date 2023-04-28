@@ -38,7 +38,7 @@ const Home = ({}) => {
 
     return(
         <div>
-            <Header searchBar={true} searchFunc={search} />
+            <Header searchBar={true} searchFunc={search} username={sessionStorage.getItem('username')} />
             <p></p>
         </div>
     )

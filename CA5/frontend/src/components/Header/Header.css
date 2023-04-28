@@ -45,10 +45,11 @@
     position: relative;
     width: 127px;
     height: 34px;
-    left: 62%;
+    left: 65%;
     text-align: center;
     color: var(--dark_theme);
 }
+
 
 .cart{
     position: relative;
@@ -59,18 +60,30 @@
     padding-right: 10px;
     /*top: 24px;*/
 
-    background: var(--dark_theme);
+
     mix-blend-mode: normal;
     border-radius: 12px;
+    text-decoration: none;
+}
 
+.cart div {
     text-align: center;
-
-    color: var(--white);
-
+    padding-top: 3px;
     display: flex;
     flex-direction: row;
     justify-content: space-between;
     align-items: center;
+}
+
+.cart-on{
+    background: var(--dark_theme);
+    color: var(--white);
+}
+
+.cart-off{
+    background-color: var(--light_theme);
+    color: var(--dark_theme);
+
 }
 
 .font{

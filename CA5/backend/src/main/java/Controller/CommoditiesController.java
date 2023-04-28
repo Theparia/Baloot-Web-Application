@@ -29,8 +29,10 @@ public class CommoditiesController {
             return ResponseEntity.ok(Baloot.getInstance().searchCommoditiesByName(searched_txt));
         }
         else if(search_method.equals("category")) {
-            System.out.println("sizzzzzzzzzzzzzzze:" + Baloot.getInstance().searchCommoditiesByCategory(searched_txt).size());
-            return new ResponseEntity<>(Baloot.getInstance().searchCommoditiesByCategory(searched_txt), HttpStatus.OK);
+            return ResponseEntity.ok(Baloot.getInstance().searchCommoditiesByCategory(searched_txt));
+        }
+        else if(search_method.equals("provider")){
+            return ResponseEntity.ok(Baloot.getInstance().searchCommoditiesByProviderName(searched_txt));
         }
         else{
             return ResponseEntity.ok(Baloot.getInstance().getCommodities());
