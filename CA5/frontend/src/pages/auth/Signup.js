@@ -1,6 +1,5 @@
 import React, {useState} from 'react';
-import {login, signup} from "../../apis/AuthRequest.js";
-import "./Login.css"
+import {signup} from "../../apis/AuthRequest.js";
 import "./Signup.css"
 import Header from "../../components/Header/Header.js";
 

@@ -1,6 +1,7 @@
 import React, {useState} from 'react';
 import "./Login.css"
 import Header from "../../components/Header/Header.js";
+import {login} from "../../apis/AuthRequest.js";
 
 const Login = () => {
     const [username, setUsername] = useState("");
@@ -10,7 +11,7 @@ const Login = () => {
     function handleLogin(e) {
         e.preventDefault();
         const user = {"username": username, "password": password};
-        (user)
+        login(user)
             .then(response => {
                 sessionStorage.setItem('username', username);
                 console.log("handle Login: " + response.data);

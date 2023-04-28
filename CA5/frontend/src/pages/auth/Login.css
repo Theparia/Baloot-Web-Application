@@ -1,9 +1,11 @@
+@import "./LoginForm.css";
+
 .form-container {
     margin-bottom: 14%;
 }
 
 .form-container h2 {
-    left: 32%;
+    left: 50%;
     position: relative;
     font-weight: 700;
     font-size: 31px;
