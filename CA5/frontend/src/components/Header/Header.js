@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import './Header.css';
-import user from "../../pages/user/User.js";
 
 const BalootLogo = () => {
     return (
@@ -24,13 +23,42 @@ const Username = ({username}) => {
         </div>
     )
 }
-const Header = ({searchBar, username}) => {
+
+
+
+const CommoditiesSearchFrom = ({searchFunc}) => {
+    const [searchMethod, setSearchMethod] = useState("name");
+    const [searchedText, setSearchedText] = useState("");
+
+    function performSearch(e) {
+        e.preventDefault();
+        searchFunc(searchMethod, searchedText);
+        setSearchedText("");
+    }
+
+    return (
+        <form className="customized-search-form m-3">
+            <input className="customized-search-box mr-auto" type="text" value={searchedText} name="search_query" placeholder="search your product ..." onChange={(event) => {setSearchedText(event.target.value)}} />
+            <select className="select-option-box mr-auto" onChange={(event) => {setSearchMethod(event.target.value)}} name="select_option">
+                <option value="name">name</option>
+                <option value="category">category</option>
+            </select>
+            <input className="glass-pic mr-auto" type="image" src="/images/searchGlass.png" alt="Submit" value="submit" onClick={(e) => performSearch(e)} />
+        </form>
+    )
+}
+
+
+const Header = (props) => {
+
+    const username = sessionStorage.getItem('username');
 
     return(
         <header>
             <nav className="navbar">
                 <BalootLogo />
-                <Username username={username}/>
+                {username!=null && <Username username={username}/>}
+                {props.searchBar && <CommoditiesSearchFrom searchFunc={props.searchFunc}/>}
             </nav>
         </header>
     )

@@ -1,27 +1,41 @@
-//package Controller;
-//
-//import Domain.Commodity;
-//import Service.Baloot;
-//import org.springframework.web.bind.annotation.RequestMapping;
-//import org.springframework.web.bind.annotation.RequestMethod;
-//import org.springframework.web.bind.annotation.RequestParam;
-//import org.springframework.web.bind.annotation.RestController;
-//
-//import java.util.ArrayList;
-//import java.util.List;
-//
-//@RestController
-//@RequestMapping
-//public class CommoditiesController {
-//    @RequestMapping(value = "/commodities", method = RequestMethod.GET)
-//    protected List<Commodity> getCommodities() {
-//        return Baloot.getInstance().getCommodities();
-//    }
-//
-////    @RequestMapping(value = "/commodities/sort",method = RequestMethod.GET)
-////    public List<Commodity> searchMovies(@RequestParam("select_option") String select_option, @RequestParam(value = "sort_option", required = false) String search_method,
-////            @RequestParam(value = "searchedTxt", required = false) String searched_txt){
-////        List<Commodity> commodities = new ArrayList<>();
-////    }
-//
-//}
+package Controller;
+
+import Domain.Comment;
+import Domain.Commodity;
+import Service.Baloot;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+
+@CrossOrigin(origins = "http://localhost:3000")
+@RestController
+@RequestMapping
+public class CommoditiesController {
+    @RequestMapping(value = "/commodities", method = RequestMethod.GET)
+    protected List<Commodity> getCommodities() {
+        return Baloot.getInstance().getCommodities();
+    }
+
+    @RequestMapping(value = "commodities/search", method = RequestMethod.GET)
+    protected ResponseEntity<List<Commodity>> searchCommodities(
+            @RequestParam(value = "searchMethod", required = false) String search_method,
+            @RequestParam(value = "searchedTxt", required = false) String searched_txt
+    ){
+        System.out.println("Search method: " + search_method);
+        System.out.println("Search text: " + searched_txt);
+        if(search_method.equals("name")) {
+            return ResponseEntity.ok(Baloot.getInstance().searchCommoditiesByName(searched_txt));
+        }
+        else if(search_method.equals("category")) {
+            System.out.println("sizzzzzzzzzzzzzzze:" + Baloot.getInstance().searchCommoditiesByCategory(searched_txt).size());
+            return new ResponseEntity<>(Baloot.getInstance().searchCommoditiesByCategory(searched_txt), HttpStatus.OK);
+        }
+        else{
+            return ResponseEntity.ok(Baloot.getInstance().getCommodities());
+        }
+    }
+
+
+}

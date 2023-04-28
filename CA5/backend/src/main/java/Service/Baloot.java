@@ -5,6 +5,7 @@ import Domain.*;
 import Service.Exceptions.*;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.type.TypeFactory;
+import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 import HTTPRequestHandler.HTTPRequestHandler;
@@ -26,7 +27,6 @@ public class Baloot {
     private Baloot(){
         try {
             importDatabase();
-            printData();
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }
@@ -130,14 +130,14 @@ public class Baloot {
         throw new CommodityNotFound();
     }
 
-    public List<Commodity> searchCommoditiesByName(String name, List<Commodity> commodities) {
-        return commodities.stream()
+    public List<Commodity> searchCommoditiesByName(String name) {
+        return Database.getInstance().getCommodities().stream()
                 .filter(commodity -> commodity.getName().toLowerCase().contains(name.toLowerCase()))
                 .collect(Collectors.toList());
     }
 
-    public List<Commodity> searchCommoditiesByCategory(String category, List<Commodity> commodities) {
-        return commodities.stream()
+    public List<Commodity> searchCommoditiesByCategory(String category) {
+        return Database.getInstance().getCommodities().stream()
                 .filter(commodity -> commodity.getCategories().contains(category))
                 .collect(Collectors.toList());
     }

@@ -4,6 +4,9 @@ import {useParams} from "react-router-dom";
 
 const User = () => {
     const {username} = useParams();
+    if(username !== sessionStorage.getItem('username')){
+        alert("You don't have access")
+    }
     return(
         <div>
             <Header searchBar={false} username={username}/>

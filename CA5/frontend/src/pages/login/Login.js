@@ -6,44 +6,17 @@ const Login = () => {
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
 
-    // const [user, setUser] = useState({});
-
 
     function handleLogin(e) {
         e.preventDefault();
         const user = { "username" :  username, "password" :  password};
         login(user)
             .then(response => {
-                console.log("Statussss " + response.status);
-            if(response.status === 200) {
-                console.log("handle Login: " + response.data);
-                // window.location.replace("/");
-            }
-            else {
-                alert("نام کاربری یا رمز عبور اشتباه است. دوباره تلاش کنید!")
-            }
-
-        }).catch((error) => console.log(error))
+                sessionStorage.setItem('username', username);
+            console.log("handle Login: " + response.data);
+            window.location.replace("/");
+        }).catch((error) => alert(error.response.data))
     }
-    //
-    // const eee = {
-    //     "username" :  "amir",
-    //     "password" :  "1234"
-    // }
-    // //
-    // getLoggedInUser(eee)
-    //     .then(response => {
-    //         console.log(response.data.username);
-    //         setUser(response.data);
-    //     })
-    //     .catch(error => console.error(error));
-
-
-    // return (
-    //     <div>
-    //         usernameeee: {user.username}
-    //     </div>
-    // );
 
     return (
         <div className="form-container">
