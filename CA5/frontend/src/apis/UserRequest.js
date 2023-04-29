@@ -11,3 +11,7 @@ export async function getBuyList(username){
 export async function getPurchasedList(username){
     return axios.get("/users/" + username + "/purchasedList");
 }
+
+export async function addCredit(username, amount){
+    return axios.post("/users/" + username + "/credit", amount);
+}

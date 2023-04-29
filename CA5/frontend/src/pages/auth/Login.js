@@ -33,7 +33,7 @@ const Login = () => {
                         <input className="form-input" name="password" type="password" placeholder="Password"
                                onChange={(event) => setPassword(event.target.value)} required/>
                     </label>
-                    <button type="submit" onClick={(e) => handleLogin(e)}>Register</button>
+                    <button type="submit" onClick={(e) => handleLogin(e)}>Login</button>
                 </form>
             </div>
         </>

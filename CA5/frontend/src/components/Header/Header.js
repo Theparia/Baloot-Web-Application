@@ -32,7 +32,7 @@ const CartButton = ({username}) => {
                 setItemCount(Object.keys(response.data).length)
             }
         )
-    }, []);
+    }, []); //TODO: Update Cart Item after adding to buylist
 
     return (
         <a className={`cart ${itemCount > 0 ? 'cart-on' : 'cart-off'} font`} href={"/users/" + username}>

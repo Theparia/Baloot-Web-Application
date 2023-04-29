@@ -28,6 +28,7 @@ public class AuthController {
     protected ResponseEntity<String> signup(@RequestBody Map<String, String> info){
         try{
             Baloot.getInstance().addUser(new User(info.get("username"), info.get("password"), info.get("email"), info.get("birthDate"), info.get("address"), 0));
+            Baloot.getInstance().login(info.get("username"), info.get("password"));
             return ResponseEntity.ok("ok");
         } catch (Exception e){
             return ResponseEntity.status(HttpStatus.FORBIDDEN).body(e.getMessage());
