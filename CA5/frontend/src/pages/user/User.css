@@ -3,6 +3,7 @@ main{
     left: 8%;
     width: 82%;
     padding-top: 10em;
+    padding-bottom: 4em;
 }
 
 .user-section{
@@ -94,10 +95,10 @@ main{
     color: var(--dark_theme);
 }
 
-.cart-table{
+.commodities-table{
     display: flex;
     flex-direction: column;
-    margin-bottom: 50px;
+    margin-bottom: 20px;
 }
 
 .table-row{
@@ -165,7 +166,6 @@ main{
 
 .pay-btn{
     text-align: center;
-    padding-top: 20px;
     padding-bottom: 45px;
 }
 
