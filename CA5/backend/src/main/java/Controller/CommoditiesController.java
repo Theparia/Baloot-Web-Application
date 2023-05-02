@@ -2,6 +2,7 @@ package Controller;
 
 import Domain.Comment;
 import Domain.Commodity;
+import Domain.User;
 import Service.Baloot;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -16,6 +17,15 @@ public class CommoditiesController {
     @RequestMapping(value = "/commodities", method = RequestMethod.GET)
     protected List<Commodity> getCommodities() {
         return Baloot.getInstance().getCommodities();
+    }
+
+    @RequestMapping(value = "/commodities/{id}", method = RequestMethod.GET)
+    protected ResponseEntity<Commodity> getCommodity(@PathVariable String id) {
+        try {
+            return ResponseEntity.ok(Baloot.getInstance().findCommodityById(Integer.valueOf(id)));
+        } catch (Exception e){
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).body(null);
+        }
     }
 
     @RequestMapping(value = "commodities/search", method = RequestMethod.GET)

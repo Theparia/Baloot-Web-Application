@@ -29,79 +29,86 @@ public class UserController {
         }
     }
 
+    @RequestMapping(value = "/users/{username}/buyList", method = RequestMethod.GET)
+    protected ResponseEntity<HashMap<Integer, Integer>> getBuyList(@PathVariable String username){
+        try {
+            Baloot.getInstance();
+            HashMap<Integer, Integer> temp = new HashMap<>();
+            temp.put(1, 1);
+            temp.put(2, 2);
+            return ResponseEntity.ok(temp);
+//            return ResponseEntity.ok(Baloot.getInstance().findUserByUsername(username).getBuyList());
+        } catch (Exception e){
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+        }
+    }
+
+
 //    @RequestMapping(value = "/users/{username}/buyList", method = RequestMethod.GET)
-//    protected ResponseEntity<HashMap<Commodity, Integer>> getBuyList(@PathVariable String username){
+//    protected ResponseEntity<List<Map<String, Object>>> getBuyList(@PathVariable String username){ //TODO
 //        try {
 //            Baloot.getInstance();
-//            HashMap<Commodity, Integer> temp = new HashMap<>();
-//            temp.put(Database.getInstance().getCommodities().get(0), 5);
-//            temp.put(Database.getInstance().getCommodities().get(1), 2);
-//            return ResponseEntity.ok(temp);
-////            return ResponseEntity.ok(Baloot.getInstance().findUserByUsername(username).getBuyList());
+//            HashMap<Commodity, Integer> buyList = new HashMap<>();
+//            buyList.put(Database.getInstance().getCommodities().get(0), 1);
+//            buyList.put(Database.getInstance().getCommodities().get(1), 2);
+////            User user = Baloot.getInstance().findUserByUsername(username);
+////            Map<Commodity, Integer> buyList = user.getBuyList();
+//
+//            List<Map<String, Object>> response = new ArrayList<>();
+//            for (Map.Entry<Commodity, Integer> entry : buyList.entrySet()) {
+//                Commodity commodity = entry.getKey();
+//                ObjectMapper mapper = new ObjectMapper();
+//                Map<String, Object> commodityMap = mapper.convertValue(commodity, new TypeReference<Map<String, Object>>() {});
+//                commodityMap.put("quantity", entry.getValue());
+//                response.add(commodityMap);
+//            }
+//
+//            return ResponseEntity.ok(response);
 //        } catch (Exception e){
 //            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
 //        }
 //    }
-
-
-    @RequestMapping(value = "/users/{username}/buyList", method = RequestMethod.GET)
-    protected ResponseEntity<List<Map<String, Object>>> getBuyList(@PathVariable String username){ //TODO
-        try {
-            Baloot.getInstance();
-            HashMap<Commodity, Integer> buyList = new HashMap<>();
-            buyList.put(Database.getInstance().getCommodities().get(0), 1);
-            buyList.put(Database.getInstance().getCommodities().get(1), 2);
-//            User user = Baloot.getInstance().findUserByUsername(username);
-//            Map<Commodity, Integer> buyList = user.getBuyList();
-
-            List<Map<String, Object>> response = new ArrayList<>();
-            for (Map.Entry<Commodity, Integer> entry : buyList.entrySet()) {
-                Commodity commodity = entry.getKey();
-                ObjectMapper mapper = new ObjectMapper();
-                Map<String, Object> commodityMap = mapper.convertValue(commodity, new TypeReference<Map<String, Object>>() {});
-                commodityMap.put("quantity", entry.getValue());
-                response.add(commodityMap);
-            }
-
-            return ResponseEntity.ok(response);
-        } catch (Exception e){
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
-        }
-    }
-
-    @RequestMapping(value = "/users/{username}/purchasedList", method = RequestMethod.GET)
-    protected ResponseEntity<List<Map<String, Object>>> getPurchasedList(@PathVariable String username){ //TODO
-        try {
-            Baloot.getInstance();
-            HashMap<Commodity, Integer> buyList = new HashMap<>();
-            buyList.put(Database.getInstance().getCommodities().get(2), 3);
-            buyList.put(Database.getInstance().getCommodities().get(3), 4);
-//            User user = Baloot.getInstance().findUserByUsername(username);
-//            Map<Commodity, Integer> buyList = user.getBuyList();
-
-            List<Map<String, Object>> response = new ArrayList<>();
-            for (Map.Entry<Commodity, Integer> entry : buyList.entrySet()) {
-                Commodity commodity = entry.getKey();
-                ObjectMapper mapper = new ObjectMapper();
-                Map<String, Object> commodityMap = mapper.convertValue(commodity, new TypeReference<Map<String, Object>>() {});
-                commodityMap.put("quantity", entry.getValue());
-                response.add(commodityMap);
-            }
-
-            return ResponseEntity.ok(response);
-        } catch (Exception e){
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
-        }
-    }
 
 //    @RequestMapping(value = "/users/{username}/purchasedList", method = RequestMethod.GET)
-//    protected ResponseEntity<HashMap<Commodity, Integer>> getPurchasedList(@PathVariable String username){
+//    protected ResponseEntity<List<Map<String, Object>>> getPurchasedList(@PathVariable String username){ //TODO
 //        try {
-//            return ResponseEntity.ok(Baloot.getInstance().findUserByUsername(username).getPurchasedList());
+//            Baloot.getInstance();
+//            HashMap<Commodity, Integer> buyList = new HashMap<>();
+//            buyList.put(Database.getInstance().getCommodities().get(2), 3);
+//            buyList.put(Database.getInstance().getCommodities().get(3), 4);
+//            buyList.put(Database.getInstance().getCommodities().get(4), 5);
+//            buyList.put(Database.getInstance().getCommodities().get(5), 6);
+////            User user = Baloot.getInstance().findUserByUsername(username);
+////            Map<Commodity, Integer> buyList = user.getBuyList();
+//
+//            List<Map<String, Object>> response = new ArrayList<>();
+//            for (Map.Entry<Commodity, Integer> entry : buyList.entrySet()) {
+//                Commodity commodity = entry.getKey();
+//                ObjectMapper mapper = new ObjectMapper();
+//                Map<String, Object> commodityMap = mapper.convertValue(commodity, new TypeReference<Map<String, Object>>() {});
+//                commodityMap.put("quantity", entry.getValue());
+//                response.add(commodityMap);
+//            }
+//
+//            return ResponseEntity.ok(response);
 //        } catch (Exception e){
 //            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
 //        }
 //    }
+
+    @RequestMapping(value = "/users/{username}/purchasedList", method = RequestMethod.GET)
+    protected ResponseEntity<HashMap<Integer, Integer>> getPurchasedList(@PathVariable String username){
+        try {
+            Baloot.getInstance();
+            HashMap<Integer, Integer> temp = new HashMap<>();
+            temp.put(3, 3);
+            temp.put(4, 4);
+            return ResponseEntity.ok(temp);
+//            return ResponseEntity.ok(Baloot.getInstance().findUserByUsername(username).getPurchasedList());
+        } catch (Exception e){
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+        }
+    }
 
     @RequestMapping(value = "/users/{username}/credit", method = RequestMethod.POST)
     protected ResponseEntity<String> addCredit(@PathVariable String username, @RequestBody Map<String, String> info){

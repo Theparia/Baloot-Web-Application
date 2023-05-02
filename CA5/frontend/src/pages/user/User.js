@@ -4,6 +4,7 @@ import {useParams} from "react-router-dom";
 import Footer from "../../components/Footer/Footer.js";
 import "./User.css"
 import {addCredit, getBuyList, getPurchasedList, getUser} from "../../apis/UserRequest.js";
+import {getCommodity} from "../../apis/CommoditiesRequest.js";
 
 
 const UserInfo = () => {
@@ -86,11 +87,11 @@ const UserInfo = () => {
     )
 }
 
-const InCart = ({commodityId}) => {
+const InCart = ({commodity}) => {
     return (
         <div className="in-cart-btn">
             <a href="">-</a>
-            <div> 1</div>
+            <div> {commodity.quantity}</div>
             <a href="">+ </a>
         </div>
     )
@@ -121,7 +122,7 @@ const CommodityTableRow = ({commodity, tableType}) => {
                 {commodity.inStock}
             </div>
             <div className="col-header-font">
-                {tableType === "Cart" && <InCart/>}
+                {tableType === "Cart" && <InCart commodity={commodity}/>}
                 {tableType === "History" && commodity.quantity}
             </div>
         </div>
@@ -177,10 +178,16 @@ const BuyList = () => {
     const [buyList, setBuyList] = useState([]);
 
     useEffect(() => {
-        getBuyList(sessionStorage.getItem('username')).then(response => {
-            setBuyList(response.data);
-        })
-    }, [])
+        getBuyList(sessionStorage.getItem('username')).then(async (buyListResponse) => {
+            const commodities = [];
+            for (const [commodityId, quantity] of Object.entries(buyListResponse.data)) {
+                const CommodityResponse = await getCommodity(commodityId);
+                const commodity = { ...CommodityResponse.data, quantity: quantity };
+                commodities.push(commodity);
+            }
+            setBuyList(commodities);
+        });
+    }, []);
 
 
     const PayNowButton = () => { //TODO: ZERO SIZE
@@ -215,10 +222,16 @@ const PurchasedList = () => {
     const [purchasedList, setPurchasedList] = useState([]);
 
     useEffect(() => {
-        getPurchasedList(sessionStorage.getItem('username')).then(response => {
-            setPurchasedList(response.data);
-        })
-    }, [])
+        getPurchasedList(sessionStorage.getItem('username')).then(async (purchasedListResponse) => {
+            const commodities = [];
+            for (const [commodityId, quantity] of Object.entries(purchasedListResponse.data)) {
+                const CommodityResponse = await getCommodity(commodityId);
+                const commodity = { ...CommodityResponse.data, quantity: quantity };
+                commodities.push(commodity);
+            }
+            setPurchasedList(commodities);
+        });
+    }, []);
 
     const HistoryLogo = () => {
         return(

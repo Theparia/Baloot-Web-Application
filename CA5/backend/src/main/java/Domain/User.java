@@ -26,9 +26,9 @@ public class User {
     private String address;
     private float credit;
     @JsonIgnore
-    private HashMap<Commodity, Integer> buyList = new HashMap<>();
+    private HashMap<Integer, Integer> buyList = new HashMap<>(); // id -> quantity
     @JsonIgnore
-    private HashMap<Commodity, Integer> purchasedList = new HashMap<>();
+    private HashMap<Integer, Integer> purchasedList = new HashMap<>(); // id -> quantity
     @JsonIgnore
     private List<Discount> usedDiscounts = new ArrayList<>();
     @JsonIgnore
@@ -57,16 +57,16 @@ public class User {
         this.currentDiscount = null;
     }
 
-    public float getCurrentBuyListPrice(){
-        float totalPrice = 0;
-
-        for (var entry : this.buyList.entrySet()) {
-            totalPrice += entry.getValue() * entry.getKey().getPrice();
-        }
-
-        if (this.currentDiscount == null) return totalPrice;
-        return totalPrice * (100 - this.currentDiscount.getDiscount()) / 100;
-    }
+//    public float getCurrentBuyListPrice(){
+//        float totalPrice = 0;
+//
+//        for (var entry : this.buyList.entrySet()) {
+//            totalPrice += entry.getValue() * entry.getKey().getPrice();
+//        }
+//
+//        if (this.currentDiscount == null) return totalPrice;
+//        return totalPrice * (100 - this.currentDiscount.getDiscount()) / 100;
+//    }
 
     public void setCurrentDiscount(Discount discount) throws ExpiredDiscount {
         if (isDiscountCodeExpired(discount.getDiscountCode())){
@@ -100,27 +100,27 @@ public class User {
         this.credit -= amount;
     }
 
-    public void addToBuyList(Commodity commodity) {
-        if(buyList.containsKey(commodity))
-            buyList.replace(commodity, buyList.get(commodity) + 1);
+    public void addToBuyList(Integer commodityId) {
+        if(buyList.containsKey(commodityId))
+            buyList.replace(commodityId, buyList.get(commodityId) + 1);
         else
-            buyList.put(commodity, 1);
+            buyList.put(commodityId, 1);
     }
 
-    public void addToPurchasedList(Commodity commodity) {
-        if(purchasedList.containsKey(commodity))
-            purchasedList.replace(commodity, buyList.get(commodity) + purchasedList.get(commodity));
+    public void addToPurchasedList(Integer commodityId) {
+        if(purchasedList.containsKey(commodityId))
+            purchasedList.replace(commodityId, buyList.get(commodityId) + purchasedList.get(commodityId));
         else
-            purchasedList.put(commodity, buyList.get(commodity));
+            purchasedList.put(commodityId, buyList.get(commodityId));
     }
 
-    public void removeFromBuyList(Commodity commodity) throws CommodityNotInBuyList {
-        if(!buyList.containsKey(commodity))
+    public void removeFromBuyList(Integer commodityId) throws CommodityNotInBuyList {
+        if(!buyList.containsKey(commodityId))
             throw new CommodityNotInBuyList();
-        if(buyList.get(commodity) == 1)
-            buyList.remove(commodity);
+        if(buyList.get(commodityId) == 1)
+            buyList.remove(commodityId);
         else
-            buyList.replace(commodity, buyList.get(commodity) - 1);
+            buyList.replace(commodityId, buyList.get(commodityId) - 1);
     }
 
     public void addCredit(float creditToBeAdded) throws NegativeCredit {

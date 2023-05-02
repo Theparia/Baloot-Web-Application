@@ -5,6 +5,10 @@ export const getCommodities = () => {
     return axios.get('/commodities');
 }
 
+export async function getCommodity(id){
+    return axios.get('/commodities/' + id);
+}
+
 // export const sortCommodities = data => {
 //     console.log('Sorting Commodities ', data);
 //     return axios.get('/commodities/sort', {params:data});

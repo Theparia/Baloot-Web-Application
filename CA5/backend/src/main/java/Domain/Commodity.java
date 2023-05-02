@@ -44,9 +44,9 @@ public class Commodity {
         this.image = image;
     }
 
-    public void checkInStock() throws CommodityOutOfStock {
-        if(inStock <= 0)
-            throw new CommodityOutOfStock();
+    public void checkInStock(Integer quantity) throws CommodityOutOfStock {
+        if(inStock < quantity)
+            throw new CommodityOutOfStock(); //TODO: name?
     }
     public void addUserRating(String username, Integer rating) throws RatingOutOfRange {
         if(rating < 1 || rating > 10)
@@ -90,10 +90,10 @@ public class Commodity {
         return false;
     }
 
-    public void reduceInStock() throws CommodityOutOfStock {
-        if(inStock <= 0)
+    public void reduceInStock(Integer quantity) throws CommodityOutOfStock {
+        if(inStock < quantity)
             throw new CommodityOutOfStock();
-        inStock -= 1;
+        inStock -= quantity;
     }
 
 }

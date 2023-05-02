@@ -10,10 +10,7 @@ import lombok.Getter;
 import lombok.Setter;
 import HTTPRequestHandler.HTTPRequestHandler;
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Getter
@@ -62,9 +59,9 @@ public class Baloot {
 
         List<Comment> comments = objectMapper.readValue(HTTPRequestHandler.getRequest(COMMENTS_URI), typeFactory.constructCollectionType(List.class, Comment.class));
         Database.getInstance().setComments(comments);
-//
-//        List<Discount> discounts = objectMapper.readValue(HTTPRequestHandler.getRequest(DISCOUNT_URI), typeFactory.constructCollectionType(List.class, Discount.class));
-//        Database.getInstance().setDiscounts(discounts);
+
+        List<Discount> discounts = objectMapper.readValue(HTTPRequestHandler.getRequest(DISCOUNT_URI), typeFactory.constructCollectionType(List.class, Discount.class));
+        Database.getInstance().setDiscounts(discounts);
     }
 
     public boolean isUserLoggedIn() {
@@ -187,27 +184,46 @@ public class Baloot {
      }
 
      public void addToBuyList(String username, Integer commodityId) throws CommodityNotFound, UserNotFound, CommodityOutOfStock, CommodityAlreadyExistsInBuyList {
-        findCommodityById(commodityId).checkInStock();
-        findUserByUsername(username).addToBuyList(findCommodityById(commodityId));
+        findCommodityById(commodityId).checkInStock(1);
+        findUserByUsername(username).addToBuyList(commodityId);
      }
 
-    public void finalizePayment(String userId) throws UserNotFound, CommodityOutOfStock, NotEnoughCredit {
-        User user = findUserByUsername(userId);
-        Set<Commodity> buyListCommodities = user.getBuyList().keySet();
-        for (Commodity commodity : buyListCommodities){
-            commodity.checkInStock();
+     public float calcBuyListPrice(String username) throws UserNotFound, CommodityNotFound { //TODO: where?
+         User user = findUserByUsername(username);
+         float totalPrice = 0;
+
+         for (var entry : user.getBuyList().entrySet()) {
+             totalPrice += entry.getValue() * findCommodityById(entry.getKey()).getPrice();
+         }
+
+         if (user.getCurrentDiscount() == null)
+             return totalPrice;
+         return totalPrice * (100 - user.getCurrentDiscount().getDiscount()) / 100;
+     }
+
+    public void finalizePayment(String username) throws UserNotFound, CommodityOutOfStock, NotEnoughCredit, CommodityNotFound {
+        User user = findUserByUsername(username);
+        Set<Integer> buyListCommodityIds = user.getBuyList().keySet();
+
+        for (var entry : user.getBuyList().entrySet()) {
+            Integer commodityId = entry.getKey();
+            Integer quantity = entry.getValue();
+            findCommodityById(commodityId).checkInStock(quantity);
         }
-        user.reduceCredit(user.getCurrentBuyListPrice());
-        for (Commodity commodity : buyListCommodities){
-            user.addToPurchasedList(commodity);
-            commodity.reduceInStock();
+
+        user.reduceCredit(calcBuyListPrice(username));
+        for (var entry : user.getBuyList().entrySet()) {
+            Integer commodityId = entry.getKey();
+            Integer quantity = entry.getValue();
+            user.addToPurchasedList(commodityId);
+            findCommodityById(commodityId).reduceInStock(quantity);
         }
         user.useDiscount();
         user.resetBuyList();
     }
 
-     public void removeFromBuyList(String username, Integer commodityId) throws UserNotFound, CommodityNotFound, CommodityNotInBuyList {
-            findUserByUsername(username).removeFromBuyList(findCommodityById(commodityId));
+     public void removeFromBuyList(String username, Integer commodityId) throws UserNotFound, CommodityNotInBuyList {
+            findUserByUsername(username).removeFromBuyList(commodityId);
      }
 
      public List<Comment> getCommodityComments(Integer commodityId){
