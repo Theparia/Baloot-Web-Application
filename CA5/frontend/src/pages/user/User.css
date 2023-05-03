@@ -148,6 +148,7 @@ main{
     color: var(--black);
     flex: 1;
     padding: 10px;
+    text-decoration: none;
 }
 
 .col-rating-font{
@@ -166,8 +167,8 @@ main{
     background: var(--white);
     height: 50px;
     border: 1px solid var(--dark_theme);
-    border-radius: 15px;
-    margin: 20px;
+    border-radius: 10px;
+    margin: 1rem;
     display: flex;
     flex-direction: row;
     justify-content: space-around;
@@ -177,6 +178,10 @@ main{
     line-height: 29px;
     text-align: center;
     color: var(--black);
+}
+
+.add-remove-buttons{
+    cursor: pointer;
 }
 
 .in-cart-btn a{
@@ -191,6 +196,12 @@ main{
 #pay-btn{
     width: 35rem;
     height: 2.5rem;
+}
+
+#empty-table{
+    color: var(--medium_theme);
+    text-align: center;
+    margin: 2em;
 }
 
 

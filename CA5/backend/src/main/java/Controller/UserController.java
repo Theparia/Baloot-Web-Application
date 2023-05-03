@@ -24,21 +24,31 @@ public class UserController {
         try {
             User user = Baloot.getInstance().findUserByUsername(username);
             return ResponseEntity.ok(user);
-        } catch (Exception e){
+        } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.FORBIDDEN).body(null);
         }
     }
 
-    @RequestMapping(value = "/users/{username}/buyList", method = RequestMethod.GET)
-    protected ResponseEntity<HashMap<Integer, Integer>> getBuyList(@PathVariable String username){
+    @RequestMapping(value = "/users/{username}/payment", method = RequestMethod.GET)
+    protected ResponseEntity<String> payment(@PathVariable String username) {
         try {
-            Baloot.getInstance();
-            HashMap<Integer, Integer> temp = new HashMap<>();
-            temp.put(1, 1);
-            temp.put(2, 2);
-            return ResponseEntity.ok(temp);
-//            return ResponseEntity.ok(Baloot.getInstance().findUserByUsername(username).getBuyList());
-        } catch (Exception e){
+            Baloot.getInstance().finalizePayment(username);
+            return ResponseEntity.ok("ok");
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).body(e.getMessage());
+        }
+    }
+
+    @RequestMapping(value = "/users/{username}/buyList", method = RequestMethod.GET)
+    protected ResponseEntity<HashMap<Integer, Integer>> getBuyList(@PathVariable String username) {
+        try {
+//            Baloot.getInstance();
+//            HashMap<Integer, Integer> temp = new HashMap<>();
+//            temp.put(1, 1);
+//            temp.put(2, 2);
+//            return ResponseEntity.ok(temp);
+            return ResponseEntity.ok(Baloot.getInstance().findUserByUsername(username).getBuyList());
+        } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
         }
     }
@@ -96,26 +106,41 @@ public class UserController {
 //        }
 //    }
 
-    @RequestMapping(value = "/users/{username}/purchasedList", method = RequestMethod.GET)
-    protected ResponseEntity<HashMap<Integer, Integer>> getPurchasedList(@PathVariable String username){
+    @RequestMapping(value = "/users/{username}/buyList/add", method = RequestMethod.POST)
+    protected ResponseEntity<String> addToBuyList(@PathVariable String username, @RequestBody Map<String, String> info) {
         try {
-            Baloot.getInstance();
-            HashMap<Integer, Integer> temp = new HashMap<>();
-            temp.put(3, 3);
-            temp.put(4, 4);
-            return ResponseEntity.ok(temp);
-//            return ResponseEntity.ok(Baloot.getInstance().findUserByUsername(username).getPurchasedList());
-        } catch (Exception e){
+            Baloot.getInstance().addToBuyList(username, Integer.valueOf(info.get("id")));
+            return ResponseEntity.ok("ok");
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).body(e.getMessage());
+        }
+    }
+
+    @RequestMapping(value = "/users/{username}/buyList/remove", method = RequestMethod.POST)
+    protected ResponseEntity<String> removeFromBuyList(@PathVariable String username, @RequestBody Map<String, String> info) {
+        try {
+            Baloot.getInstance().removeFromBuyList(username, Integer.valueOf(info.get("id")));
+            return ResponseEntity.ok("ok");
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).body(e.getMessage());
+        }
+    }
+
+    @RequestMapping(value = "/users/{username}/purchasedList", method = RequestMethod.GET)
+    protected ResponseEntity<HashMap<Integer, Integer>> getPurchasedList(@PathVariable String username) {
+        try {
+            return ResponseEntity.ok(Baloot.getInstance().findUserByUsername(username).getPurchasedList());
+        } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
         }
     }
 
     @RequestMapping(value = "/users/{username}/credit", method = RequestMethod.POST)
-    protected ResponseEntity<String> addCredit(@PathVariable String username, @RequestBody Map<String, String> info){
+    protected ResponseEntity<String> addCredit(@PathVariable String username, @RequestBody Map<String, String> info) {
         try {
             Baloot.getInstance().findUserByUsername(username).addCredit(Float.parseFloat(info.get("amount")));
             return ResponseEntity.ok("ok");
-        } catch (Exception e){
+        } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.FORBIDDEN).body(e.getMessage());
         }
     }

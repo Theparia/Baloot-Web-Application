@@ -1,17 +1,29 @@
 import axios from "./BaseRequest.js";
 
-export async function getUser(username){
+export function getUser(username){
     return axios.get("/users/" + username);
 }
 
-export async function getBuyList(username){
+export function getBuyList(username){
     return axios.get("/users/" + username + "/buyList");
 }
 
-export async function getPurchasedList(username){
+export function getPurchasedList(username){
     return axios.get("/users/" + username + "/purchasedList");
 }
 
-export async function addCredit(username, amount){
+export function addCredit(username, amount){
     return axios.post("/users/" + username + "/credit", amount);
+}
+
+export function addToBuyList(username, commodityId){
+    return axios.post("/users/" + username + "/buyList/add", commodityId)
+}
+
+export function removeFromBuyList(username, commodityId){
+    return axios.post("/users/" + username + "/buyList/remove", commodityId)
+}
+
+export function finalizePayment(username){
+    return axios.get("/users/" + username + "/payment")
 }

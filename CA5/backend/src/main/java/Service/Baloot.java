@@ -203,7 +203,7 @@ public class Baloot {
 
     public void finalizePayment(String username) throws UserNotFound, CommodityOutOfStock, NotEnoughCredit, CommodityNotFound {
         User user = findUserByUsername(username);
-        Set<Integer> buyListCommodityIds = user.getBuyList().keySet();
+//        Set<Integer> buyListCommodityIds = user.getBuyList().keySet();
 
         for (var entry : user.getBuyList().entrySet()) {
             Integer commodityId = entry.getKey();

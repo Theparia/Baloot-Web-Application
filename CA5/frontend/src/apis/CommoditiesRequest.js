@@ -5,7 +5,7 @@ export const getCommodities = () => {
     return axios.get('/commodities');
 }
 
-export async function getCommodity(id){
+export function getCommodity(id){
     return axios.get('/commodities/' + id);
 }
 
