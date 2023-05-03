@@ -5,7 +5,7 @@ import Footer from "../../components/Footer/Footer.js";
 import "./User.css"
 import {
     addCredit,
-    addToBuyList,
+    addToBuyList, finalizePayment,
     getBuyList,
     getPurchasedList,
     getUser,
@@ -45,22 +45,12 @@ const UserBody = () => {
     const fetchBuyList = async () => {
         const buyListResponse = await getBuyList(sessionStorage.getItem('username'));
         const commodities = await extractCommodities(buyListResponse.data);
-        // for (const [commodityId, quantity] of Object.entries(buyListResponse.data)) {
-        //     const CommodityResponse = await getCommodity(commodityId);
-        //     const commodity = {...CommodityResponse.data, quantity: quantity};
-        //     commodities.push(commodity);
-        // }
         setBuyList(commodities);
     }
 
     const fetchPurchasedList = async () => {
         const purchasedListResponse = await getPurchasedList(sessionStorage.getItem('username'));
         const commodities = await extractCommodities(purchasedListResponse.data);
-        // for (const [commodityId, quantity] of Object.entries(purchasedListResponse.data)) {
-        //     const CommodityResponse = await getCommodity(commodityId);
-        //     const commodity = {...CommodityResponse.data, quantity: quantity};
-        //     commodities.push(commodity);
-        // }
         setPurchasedList(commodities);
     }
 
@@ -267,9 +257,18 @@ const UserBody = () => {
     }
 
     const PayNowButton = () => {
+        const handleFinalizePayment = (e) => {
+            e.preventDefault();
+            finalizePayment(user.username).then(async (response) => {
+                console.log("PAYMENT");
+                await fetchUser();
+                await fetchBuyList();
+                await fetchPurchasedList();
+            }).catch((error) => alert(error.response.data))
+        }
         return (
             <div className="pay-section">
-                <button id="pay-btn" className="btn btn-font">
+                <button id="pay-btn" className="btn btn-font" onClick={(e)=> handleFinalizePayment(e)}>
                     Pay Now!
                 </button>
             </div>
