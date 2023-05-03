@@ -12,8 +12,9 @@
   --white: #FFFFFF;
 }
 
-body{
+body {
   background: var(--background_color);
   font-family: 'Inter', serif;
   font-style: normal;
+  margin: 0;
 }

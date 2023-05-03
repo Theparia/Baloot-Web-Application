@@ -39,8 +39,8 @@ main{
 }
 
 #amount-input{
-    width: 550px;
-    height: 40px;
+    width: 35rem;
+    height: 2.5rem;
     box-sizing: border-box;
     background: var(--white);
     border: 1px solid var(--dark-gray);
@@ -62,14 +62,24 @@ main{
 }
 
 .btn{
-    width: 550px;
-    height: 40px;
     background: var(--dark_theme);
     box-shadow: 0px 4px 4px rgba(208, 208, 208, 0.25);
     border-radius: 15px;
     text-align: center;
-    margin: 10px;
+    /*margin: 10px;*/
     cursor: pointer;
+}
+
+#credit-btn{
+    width: 35rem;
+    height: 2.5rem;
+    margin: 0.5em;
+}
+
+#logout-btn{
+    margin-top: 2em;
+    width: 7em;
+    height: 2.5em;
 }
 
 .credit{
@@ -103,11 +113,10 @@ main{
 
 .table-row{
     width: 100%;
-    height: auto;
+    /*height: auto;*/
     background: var(--white);
     box-shadow: 0px 4px 4px rgba(208, 208, 208, 0.25);
     border-radius: 15px;
-    padding: 5px;
     margin-top: 15px;
     margin-bottom: 15px;
     display: flex;
@@ -116,10 +125,20 @@ main{
     align-items: center;
 }
 
-.table-row img{
-    height: 100px;
-    width: 100px;
+#img-container img{
+    height: 5em;
+    width: 5em;
+    border-radius: 0.7em;
+    align-self: center;
 }
+
+#img-container{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+}
+
 
 .col-header-font{
     font-weight: 600;
@@ -164,10 +183,14 @@ main{
     text-decoration: none;
 }
 
-.pay-btn{
+.pay-section{
     text-align: center;
-    padding-bottom: 45px;
+    padding-bottom: 3em;
 }
 
+#pay-btn{
+    width: 35rem;
+    height: 2.5rem;
+}
 
 

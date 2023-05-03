@@ -5,14 +5,38 @@ import Footer from "../../components/Footer/Footer.js";
 import "./User.css"
 import {addCredit, getBuyList, getPurchasedList, getUser} from "../../apis/UserRequest.js";
 import {getCommodity} from "../../apis/CommoditiesRequest.js";
+import {logout} from "../../apis/AuthRequest.js";
+import { toast, ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
+
+const Logout = ({username}) => {
+
+    const handleLogout = (e) => {
+        e.preventDefault();
+        logout().then((response) => {
+            console.log(response.data);
+            sessionStorage.removeItem('username');
+            window.location.replace("/login");
+            console.log("AFTER LOGOUT: " + sessionStorage.getItem('username'))
+        })
+    }
+
+    return (
+        <button id="logout-btn" className="btn btn-font" type="submit"
+                onClick={(e) => handleLogout(e)}>
+            Logout
+        </button>
+    )
+
+}
 
 const UserInfo = () => {
     const [user, setUser] = useState({});
 
-    useEffect(() => { // TODO: hook other than useEffect?
+    useEffect(() => {
         getUser(sessionStorage.getItem('username')).then(response => {
-                setUser(response.data)
+                setUser(response.data);
             }
         )
     }, []);
@@ -20,7 +44,7 @@ const UserInfo = () => {
 
     const Info = () => {
         return (
-            <div className="info font">
+            <>
                 <div>
                     <img src="/images/user.png"/>
                     {user.username}
@@ -37,7 +61,7 @@ const UserInfo = () => {
                     <img src="/images/address.png"/>
                     {user.address}
                 </div>
-            </div>
+            </>
         )
     }
 
@@ -47,13 +71,10 @@ const UserInfo = () => {
         function handleAddCredit(e) {
             e.preventDefault();
             addCredit(user.username, {"amount": amount})
-                .then(response => {
-                    console.log(response.data);
-                    getUser(sessionStorage.getItem('username')).then(response => {
-                            setUser(response.data)
-                        }
-                    )
-                    console.log("NEW CREDIT : " + user.credit); //TODO: WHAT?
+                .then(async (creditResponse) => {
+                    const userResponse = await getUser(sessionStorage.getItem('username'));
+                    setUser(userResponse.data)
+                    // console.log("NEW CREDIT : " + user.credit); //TODO: WHAT?
                     // setUser({ ...user, credit: parseFloat(user.credit) + parseFloat(amount) });
                     setAmount("");
                 }).catch((error) => alert(error.response.data));
@@ -70,7 +91,7 @@ const UserInfo = () => {
                            onChange={(event) => setAmount(event.target.value)}/>
                 </div>
                 <div>
-                    <button className="btn btn-font" type="submit"
+                    <button id="credit-btn" className="btn btn-font" type="submit"
                             onClick={(e) => handleAddCredit(e)}>
                         Add More Credit
                     </button>
@@ -81,7 +102,10 @@ const UserInfo = () => {
 
     return (
         <div className="user-section">
-            <Info/>
+            <div className="info font">
+                <Info/>
+                <Logout/>
+            </div>
             <Credit/>
         </div>
     )
@@ -100,7 +124,7 @@ const InCart = ({commodity}) => {
 const CommodityTableRow = ({commodity, tableType}) => {
     return (
         <div className="table-row">
-            <div className="col-header-font">
+            <div id="img-container" className="col-header-font">
                 <img src={commodity.image}/>
             </div>
             <div className="col-font col-header-font">
@@ -121,7 +145,7 @@ const CommodityTableRow = ({commodity, tableType}) => {
             <div className="col-in-stock-font col-header-font">
                 {commodity.inStock}
             </div>
-            <div className="col-header-font">
+            <div className="col-font col-header-font">
                 {tableType === "Cart" && <InCart commodity={commodity}/>}
                 {tableType === "History" && commodity.quantity}
             </div>
@@ -162,7 +186,7 @@ const CommodityTableHeader = ({tableType}) => {
 }
 
 const CommoditiesTable = ({tableType, commoditiesList}) => {
-    return(
+    return (
         <div className="commodities-table">
             <CommodityTableHeader tableType={tableType}/>
             {
@@ -182,7 +206,7 @@ const BuyList = () => {
             const commodities = [];
             for (const [commodityId, quantity] of Object.entries(buyListResponse.data)) {
                 const CommodityResponse = await getCommodity(commodityId);
-                const commodity = { ...CommodityResponse.data, quantity: quantity };
+                const commodity = {...CommodityResponse.data, quantity: quantity};
                 commodities.push(commodity);
             }
             setBuyList(commodities);
@@ -192,8 +216,8 @@ const BuyList = () => {
 
     const PayNowButton = () => { //TODO: ZERO SIZE
         return (
-            <div className="pay-btn">
-                <button className="btn btn-font">
+            <div className="pay-section">
+                <button id="pay-btn" className="btn btn-font">
                     Pay Now!
                 </button>
             </div>
@@ -201,7 +225,7 @@ const BuyList = () => {
     }
 
     const CartLogo = () => {
-        return(
+        return (
             <div>
                 <img src="/images/cart.png"/>
                 <span className="topic-font">Cart</span>
@@ -226,7 +250,7 @@ const PurchasedList = () => {
             const commodities = [];
             for (const [commodityId, quantity] of Object.entries(purchasedListResponse.data)) {
                 const CommodityResponse = await getCommodity(commodityId);
-                const commodity = { ...CommodityResponse.data, quantity: quantity };
+                const commodity = {...CommodityResponse.data, quantity: quantity};
                 commodities.push(commodity);
             }
             setPurchasedList(commodities);
@@ -234,7 +258,7 @@ const PurchasedList = () => {
     }, []);
 
     const HistoryLogo = () => {
-        return(
+        return (
             <div>
                 <img src="/images/history.png"/>
                 <span className="topic-font">History</span>
@@ -242,7 +266,7 @@ const PurchasedList = () => {
         )
     }
 
-    return(
+    return (
         <>
             <HistoryLogo/>
             <CommoditiesTable tableType={"History"} commoditiesList={purchasedList}/>
@@ -264,10 +288,13 @@ const UserBody = () => {
 const User = () => {
     const {username} = useParams();
     if (username !== sessionStorage.getItem('username')) {
-        alert("You don't have access")
+        toast.error('An error occurred while fetching data.', { autoClose: 5000, closeOnClick: true });
+        // alert("You don't have access")
+        window.location.replace("/login") //TODO
     }
     return (
         <>
+            <ToastContainer/>
             <Header searchBar={false} username={username}/>
             <UserBody/>
             <Footer/>
