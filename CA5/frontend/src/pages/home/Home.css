@@ -1,8 +1,4 @@
-/*@import "switch.css";*/
-/*@import "footer.css";*/
-/*@import "normalize.css";*/
-/*@import "navbar.css";*/
-/*@import "root.css";*/
+@import "./Switch.css";
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@200;300;400;500;600;700;800&display=swap');
 
 body{
@@ -10,11 +6,11 @@ body{
 }
 
 .sort-section{
-    position: relative;
-    width: 82%;
+    width: 100%;
     height: 6.2rem;
-    left: 12%;
-    margin-top: 9%;
+    left: 5rem;
+    margin-top: -3%;
+    margin-left: 3%;
     background: var(--light_theme);
     box-shadow: 0px 4px 4px rgba(208, 208, 208, 0.25);
     border-radius: 15px;
@@ -69,7 +65,20 @@ body{
     text-decoration: none;
 }
 
-#name-sort-option{
+#name-sort-option-off{
+    /*background: var(--medium_theme);*/
+    /*border-radius: 15px;*/
+    position: relative;
+    left: 31rem;
+    width: 7rem;
+    margin-top: -2.3rem;
+}
+
+#name-sort-option-off a{
+    color: var(--dark-gray);
+}
+
+#name-sort-option-on{
     background: var(--medium_theme);
     border-radius: 15px;
     position: relative;
@@ -78,19 +87,35 @@ body{
     margin-top: -2.3rem;
 }
 
-#name-sort-option a{
+#name-sort-option-on a{
     color: var(--white);
 }
 
-#price-sort-option{
+
+#price-sort-option-off{
     position: relative;
     left: 35rem;
+    width: 7rem;
+    margin-top: -2.3rem;
+}
+#price-sort-option-off a {
+    color: var(--dark-gray);
 }
 
-#price-sort-option a{
-    color: var(--dark-gray);
-    margin-top: -2rem;
+#price-sort-option-on{
+    background: var(--medium_theme);
+    border-radius: 15px;
+    position: relative;
+    left: 35rem;
+    width: 7rem;
+    margin-top: -2.3rem;
 }
+
+#price-sort-option-on a {
+    color: var(--white);
+}
+
+
 
 .main-container{
     position: relative;
