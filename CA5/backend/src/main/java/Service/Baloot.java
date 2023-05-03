@@ -149,6 +149,12 @@ public class Baloot {
                 .collect(Collectors.toList());
     }
 
+    public List<Commodity> sortCommoditiesByName(List<Commodity> commodities){
+        return commodities.stream()
+                .sorted(Comparator.comparing(Commodity::getName))
+                .collect(Collectors.toList());
+    }
+
     public List<Commodity> findCommoditiesByCategory(String category){
         List<Commodity> commoditiesInCategory = new ArrayList<>();
         for (Commodity commodity : Database.getInstance().getCommodities()){
@@ -313,6 +319,16 @@ public class Baloot {
                 .limit(5)
                 .collect(Collectors.toList());
 
+    }
+
+    public List<Commodity> getAvailableCommodities(List<Commodity> commodities_){
+        List<Commodity> availableCommodities = new ArrayList<>();
+        for (Commodity commodity : commodities_){
+            if(commodity.getInStock() > 0){
+                availableCommodities.add(commodity);
+            }
+        }
+        return availableCommodities;
     }
 
     public void printData(){
