@@ -2,46 +2,51 @@ import React, { useEffect, useState } from 'react';
 import Header from "../../components/Header/Header.js";
 import './Home.css'
 import {
-    filterCommodities,
+    getCommoditiesSize,
     getCommodities, getCommodity,
-    searchCommodities,
 } from "../../apis/CommoditiesRequest.js";
 import {addToBuyList, getBuyList, removeFromBuyList} from "../../apis/UserRequest.js";
 
 
 const Home = () => {
     const [commoditiesList, setCommoditiesList] = useState([]);
+    const [commoditiesSize, setCommoditiesSize] = useState(0);
     const [searchMethod, setSearchMethod] = useState(null);
     const [searchedText, setSearchedText] = useState("");
     const [sortMethod, setSortMethod] = useState("");
     const [commoditiesAvailable, setCommoditiesAvailable] = useState(false);
     const [buyList, setBuyList] = useState([]);
+    const [pageNumber, setPageNumber] = useState(0);
+    const [pageSize, setPageSize] = useState(12);
+    const [totalPages, setTotalPages] = useState(Math.ceil(commoditiesSize / pageSize));
+
 
     useEffect(() => {
-        getCommodities().then((response) => {
-            let result = [];
-            for(let i in response.data) {
-                result.push(response.data[i]);
-            }
-            setCommoditiesList(result);
-            fetchBuyList();
-            // setCommoditiesAvailable(false);
-            // setSortMethod("")
-            // setLoadingState(false)
-        }).catch(console.error);
+        fetchBuyList();
+        setTotalPages(Math.ceil(commoditiesSize / pageSize));
     }, []);
 
     useEffect(() => {
-        const req = {"sortMethod":  sortMethod, "searchMethod": searchMethod, "searchedText": searchedText, "commoditiesAvailable": commoditiesAvailable};
-        filterCommodities(req).then((response) => {
+        const req = {"sortMethod":  sortMethod, "searchMethod": searchMethod, "searchedText": searchedText, "commoditiesAvailable": commoditiesAvailable, "pageNumber": pageNumber, "pageSize": pageSize};
+        getCommodities(req).then((response) => {
             let result = [];
+            console.log("sortMethod, commoditiesAvailable, pageNumber changing");
             for (let i in response.data) {
                 console.log(response.data[i].name);
                 result.push(response.data[i]);
             }
             setCommoditiesList(result);
         }).catch(console.error);
-    }, [sortMethod, commoditiesAvailable]);
+    }, [sortMethod, commoditiesAvailable, pageNumber, searchMethod, searchedText]);
+
+    useEffect(() => {
+        const req = {"sortMethod":  sortMethod, "searchMethod": searchMethod, "searchedText": searchedText, "commoditiesAvailable": commoditiesAvailable};
+        getCommoditiesSize(req).then((response) => {
+            console.log("------------------------------------getting size1: " + response.data);
+            setCommoditiesSize(response.data);
+            setTotalPages(Math.ceil(response.data / pageSize));
+        }).catch(console.error);
+    }, [sortMethod, commoditiesAvailable, pageNumber, searchMethod, searchedText]);
 
 
     const FilterCommodities = () => {
@@ -72,15 +77,6 @@ const Home = () => {
     function search(method, text){
         setSearchMethod(method)
         setSearchedText(text)
-        const req = {"searchMethod" :  method ,"searchedText" : text};
-        searchCommodities(req).then(response => {
-            let result = [];
-            for(let i in response.data) {
-                console.log(response.data[i].name)
-                result.push(response.data[i]);
-            }
-            setCommoditiesList(result)
-        }).catch(error => console.log(error));
     }
 
     const fetchBuyList = async () => {
@@ -163,6 +159,12 @@ const Home = () => {
     }
 
     const CommoditiesTable = () => {
+        const handlePageClick = (e, pageNumber) => {
+            e.preventDefault();
+            console.log("*****************Page: " + pageNumber);
+            setPageNumber(pageNumber);
+        }
+
         return (
             <div className="main-container-home">
                 <div className="product-container-home">
@@ -171,6 +173,13 @@ const Home = () => {
                             <CommodityCard key={index} commodity={item}/>
                         )) : <></>
                     }
+                </div>
+                <div className="pagination">
+                    {[...Array(totalPages).keys()].map((currentPageNumber) => (
+                        <a key={currentPageNumber} href="#" className={pageNumber === currentPageNumber ? "active" : ""} onClick={(e) => handlePageClick(e, currentPageNumber)}>
+                            {currentPageNumber + 1}
+                        </a>
+                    ))}
                 </div>
             </div>
         )

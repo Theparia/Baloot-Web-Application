@@ -38,6 +38,20 @@ public class Baloot {
     public List<Commodity> getCommodities(){
         return Database.getInstance().getCommodities();
     }
+
+    public List<Commodity> getCommoditiesByPage(int pageNumber, int itemsPerPage, List<Commodity> allCommodities) {
+        int startIndex = pageNumber * itemsPerPage;
+        int endIndex = Math.min(startIndex + itemsPerPage, allCommodities.size());
+        System.out.println("pageNumber:"+pageNumber + " itemsPerPage:" +itemsPerPage + " start:" + startIndex + " end:" + endIndex + " allCommodities.size():" + allCommodities.size());
+        allCommodities = allCommodities.subList(startIndex, endIndex);
+        int i = 0;
+        for(Commodity commodity: allCommodities){
+            System.out.println("i=" + i + " " + commodity.getName());
+            i+=1;
+        }
+        return allCommodities;
+    }
+
     public void importDatabase() throws Exception {
         final String USERS_URI = "http://5.253.25.110:5000/api/users";
         final String COMMODITIES_URI = "http://5.253.25.110:5000/api/v2/commodities";

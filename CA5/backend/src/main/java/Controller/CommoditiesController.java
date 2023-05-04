@@ -15,10 +15,19 @@ import java.util.List;
 @RestController
 @RequestMapping
 public class CommoditiesController {
-    @RequestMapping(value = "/commodities", method = RequestMethod.GET)
-    protected List<Commodity> getCommodities() {
-        return Baloot.getInstance().getCommodities();
-    }
+//    @RequestMapping(value = "/commodities", method = RequestMethod.GET)
+//    protected List<Commodity> getCommodities() {
+//        return Baloot.getInstance().getCommodities();
+//    }
+
+//    @RequestMapping(value = "/commodities", method = RequestMethod.GET)
+//    protected List<Commodity> getCommodities(
+//            @RequestParam(value = "pageNumber", defaultValue = "0", required = false) int pageNumber,
+//            @RequestParam(value = "pageSize", defaultValue = "12", required = false) int pageSize
+//    ) {
+//        System.out.println("-----> pageNumber: " + pageNumber + "pageSize: " + pageSize);
+//        return Baloot.getInstance().getCommoditiesByPage(pageNumber, pageSize);
+//    }
 
     @RequestMapping(value = "/commodities/{id}", method = RequestMethod.GET)
     protected ResponseEntity<Commodity> getCommodity(@PathVariable String id) {
@@ -29,39 +38,32 @@ public class CommoditiesController {
         }
     }
 
-    @RequestMapping(value = "commodities/search", method = RequestMethod.GET)
-    protected ResponseEntity<List<Commodity>> searchCommodities(
-            @RequestParam(value = "searchMethod", required = false) String search_method,
-            @RequestParam(value = "searchedText", required = false) String searchedText
-    ){
-        System.out.println("Search method: " + search_method);
-        System.out.println("Search text: " + searchedText);
-        if(search_method.equals("name")) {
-            return ResponseEntity.ok(Baloot.getInstance().searchCommoditiesByName(searchedText));
-        }
-        else if(search_method.equals("category")) {
-            return ResponseEntity.ok(Baloot.getInstance().searchCommoditiesByCategory(searchedText));
-        }
-        else if(search_method.equals("provider")){
-            return ResponseEntity.ok(Baloot.getInstance().searchCommoditiesByProviderName(searchedText));
-        }
-        else{
-            return ResponseEntity.ok(Baloot.getInstance().getCommodities());
-        }
-    }
-
-    @RequestMapping(value = "commodities/available", method = RequestMethod.GET)
-    protected ResponseEntity<List<Commodity>> searchCommodities() {
-        return ResponseEntity.ok(Baloot.getInstance().getAvailableCommodities(Baloot.getInstance().getCommodities()));
-    }
-
-    @RequestMapping(value = "/commodities/filter",method = RequestMethod.GET)
-    public ResponseEntity<List<Commodity>> sortCommodities(
+    @RequestMapping(value = "/commodities/size/",method = RequestMethod.GET)
+    public ResponseEntity<Integer> sortCommoditiesSize(
             @RequestParam("sortMethod") String sortMethod,
             @RequestParam(value = "searchMethod", required = false) String searchMethod,
             @RequestParam(value = "searchedText", required = false) String searchedText,
             @RequestParam(value = "commoditiesAvailable", required = false) Boolean commoditiesAvailable) {
+        Integer size = filterCommodities(sortMethod, searchMethod, searchedText, commoditiesAvailable).size();
+        System.out.println("SIZEEEEEEEEEe: " + size);
+        return ResponseEntity.ok(size);
+    }
 
+    @RequestMapping(value = "/commodities/",method = RequestMethod.GET)
+    public ResponseEntity<List<Commodity>> getCommodities(
+            @RequestParam("sortMethod") String sortMethod,
+            @RequestParam(value = "searchMethod", required = false) String searchMethod,
+            @RequestParam(value = "searchedText", required = false) String searchedText,
+            @RequestParam(value = "commoditiesAvailable", required = false) Boolean commoditiesAvailable,
+            @RequestParam(value = "pageNumber", defaultValue = "0", required = false) int pageNumber,
+            @RequestParam(value = "pageSize", defaultValue = "12", required = false) int pageSize) {
+
+        System.out.println("-----> pageNumber: " + pageNumber + "pageSize: " + pageSize);
+        List<Commodity> commodities = filterCommodities(sortMethod, searchMethod, searchedText, commoditiesAvailable);
+        return ResponseEntity.ok(Baloot.getInstance().getCommoditiesByPage(pageNumber, pageSize, commodities));
+    }
+
+    private List<Commodity> filterCommodities(String sortMethod, String searchMethod, String searchedText, Boolean commoditiesAvailable){
         List<Commodity> commodities = Baloot.getInstance().getCommodities();
 
         if (searchMethod != null && !searchedText.equals("")) {
@@ -82,6 +84,7 @@ public class CommoditiesController {
         if (sortMethod.equals("price")) {
             commodities = Baloot.getInstance().sortCommoditiesByPrice(commodities);
         }
-        return ResponseEntity.ok(commodities);
+        return commodities;
+
     }
 }
