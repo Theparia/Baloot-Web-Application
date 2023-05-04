@@ -254,7 +254,7 @@ const UserBody = () => {
             return (
                 <div className="total-price">
                     <div> total </div>
-                    <div id={`${discountPercentage > 0 ? "discounted-price" : "price"}`}> {price}$ </div>
+                    <div className={`${discountPercentage > 0 ? "discounted-price" : "price"}`}> {price}$ </div>
                 </div>
             )
         }
@@ -264,7 +264,7 @@ const UserBody = () => {
             return (
                 <div className="total-price">
                     <div> with discount </div>
-                    <div> {price * (100 - discountPercentage) / 100}$ </div>
+                    <div className="price"> {price * (100 - discountPercentage) / 100}$ </div>
                 </div>
             )
         }

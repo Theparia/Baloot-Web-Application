@@ -374,11 +374,11 @@ main{
     padding-right: 1.5em;
 }
 
-#price{
+.price{
     color: var(--red);
 }
 
-#discounted-price{
+.discounted-price{
     color: var(--cream);
     text-decoration: line-through;
 }
