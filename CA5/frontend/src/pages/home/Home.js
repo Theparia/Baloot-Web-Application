@@ -3,12 +3,10 @@ import Header from "../../components/Header/Header.js";
 import './Home.css'
 import {
     filterCommodities,
-    getAvailableCommodities,
-    getCommodities,
+    getCommodities, getCommodity,
     searchCommodities,
-    sortCommodities
 } from "../../apis/CommoditiesRequest.js";
-import {addToBuyList} from "../../apis/UserRequest.js";
+import {addToBuyList, getBuyList, removeFromBuyList} from "../../apis/UserRequest.js";
 
 
 const Home = () => {
@@ -17,15 +15,16 @@ const Home = () => {
     const [searchedText, setSearchedText] = useState("");
     const [sortMethod, setSortMethod] = useState("");
     const [commoditiesAvailable, setCommoditiesAvailable] = useState(false);
+    const [buyList, setBuyList] = useState([]);
 
     useEffect(() => {
         getCommodities().then((response) => {
             let result = [];
             for(let i in response.data) {
-                // console.log(response.data[i].name)
                 result.push(response.data[i]);
             }
             setCommoditiesList(result);
+            fetchBuyList();
             // setCommoditiesAvailable(false);
             // setSortMethod("")
             // setLoadingState(false)
@@ -52,8 +51,8 @@ const Home = () => {
                     Available commodities
                 </div>
                 <label className="switch">
-                    <input type="checkbox" />
-                    <span className="slider round" onClick={() => setCommoditiesAvailable(prevCommoditiesAvailable => !prevCommoditiesAvailable)}></span>
+                    <input type="checkbox" className="toggle" checked={commoditiesAvailable} onChange={() => setCommoditiesAvailable(prevCommoditiesAvailable => !prevCommoditiesAvailable)}/>
+                    <span className="slider round"></span>
                 </label>
                 <div className="sort-by">
                     <span id="sort-by-text">
@@ -84,16 +83,59 @@ const Home = () => {
         }).catch(error => console.log(error));
     }
 
-    const CommodityCart = ({commodity}) => {
+    const fetchBuyList = async () => {
+        const buyListResponse = await getBuyList(sessionStorage.getItem('username'));
+        const commodities = await extractCommodities(buyListResponse.data);
+        setBuyList(commodities);
+    }
+
+    const extractCommodities = async (data) => {
+        const commodities = [];
+        for (const [commodityId, quantity] of Object.entries(data)) {
+            const CommodityResponse = await getCommodity(commodityId);
+            const commodity = {...CommodityResponse.data, quantity: quantity};
+            commodities.push(commodity);
+        }
+        return commodities;
+    }
+
+    const CommodityCard = ({commodity}) => {
+        const AddCommodityToUsersBuyListButton = ({commodity_in}) => {
+            const isCommodityInBuyList = buyList.some((item) => item.id === commodity_in.id);
+            const buyListItem = buyList.filter(item => item.id === commodity.id).find(item => item);
+            if (isCommodityInBuyList) {
+                return (
+                    <div className="add-remove-button-home">
+                        <div className="add-remove-buttons" onClick={(e) => handleRemoveFromBuyList(e)}>-</div>
+                        <div> {buyListItem.quantity}</div>
+                        <div className="add-remove-buttons" onClick={(e) => handleAddToBuyList(e)}>+</div>
+                    </div>
+                )
+            } else {
+                return (
+                    <button className="add-to-cart-button-home" type="button" onClick={(e) => handleAddToBuyList(e)}>add to cart</button>
+                )
+            }
+        }
+
         const handleAddToBuyList = (e) => {
             e.preventDefault();
             addToBuyList(sessionStorage.getItem('username'), {"id": commodity.id}).then(async (response) => {
                 console.log("ADD TO BUY LIST");
+                await fetchBuyList();
+            }).catch((error) => console.log("ERROR: " + error.data))
+        }
+
+        const handleRemoveFromBuyList = (e) => {
+            e.preventDefault();
+            removeFromBuyList(sessionStorage.getItem('username'), {"id": commodity.id}).then(async(response) => {
+                console.log("REMOVE FROM BUY LIST");
+                await fetchBuyList();
             }).catch((error) => console.log("ERROR: " + error.data))
         }
 
         return (
-            <div className="product-cart-home">
+            <div className="product-card-home">
                 <a href={"/commodities/" + commodity.id}>
                     <div className="product-title-home">
                         {commodity.name}
@@ -109,9 +151,7 @@ const Home = () => {
                     <div>
                         <span>{commodity.price}</span>$
                     </div>
-                    <div>
-                        <button className="add-to-cart-button-home" type="button" onClick={(e) => handleAddToBuyList(e)}>add to cart</button>
-                    </div>
+                    <AddCommodityToUsersBuyListButton commodity_in={commodity}/>
                 </div>
             </div>
         )
@@ -123,7 +163,7 @@ const Home = () => {
                 <div className="product-container-home">
                     {commoditiesList.length > 0 ?
                         commoditiesList.map((item, index) => (
-                            <CommodityCart key={index} commodity={item}/>
+                            <CommodityCard key={index} commodity={item}/>
                         )) : <></>
                     }
                 </div>
