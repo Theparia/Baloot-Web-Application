@@ -5,7 +5,7 @@ import Footer from "../../components/Footer/Footer.js";
 import "./User.css"
 import {
     addCredit,
-    addToBuyList, finalizePayment,
+    addToBuyList, applyDiscountCode, deleteDiscountCode, finalizePayment,
     getBuyList,
     getPurchasedList,
     getUser,
@@ -15,8 +15,14 @@ import {getCommodity} from "../../apis/CommoditiesRequest.js";
 import {logout} from "../../apis/AuthRequest.js";
 import {toast, ToastContainer} from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import {Modal, Button} from 'react-bootstrap';
+import {Modal, Button, ButtonGroup} from 'react-bootstrap';
+import * as PropTypes from "prop-types";
 
+function JSONList(props) {
+    return null;
+}
+
+JSONList.propTypes = {data: PropTypes.any};
 const UserBody = () => {
     const [buyList, setBuyList] = useState([]);
     const [user, setUser] = useState({});
@@ -117,7 +123,7 @@ const UserBody = () => {
 
                 {showModal && (
                     <>
-                        <div className="modal-overlay" onClick={() => setShowModal(false)}/>
+                        <div className="modal-overlay"/>
                         <div className="modal">
                             <Modal.Header className="modal-header">
                                 <Modal.Title className="modal-title">Add Credit</Modal.Title>
@@ -134,9 +140,6 @@ const UserBody = () => {
                 )}
 
 
-
-
-
                 {/*    <Modal show={showModal} onHide={() => setShowModal(false)}>*/}
                 {/*        <Modal.Header>*/}
                 {/*            <Modal.Title>Add Credit</Modal.Title>*/}
@@ -148,6 +151,167 @@ const UserBody = () => {
                 {/*        </Modal.Footer>*/}
                 {/*    </Modal>*/}
             </>
+        )
+    }
+
+    const PayNowButton = () => {
+        const [showModal, setShowModal] = useState(false);
+        const [discountPercentage, setDiscountPercentage] = useState(0);
+
+        const handlePayment = (e) => {
+            e.preventDefault();
+            setShowModal(true);
+        }
+
+        const handleFinalizePayment = () => {
+            finalizePayment(user.username).then(async (response) => {
+                await fetchUser();
+                await fetchBuyList();
+                await fetchPurchasedList();
+                setDiscountPercentage(0);
+                setShowModal(false);
+            }).catch((error) => alert(error.response.data))
+
+        }
+
+        const BuyListItems = () => {
+            return (
+                <ul className="buylist-item-names">
+                    {buyList.map((item, index) => (
+                        <li key={index}>
+                            {item.name} &nbsp; x{item.quantity}
+                        </li>
+                    ))}
+                </ul>
+            )
+        }
+
+        const BuyListPrices = () => {
+            return (
+                <ul className="buylist-prices-list">
+                    {buyList.map((item, index) => (
+                        <li key={index}>
+                            {item.price * item.quantity}$
+                        </li>
+                    ))}
+                </ul>
+            )
+        }
+
+
+        const Discount = () => {
+            const [discountCode, setDiscountCode] = useState("");
+
+            useEffect(() => {
+                const applyDiscount = async () => {
+                    try {
+                        const response = await applyDiscountCode(user.username, { "code": discountCode });
+                        setDiscountPercentage(response.data);
+                    } catch (error) {
+                        alert("Invalid Discount Code");
+                        setDiscountPercentage(0);
+                    }
+                };
+
+                if (discountCode && user.username) {
+                    applyDiscount().then();
+                }
+            }, [discountCode, user.username]);
+
+            const handleSubmitDiscount = async (e) => {
+                e.preventDefault();
+                setDiscountCode(e.target.elements.code.value);
+            };
+
+            return (
+                <div>
+                    <form onSubmit={handleSubmitDiscount} className="discount">
+                        <div>
+                            <input className="btn-font" id="code-input" placeholder="Code" name="code" />
+                        </div>
+                        <div>
+                            <button id={`${discountPercentage > 0 ? "submit-discount-btn-on" : "submit-discount-btn-off"}`} className="btn btn-font" type="submit">
+                                {discountPercentage > 0 ? "Submitted" : "Submit"}
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            );
+        }
+
+        const getBuylistPrice = () => {
+            let price = 0;
+            {
+                buyList.map((item, index) => (
+                    price += item.price * item.quantity
+                ))
+            }
+            return price;
+        }
+
+        const TotalPrice = () => {
+            const price = getBuylistPrice();
+            return (
+                <div className="total-price">
+                    <div> total </div>
+                    <div id={`${discountPercentage > 0 ? "discounted-price" : "price"}`}> {price}$ </div>
+                </div>
+            )
+        }
+
+        const TotalPriceWithDiscount = () => {
+            const price = getBuylistPrice();
+            return (
+                <div className="total-price">
+                    <div> with discount </div>
+                    <div> {price * (100 - discountPercentage) / 100}$ </div>
+                </div>
+            )
+        }
+
+        const deleteCurrentDiscountCode = () => {
+            deleteDiscountCode(user.username).then().catch((error) => console.log(error.response.data));
+        }
+
+
+        return (
+            <>
+                <div className="pay-section">
+                    <button id="pay-btn" className="btn btn-font" onClick={(e) => handlePayment(e)}>
+                        Pay Now!
+                    </button>
+                </div>
+                {showModal && (
+                    <>
+                        <div className="modal-overlay"/>
+                        <div className="modal">
+                            <Modal.Header className="modal-header">
+                                <Modal.Title className="modal-title">Your Cart</Modal.Title>
+                            </Modal.Header>
+                            <Modal.Body className="modal-body">
+                                <div className="buylist-items">
+                                    <BuyListItems/>
+                                    <BuyListPrices/>
+                                </div>
+                                <Discount/>
+                                <TotalPrice/>
+                                {discountPercentage > 0 && <TotalPriceWithDiscount/>}
+                            </Modal.Body>
+                            <Modal.Footer className="modal-footer">
+                                <button onClick={() => {
+                                    setShowModal(false);
+                                    deleteCurrentDiscountCode();
+                                    setDiscountPercentage(0);
+                                }}>Close
+                                </button>
+                                <button id="buy-btn" className="btn btn-font" onClick={handleFinalizePayment}>Buy!</button>
+                            </Modal.Footer>
+                        </div>
+                    </>
+                )}
+            </>
+
+
         )
     }
 
@@ -223,6 +387,7 @@ const UserBody = () => {
                     {commodity.name}
                 </a>
                 <div className="col-font col-header-font">
+                    {/*{commodity.arrayField.join(', ')}*/}
                     {commodity.categories}
                 </div>
                 <div className="col-font col-header-font">
@@ -298,24 +463,6 @@ const UserBody = () => {
         )
     }
 
-    const PayNowButton = () => {
-        const handleFinalizePayment = (e) => {
-            e.preventDefault();
-            finalizePayment(user.username).then(async (response) => {
-                console.log("PAYMENT");
-                await fetchUser();
-                await fetchBuyList();
-                await fetchPurchasedList();
-            }).catch((error) => alert(error.response.data))
-        }
-        return (
-            <div className="pay-section">
-                <button id="pay-btn" className="btn btn-font" onClick={(e) => handleFinalizePayment(e)}>
-                    Pay Now!
-                </button>
-            </div>
-        )
-    }
 
     const CartLogo = () => {
         return (

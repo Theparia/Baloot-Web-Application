@@ -145,4 +145,23 @@ public class UserController {
         }
     }
 
+    @RequestMapping(value = "/users/{username}/discount", method = RequestMethod.POST)
+    protected ResponseEntity<Float> applyDiscountCode(@PathVariable String username, @RequestBody Map<String, String> info) {
+        try {
+            return ResponseEntity.ok(Baloot.getInstance().applyDiscountCode(username, info.get("code")));
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+        }
+    }
+
+    @RequestMapping(value = "/users/{username}/discount", method = RequestMethod.DELETE)
+    protected ResponseEntity<String> deleteDiscountCode(@PathVariable String username) {
+        try {
+            Baloot.getInstance().deleteDiscountCode(username);
+            return ResponseEntity.ok("ok");
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).body(e.getMessage());
+        }
+    }
+
 }

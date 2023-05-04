@@ -76,7 +76,12 @@ public class User {
     }
 
     public void useDiscount(){
-        this.usedDiscounts.add(this.currentDiscount);
+        if(this.currentDiscount != null)
+            this.usedDiscounts.add(this.currentDiscount);
+        this.currentDiscount = null;
+    }
+
+    public void deleteCurrentDiscount(){
         this.currentDiscount = null;
     }
 

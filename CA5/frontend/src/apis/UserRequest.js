@@ -17,13 +17,21 @@ export function addCredit(username, amount){
 }
 
 export function addToBuyList(username, commodityId){
-    return axios.post("/users/" + username + "/buyList/add", commodityId)
+    return axios.post("/users/" + username + "/buyList/add", commodityId);
 }
 
 export function removeFromBuyList(username, commodityId){
-    return axios.post("/users/" + username + "/buyList/remove", commodityId)
+    return axios.post("/users/" + username + "/buyList/remove", commodityId);
 }
 
 export function finalizePayment(username){
-    return axios.get("/users/" + username + "/payment")
+    return axios.get("/users/" + username + "/payment");
+}
+
+export function applyDiscountCode(username, code){
+    return axios.post("/users/" + username + "/discount", code);
+}
+
+export function deleteDiscountCode(username) {
+    return axios.delete("/users/" + username + "/discount");
 }

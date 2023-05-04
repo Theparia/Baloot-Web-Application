@@ -174,9 +174,16 @@ public class Baloot {
         throw new InvalidDiscount();
     }
 
-    public void applyDiscountCode(String username, String discountCode) throws UserNotFound, ExpiredDiscount, InvalidDiscount {
+    public float applyDiscountCode(String username, String discountCode) throws UserNotFound, ExpiredDiscount, InvalidDiscount, CommodityNotFound {
         User user = findUserByUsername(username);
-        user.setCurrentDiscount(findDiscountByCode(discountCode));
+        Discount discount = findDiscountByCode(discountCode);
+        user.setCurrentDiscount(discount);
+        return discount.getDiscount();
+    }
+
+    public void deleteDiscountCode(String username) throws UserNotFound, ExpiredDiscount, InvalidDiscount, CommodityNotFound {
+        User user = findUserByUsername(username);
+        user.deleteCurrentDiscount();
     }
 
     public void addComment(String userEmail, Integer commodityId, String text){
