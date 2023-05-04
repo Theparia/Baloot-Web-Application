@@ -30,23 +30,21 @@ const Home = () => {
         const req = {"sortMethod":  sortMethod, "searchMethod": searchMethod, "searchedText": searchedText, "commoditiesAvailable": commoditiesAvailable, "pageNumber": pageNumber, "pageSize": pageSize};
         getCommodities(req).then((response) => {
             let result = [];
-            console.log("sortMethod, commoditiesAvailable, pageNumber changing");
             for (let i in response.data) {
                 console.log(response.data[i].name);
                 result.push(response.data[i]);
             }
             setCommoditiesList(result);
         }).catch(console.error);
-    }, [sortMethod, commoditiesAvailable, pageNumber, searchMethod, searchedText]);
 
-    useEffect(() => {
-        const req = {"sortMethod":  sortMethod, "searchMethod": searchMethod, "searchedText": searchedText, "commoditiesAvailable": commoditiesAvailable};
         getCommoditiesSize(req).then((response) => {
-            console.log("------------------------------------getting size1: " + response.data);
             setCommoditiesSize(response.data);
             setTotalPages(Math.ceil(response.data / pageSize));
+            if(pageNumber+1 > Math.ceil(response.data / pageSize)){
+                setPageNumber(0);
+            }
         }).catch(console.error);
-    }, [sortMethod, commoditiesAvailable, pageNumber, searchMethod, searchedText]);
+    }, [sortMethod, commoditiesAvailable, totalPages, pageNumber, searchMethod, searchedText]);
 
 
     const FilterCommodities = () => {
@@ -157,14 +155,30 @@ const Home = () => {
             </div>
         )
     }
-
-    const CommoditiesTable = () => {
+    const Pagination = () => {
         const handlePageClick = (e, pageNumber) => {
             e.preventDefault();
             console.log("*****************Page: " + pageNumber);
             setPageNumber(pageNumber);
         }
+        return (
+            <div className="pagination">
+                <a href="" className="prev" onClick={(e) => {pageNumber < 1 ? handlePageClick(e, 0) : handlePageClick(e, pageNumber - 1)}}>
+                    &#8249;
+                </a>
+                {[...Array(totalPages).keys()].map((currentPageNumber) => (
+                    <a key={currentPageNumber} href="" className={pageNumber === currentPageNumber ? "active" : ""} onClick={(e) => handlePageClick(e, currentPageNumber)}>
+                        {currentPageNumber + 1}
+                    </a>
+                ))}
+                <a href="" className="next" onClick={(e) => {pageNumber > totalPages-2 ? handlePageClick(e, pageNumber) : handlePageClick(e, pageNumber + 1)}}>
+                    &#8250;
+                </a>
+            </div>
+        )
+    }
 
+    const CommoditiesTable = () => {
         return (
             <div className="main-container-home">
                 <div className="product-container-home">
@@ -173,13 +187,6 @@ const Home = () => {
                             <CommodityCard key={index} commodity={item}/>
                         )) : <></>
                     }
-                </div>
-                <div className="pagination">
-                    {[...Array(totalPages).keys()].map((currentPageNumber) => (
-                        <a key={currentPageNumber} href="#" className={pageNumber === currentPageNumber ? "active" : ""} onClick={(e) => handlePageClick(e, currentPageNumber)}>
-                            {currentPageNumber + 1}
-                        </a>
-                    ))}
                 </div>
             </div>
         )
@@ -191,6 +198,7 @@ const Home = () => {
             <main id="home-main">
                 <FilterCommodities/>
                 <CommoditiesTable/>
+                <Pagination/>
             </main>
         </>
     )
