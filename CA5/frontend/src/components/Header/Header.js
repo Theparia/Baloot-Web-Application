@@ -10,8 +10,10 @@ const BalootLogo = () => {
                     <img src="/images/logo.png" alt="logo" />
                 </a>
             </div>
-            <div className="baloot-text">
-                Baloot
+            <div>
+                <a className="baloot-text" href="/">
+                    Baloot
+                </a>
             </div>
         </div>
     )

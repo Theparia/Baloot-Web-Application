@@ -124,7 +124,7 @@ const Home = () => {
             addToBuyList(sessionStorage.getItem('username'), {"id": commodity.id}).then(async (response) => {
                 console.log("ADD TO BUY LIST");
                 await fetchBuyList();
-            }).catch((error) => console.log("ERROR: " + error.data))
+            }).catch((error) => alert(error.response.data))
         }
 
         const handleRemoveFromBuyList = (e) => {
@@ -132,7 +132,7 @@ const Home = () => {
             removeFromBuyList(sessionStorage.getItem('username'), {"id": commodity.id}).then(async(response) => {
                 console.log("REMOVE FROM BUY LIST");
                 await fetchBuyList();
-            }).catch((error) => console.log("ERROR: " + error.data))
+            }).catch((error) => alert(error.response.data))
         }
 
         return (
