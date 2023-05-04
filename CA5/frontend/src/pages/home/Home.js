@@ -11,7 +11,7 @@ import {
 
 
 const Home = () => {
-    const [CommoditiesList, setCommoditiesList] = useState([]);
+    const [commoditiesList, setCommoditiesList] = useState([]);
     const [searchMethod, setSearchMethod] = useState(null);
     const [searchedText, setSearchedText] = useState("");
     const [sortMethod, setSortMethod] = useState("");
@@ -83,11 +83,53 @@ const Home = () => {
         }).catch(error => console.log(error));
     }
 
+    const CommodityCart = ({commodity}) => {
+        return (
+            <div className="product-cart-home">
+                <a>
+                    <div className="product-title-home">
+                        {commodity.name}
+                        {/*Huawei nova 9*/}
+                    </div>
+                </a>
+                <div className="product-inStock-home">
+                    <span> {commodity.inStock} </span> left in stock
+                </div>
+                <a href="">
+                    <img className="w-100" src={commodity.image} alt="ProductImage"/>
+                </a>
+                <div className="product-price-home">
+                    <div>
+                        <span>{commodity.price}</span>$
+                    </div>
+                    <div>
+                        <button className="add-to-cart-button-home" type="button">add to cart</button>
+                    </div>
+                </div>
+            </div>
+        )
+    }
+
+    const CommoditiesTable = () => {
+        return (
+            <div className="main-container-home">
+                <div className="product-container-home">
+                    {commoditiesList.length > 0 ?
+                        commoditiesList.map((item, index) => (
+                            <CommodityCart key={index} commodity={item}/>
+                        )) : <></>
+                    }
+                </div>
+            </div>
+        )
+    }
+
     return(
         <>
             <Header searchBar={true} searchFunc={search} username={sessionStorage.getItem('username')} />
             <main id="home-main">
                 <FilterCommodities/>
+                <CommoditiesTable/>
             </main>
         </>
     )
