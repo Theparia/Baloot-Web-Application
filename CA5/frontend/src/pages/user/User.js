@@ -230,7 +230,9 @@ const UserBody = () => {
                             <input className="btn-font" id="code-input" placeholder="Code" name="code" />
                         </div>
                         <div>
-                            <button id={`${discountPercentage > 0 ? "submit-discount-btn-on" : "submit-discount-btn-off"}`} className="btn btn-font" type="submit">
+                            <button id={`${discountPercentage > 0 ? "submit-discount-btn-on" : "submit-discount-btn-off"}`}
+                                    className="btn btn-font" type="submit"
+                                    disabled={discountPercentage > 0}>
                                 {discountPercentage > 0 ? "Submitted" : "Submit"}
                             </button>
                         </div>
