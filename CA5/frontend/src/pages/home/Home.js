@@ -6,6 +6,7 @@ import {
     getCommodities, getCommodity,
 } from "../../apis/CommoditiesRequest.js";
 import {addToBuyList, getBuyList, removeFromBuyList} from "../../apis/UserRequest.js";
+import Footer from "../../components/Footer/Footer.js";
 
 
 const Home = () => {
@@ -162,19 +163,22 @@ const Home = () => {
             setPageNumber(pageNumber);
         }
         return (
-            <div className="pagination">
-                <a href="" className="prev" onClick={(e) => {pageNumber < 1 ? handlePageClick(e, 0) : handlePageClick(e, pageNumber - 1)}}>
-                    &#8249;
-                </a>
-                {[...Array(totalPages).keys()].map((currentPageNumber) => (
-                    <a key={currentPageNumber} href="" className={pageNumber === currentPageNumber ? "active" : ""} onClick={(e) => handlePageClick(e, currentPageNumber)}>
-                        {currentPageNumber + 1}
+            <div id={"pagination-container"}>
+                <div className="pagination">
+                    <a href="" className="prev" onClick={(e) => {pageNumber < 1 ? handlePageClick(e, 0) : handlePageClick(e, pageNumber - 1)}}>
+                        &#8249;
                     </a>
-                ))}
-                <a href="" className="next" onClick={(e) => {pageNumber > totalPages-2 ? handlePageClick(e, pageNumber) : handlePageClick(e, pageNumber + 1)}}>
-                    &#8250;
-                </a>
+                    {[...Array(totalPages).keys()].map((currentPageNumber) => (
+                        <a key={currentPageNumber} href="" className={pageNumber === currentPageNumber ? "active" : ""} onClick={(e) => handlePageClick(e, currentPageNumber)}>
+                            {currentPageNumber + 1}
+                        </a>
+                    ))}
+                    <a href="" className="next" onClick={(e) => {pageNumber > totalPages-2 ? handlePageClick(e, pageNumber) : handlePageClick(e, pageNumber + 1)}}>
+                        &#8250;
+                    </a>
+                </div>
             </div>
+
         )
     }
 
@@ -200,6 +204,7 @@ const Home = () => {
                 <CommoditiesTable/>
                 <Pagination/>
             </main>
+            <Footer/>
         </>
     )
 }

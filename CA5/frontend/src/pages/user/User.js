@@ -503,7 +503,7 @@ const UserBody = () => {
     }
 
     return (
-        <main>
+        <main id="main-user">
             <UserInfo/>
             <BuyList/>
             <PurchasedList/>
