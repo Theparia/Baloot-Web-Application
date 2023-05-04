@@ -10,6 +10,7 @@ import Footer from "../../components/Footer/Footer.js";
 
 
 const Home = () => {
+
     const [commoditiesList, setCommoditiesList] = useState([]);
     const [commoditiesSize, setCommoditiesSize] = useState(0);
     const [searchMethod, setSearchMethod] = useState(null);
@@ -196,16 +197,23 @@ const Home = () => {
         )
     }
 
+    if (sessionStorage.getItem('username') === null) {
+        window.location.replace("/login")
+        return;
+    }
+
+
     return(
         <>
-            <Header searchBar={true} searchFunc={search} username={sessionStorage.getItem('username')} />
+            <Header searchBar={true} searchFunc={search} username={sessionStorage.getItem('username')}/>
             <main id="home-main">
-                <FilterCommodities/>
-                <CommoditiesTable/>
-                <Pagination/>
+            <FilterCommodities/>
+            <CommoditiesTable/>
+            <Pagination/>
             </main>
             <Footer/>
         </>
+
     )
 }
 
