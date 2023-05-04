@@ -8,6 +8,7 @@ import {
     searchCommodities,
     sortCommodities
 } from "../../apis/CommoditiesRequest.js";
+import {addToBuyList} from "../../apis/UserRequest.js";
 
 
 const Home = () => {
@@ -84,18 +85,24 @@ const Home = () => {
     }
 
     const CommodityCart = ({commodity}) => {
+        const handleAddToBuyList = (e) => {
+            e.preventDefault();
+            addToBuyList(sessionStorage.getItem('username'), {"id": commodity.id}).then(async (response) => {
+                console.log("ADD TO BUY LIST");
+            }).catch((error) => console.log("ERROR: " + error.data))
+        }
+
         return (
             <div className="product-cart-home">
-                <a>
+                <a href={"/commodities/" + commodity.id}>
                     <div className="product-title-home">
                         {commodity.name}
-                        {/*Huawei nova 9*/}
                     </div>
                 </a>
                 <div className="product-inStock-home">
                     <span> {commodity.inStock} </span> left in stock
                 </div>
-                <a href="">
+                <a href={"/commodities/" + commodity.id}>
                     <img className="w-100" src={commodity.image} alt="ProductImage"/>
                 </a>
                 <div className="product-price-home">
@@ -103,7 +110,7 @@ const Home = () => {
                         <span>{commodity.price}</span>$
                     </div>
                     <div>
-                        <button className="add-to-cart-button-home" type="button">add to cart</button>
+                        <button className="add-to-cart-button-home" type="button" onClick={(e) => handleAddToBuyList(e)}>add to cart</button>
                     </div>
                 </div>
             </div>

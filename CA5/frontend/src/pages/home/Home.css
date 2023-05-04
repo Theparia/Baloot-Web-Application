@@ -146,6 +146,10 @@ body{
     flex: 0 0 calc(20% - 20px);
 }
 
+.product-cart-home a{
+    text-decoration: none;
+}
+
 .product-title-home{
     font-weight: 600;
     font-size: 25px;
@@ -154,6 +158,7 @@ body{
     color: var(--dark_theme);
     padding-top: 8px;
     padding-left: 20px;
+    text-decoration: none;
 }
 
 .product-inStock-home{
