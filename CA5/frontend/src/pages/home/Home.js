@@ -103,6 +103,11 @@ const Home = () => {
         const AddCommodityToUsersBuyListButton = ({commodity_in}) => {
             const isCommodityInBuyList = buyList.some((item) => item.id === commodity_in.id);
             const buyListItem = buyList.filter(item => item.id === commodity.id).find(item => item);
+            if(commodity.inStock <= 0){
+                return (
+                    <button className="add-to-cart-button-disabled" type="button" disabled={true}>add to cart</button>
+                )
+            }
             if (isCommodityInBuyList) {
                 return (
                     <div className="add-remove-button-home">
