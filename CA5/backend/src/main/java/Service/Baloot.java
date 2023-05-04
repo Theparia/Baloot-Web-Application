@@ -211,8 +211,12 @@ public class Baloot {
      }
 
      public void addToBuyList(String username, Integer commodityId) throws CommodityNotFound, UserNotFound, CommodityOutOfStock, CommodityAlreadyExistsInBuyList {
-        findCommodityById(commodityId).checkInStock(1);
-        findUserByUsername(username).addToBuyList(commodityId);
+        User user = findUserByUsername(username);
+        int quantity = 1;
+        if(user.getBuyList().containsKey(commodityId))
+            quantity += user.getBuyList().get(commodityId);
+        findCommodityById(commodityId).checkInStock(quantity);
+        user.addToBuyList(commodityId);
      }
 
      public float calcBuyListPrice(String username) throws UserNotFound, CommodityNotFound { //TODO: where?

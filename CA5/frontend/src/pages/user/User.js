@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import Header from "../../components/Header/Header.js";
-import {Link, useParams} from "react-router-dom";
+import {useParams} from "react-router-dom";
 import Footer from "../../components/Footer/Footer.js";
 import "./User.css"
 import {
@@ -15,7 +15,7 @@ import {getCommodity} from "../../apis/CommoditiesRequest.js";
 import {logout} from "../../apis/AuthRequest.js";
 import {toast, ToastContainer} from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import {Modal, Button, ButtonGroup} from 'react-bootstrap';
+import {Modal} from 'react-bootstrap';
 import * as PropTypes from "prop-types";
 
 function JSONList(props) {
@@ -357,7 +357,7 @@ const UserBody = () => {
                 buyList.forEach((item) => {
                     console.log(item.id + " ===> " + item.quantity)
                 })
-            }).catch((error) => console.log("ERROR: " + error.data))
+            }).catch((error) => alert(error.response.data))
         }
 
         const handleRemoveFromBuyList = (e) => {
@@ -387,11 +387,10 @@ const UserBody = () => {
                     {commodity.name}
                 </a>
                 <div className="col-font col-header-font">
-                    {/*{commodity.arrayField.join(', ')}*/}
-                    {commodity.categories}
+                    {commodity.categories.join(", ")}
                 </div>
                 <div className="col-font col-header-font">
-                    {commodity.price}
+                    ${commodity.price}
                 </div>
                 <div className="col-font col-header-font">
                     {commodity.providerId}

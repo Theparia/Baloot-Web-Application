@@ -125,6 +125,18 @@ main{
     align-items: center;
 }
 
+.col-header-font{
+    font-weight: 600;
+    font-size: 20px;
+    line-height: 34px;
+    text-align: center;
+    color: var(--black);
+    flex: 1;
+    padding: 10px;
+    text-decoration: none;
+}
+
+
 #img-container img{
     height: 5em;
     width: 5em;
@@ -137,18 +149,6 @@ main{
     justify-content: center;
     align-items: center;
     width: 100%;
-}
-
-
-.col-header-font{
-    font-weight: 600;
-    font-size: 20px;
-    line-height: 34px;
-    text-align: center;
-    color: var(--black);
-    flex: 1;
-    padding: 10px;
-    text-decoration: none;
 }
 
 .col-rating-font{
