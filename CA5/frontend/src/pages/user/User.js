@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import Header from "../../components/Header/Header.js";
-import {useParams} from "react-router-dom";
+import {Link, useParams} from "react-router-dom";
 import Footer from "../../components/Footer/Footer.js";
 import "./User.css"
 import {
@@ -15,6 +15,7 @@ import {getCommodity} from "../../apis/CommoditiesRequest.js";
 import {logout} from "../../apis/AuthRequest.js";
 import {toast, ToastContainer} from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import {Modal, Button} from 'react-bootstrap';
 
 const UserBody = () => {
     const [buyList, setBuyList] = useState([]);
@@ -79,33 +80,74 @@ const UserBody = () => {
 
     const Credit = () => {
         const [amount, setAmount] = useState("");
+        const [showModal, setShowModal] = useState(false);
 
         function handleAddCredit(e) {
             e.preventDefault();
+            setShowModal(true);
+        }
+
+        function handleConfirm() {
             addCredit(user.username, {"amount": amount})
                 .then(async (creditResponse) => {
                     await fetchUser();
                     setAmount("");
+                    setShowModal(false);
                 }).catch((error) => alert(error.response.data));
         }
 
         return (
-            <div className="credit">
-                <div id="font">
-                    <img src="/images/dollar.png"/>
-                    {user.credit}
+            <>
+                <div className="credit">
+                    <div id="font">
+                        <img src="/images/dollar.png"/>
+                        {user.credit}
+                    </div>
+                    <div>
+                        <input className="btn-font" id="amount-input" placeholder="$Amount" value={amount}
+                               onChange={(event) => setAmount(event.target.value)}/>
+                    </div>
+                    <div>
+                        <button id="credit-btn" className="btn btn-font" type="submit"
+                                onClick={(e) => handleAddCredit(e)}>
+                            Add More Credit
+                        </button>
+                    </div>
                 </div>
-                <div>
-                    <input className="btn-font" id="amount-input" placeholder="$Amount" value={amount}
-                           onChange={(event) => setAmount(event.target.value)}/>
-                </div>
-                <div>
-                    <button id="credit-btn" className="btn btn-font" type="submit"
-                            onClick={(e) => handleAddCredit(e)}>
-                        Add More Credit
-                    </button>
-                </div>
-            </div>
+
+                {showModal && (
+                    <>
+                        <div className="modal-overlay" onClick={() => setShowModal(false)}/>
+                        <div className="modal">
+                            <Modal.Header className="modal-header">
+                                <Modal.Title className="modal-title">Add Credit</Modal.Title>
+                            </Modal.Header>
+                            <Modal.Body className="modal-body">
+                                Are you sure you want to add {amount}$ to your account?
+                            </Modal.Body>
+                            <Modal.Footer className="modal-footer">
+                                <button onClick={() => setShowModal(false)}>Close</button>
+                                <button className="btn btn-font" onClick={handleConfirm}>Confirm!</button>
+                            </Modal.Footer>
+                        </div>
+                    </>
+                )}
+
+
+
+
+
+                {/*    <Modal show={showModal} onHide={() => setShowModal(false)}>*/}
+                {/*        <Modal.Header>*/}
+                {/*            <Modal.Title>Add Credit</Modal.Title>*/}
+                {/*        </Modal.Header>*/}
+                {/*        <Modal.Body>Are you sure you want to add {amount}$ to your account?</Modal.Body>*/}
+                {/*        <Modal.Footer>*/}
+                {/*            <Button onClick={() => setShowModal(false)}>Close</Button>*/}
+                {/*            <Button onClick={handleConfirm}>Confirm!</Button>*/}
+                {/*        </Modal.Footer>*/}
+                {/*    </Modal>*/}
+            </>
         )
     }
 
@@ -156,7 +198,7 @@ const UserBody = () => {
 
         const handleRemoveFromBuyList = (e) => {
             e.preventDefault();
-            removeFromBuyList(sessionStorage.getItem('username'), {"id": commodity.id}).then(async(response) => {
+            removeFromBuyList(sessionStorage.getItem('username'), {"id": commodity.id}).then(async (response) => {
                 console.log("REMOVE FROM BUY LIST");
                 await fetchBuyList();
             }).catch((error) => console.log("ERROR: " + error.data))
@@ -268,7 +310,7 @@ const UserBody = () => {
         }
         return (
             <div className="pay-section">
-                <button id="pay-btn" className="btn btn-font" onClick={(e)=> handleFinalizePayment(e)}>
+                <button id="pay-btn" className="btn btn-font" onClick={(e) => handleFinalizePayment(e)}>
                     Pay Now!
                 </button>
             </div>
