@@ -15,20 +15,6 @@ import java.util.List;
 @RestController
 @RequestMapping
 public class CommoditiesController {
-//    @RequestMapping(value = "/commodities", method = RequestMethod.GET)
-//    protected List<Commodity> getCommodities() {
-//        return Baloot.getInstance().getCommodities();
-//    }
-
-//    @RequestMapping(value = "/commodities", method = RequestMethod.GET)
-//    protected List<Commodity> getCommodities(
-//            @RequestParam(value = "pageNumber", defaultValue = "0", required = false) int pageNumber,
-//            @RequestParam(value = "pageSize", defaultValue = "12", required = false) int pageSize
-//    ) {
-//        System.out.println("-----> pageNumber: " + pageNumber + "pageSize: " + pageSize);
-//        return Baloot.getInstance().getCommoditiesByPage(pageNumber, pageSize);
-//    }
-
     @RequestMapping(value = "/commodities/{id}", method = RequestMethod.GET)
     protected ResponseEntity<Commodity> getCommodity(@PathVariable String id) {
         try {
@@ -45,7 +31,6 @@ public class CommoditiesController {
             @RequestParam(value = "searchedText", required = false) String searchedText,
             @RequestParam(value = "commoditiesAvailable", required = false) Boolean commoditiesAvailable) {
         Integer size = filterCommodities(sortMethod, searchMethod, searchedText, commoditiesAvailable).size();
-        System.out.println("SIZEEEEEEEEEe: " + size);
         return ResponseEntity.ok(size);
     }
 
@@ -58,7 +43,6 @@ public class CommoditiesController {
             @RequestParam(value = "pageNumber", defaultValue = "0", required = false) int pageNumber,
             @RequestParam(value = "pageSize", defaultValue = "12", required = false) int pageSize) {
 
-        System.out.println("-----> pageNumber: " + pageNumber + "pageSize: " + pageSize);
         List<Commodity> commodities = filterCommodities(sortMethod, searchMethod, searchedText, commoditiesAvailable);
         return ResponseEntity.ok(Baloot.getInstance().getCommoditiesByPage(pageNumber, pageSize, commodities));
     }
@@ -85,6 +69,5 @@ public class CommoditiesController {
             commodities = Baloot.getInstance().sortCommoditiesByPrice(commodities);
         }
         return commodities;
-
     }
 }
