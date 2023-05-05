@@ -14,10 +14,6 @@ export function getCommodities(data) {
     return axios.get('/commodities/', {params: data});
 }
 
-export function getComments(commodityId){
-    return axios.get("/commodities/" + commodityId + "/comments/");
-}
-
 export function rateCommodity(commodityId, data) {
     return axios.post("/commodities/" + commodityId + "/rating", data);
 }

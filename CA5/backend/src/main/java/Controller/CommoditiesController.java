@@ -51,13 +51,11 @@ public class CommoditiesController {
 
     @RequestMapping(value = "/commodities/{commodityId}/comments/",method = RequestMethod.GET)
     public ResponseEntity<List<Comment>> getCommentsCommodity(@PathVariable String commodityId) {
-        System.out.println("COMMENT");
         return ResponseEntity.ok(Baloot.getInstance().getCommodityComments(Integer.valueOf(commodityId)));
     }
 
     @RequestMapping(value = "/commodities/{commodityId}/comments/like",method = RequestMethod.POST)
     public ResponseEntity<List<Comment>> likeComment(@PathVariable String commodityId, @RequestParam("commentId") String sortMethod) {
-        System.out.println("COMMENT");
         return ResponseEntity.ok(Baloot.getInstance().getCommodityComments(Integer.valueOf(commodityId)));
     }
 

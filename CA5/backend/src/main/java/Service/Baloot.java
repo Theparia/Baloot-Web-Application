@@ -25,7 +25,6 @@ public class Baloot {
         try {
             importDatabase();
         } catch (Exception e) {
-            System.out.println(e.getMessage());
         }
     }
 
@@ -280,7 +279,7 @@ public class Baloot {
         throw new UserNotFound();
      }
 
-    public Comment findCommentById(Integer commentId) throws CommentNotFound {
+    public Comment findCommentById(UUID commentId) throws CommentNotFound {
         for (Comment comment : Database.getInstance().getComments()){
             if(comment.getId().equals(commentId)){
                 return comment;
@@ -325,7 +324,7 @@ public class Baloot {
         return vote == 1 || vote == 0 || vote == -1;
     }
 
-    public void voteComment(Integer commentId, String username, int vote) throws InvalidCommentVote, CommentNotFound, UserNotFound{
+    public void voteComment(UUID commentId, String username, int vote) throws InvalidCommentVote, CommentNotFound, UserNotFound{
         if(!isVoteValid(vote))
             throw new InvalidCommentVote();
         findCommentById(commentId).addVote(findUserByUsername(username).getUsername(), vote);

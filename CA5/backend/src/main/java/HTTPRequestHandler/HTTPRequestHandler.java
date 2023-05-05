@@ -17,7 +17,6 @@ public class HTTPRequestHandler {
             String result = "";
             if (entity != null) {
                 result = EntityUtils.toString(entity);
-//                System.out.println(result);
             }
             return result;
         }

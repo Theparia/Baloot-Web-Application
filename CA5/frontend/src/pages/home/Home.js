@@ -33,7 +33,6 @@ const Home = () => {
         getCommodities(req).then((response) => {
             let result = [];
             for (let i in response.data) {
-                console.log(response.data[i].name);
                 result.push(response.data[i]);
             }
             setCommoditiesList(result);
@@ -160,7 +159,6 @@ const Home = () => {
     const Pagination = () => {
         const handlePageClick = (e, pageNumber) => {
             e.preventDefault();
-            console.log("*****************Page: " + pageNumber);
             setPageNumber(pageNumber);
         }
         return (

@@ -1,29 +1,38 @@
-import React, {useEffect, useState} from 'react';
+import React, { useEffect, useState } from 'react';
 import Header from "../../components/Header/Header.js";
 import Footer from "../../components/Footer/Footer.js";
 
 import './Product.css'
 import {useParams} from "react-router-dom";
-import {getComments, getCommoditiesSize, getCommodity, rateCommodity} from "../../apis/CommoditiesRequest.js";
-import {getProvider} from "../../apis/Provider.js";
-import {addToBuyList, getBuyList, removeFromBuyList} from "../../apis/UserRequest.js";
+import {getCommodities, rateCommodity, getCommodity} from "../../apis/CommoditiesRequest.js";
+import {likeComment, dislikeComment, getComments, getCommentVotes} from "../../apis/CommentsRequest.js"
+import {getProvider} from "../../apis/Provider.js"
+import {getBuyList, addToBuyList, removeFromBuyList} from "../../apis/UserRequest.js"
 
 const Comments = () => {
     const {commodityId} = useParams();
     const [commentsList, setCommentsList] = useState([]);
+    const [vote, setVote] = useState(true);
 
     useEffect(() => {
         getComments(commodityId).then((response) => {
-            console.log("Getting Comments")
             let result = [];
             for (let i in response.data) {
-                console.log(response.data[i].text);
                 result.push(response.data[i]);
             }
             setCommentsList(result);
         }).catch(console.error);
     }, []);
 
+    useEffect(() => {
+        getComments(commodityId).then((response) => {
+            let result = [];
+            for (let i in response.data) {
+                result.push(response.data[i]);
+            }
+            setCommentsList(result);
+        }).catch(console.error);
+    }, [vote]);
 
     const CommentTableHeader = () => {
         return (
@@ -37,6 +46,21 @@ const Comments = () => {
     }
 
     const Comment = ({comment}) => {
+        const handleLikeComment = (e) => {
+            e.preventDefault();
+            const req = {"username": sessionStorage.getItem('username')}
+            likeComment(comment.id, req).then(() => {
+                setVote(!vote)
+            }).catch(error => alert(error.response.data))
+        }
+
+        const handleDislikeComment = (e) => {
+            e.preventDefault();
+            const req = {"username": sessionStorage.getItem('username')}
+            dislikeComment(comment.id, req).then(() => {
+                setVote(!vote)
+            }).catch((error) => alert(error.response.data))
+        }
         return (
             <div className="comment-row">
                 <div className="comment-text">
@@ -48,13 +72,13 @@ const Comments = () => {
                 <div className="comment-voting">
                     Is this comment helpful?
                     &nbsp;
-                    <span className="vote-count-text">1</span>
-                    <a href="">
+                    <span className="vote-count-text">{comment.likeCount}</span>
+                    <a href="" onClick={async (e) => await handleLikeComment(e)}>
                         <img src="/images/thumbsUp.png" alt="thumbsUp img"/>
                     </a>
                     &nbsp;
-                    <span className="vote-count-text">1</span>
-                    <a href="">
+                    <span className="vote-count-text">{comment.dislikeCount}</span>
+                    <a href="" onClick={async (e) => await handleDislikeComment(e)}>
                         <img src="/images/thumbsDown.png" alt="thumbsDown img"/>
                     </a>
                 </div>
