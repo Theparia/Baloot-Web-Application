@@ -5,7 +5,7 @@ import Footer from "../../components/Footer/Footer.js";
 import './Product.css'
 import {useParams} from "react-router-dom";
 import {getCommodities, rateCommodity, getCommodity} from "../../apis/CommoditiesRequest.js";
-import {likeComment, dislikeComment, getComments, getCommentVotes} from "../../apis/CommentsRequest.js"
+import {likeComment, dislikeComment, getComments, getCommentVotes, addComment} from "../../apis/CommentsRequest.js"
 import {getProvider} from "../../apis/Provider.js"
 import {getBuyList, addToBuyList, removeFromBuyList} from "../../apis/UserRequest.js"
 
@@ -51,7 +51,7 @@ const Comments = () => {
             const req = {"username": sessionStorage.getItem('username')}
             likeComment(comment.id, req).then(() => {
                 setVote(!vote)
-            }).catch(error => alert(error.response.data))
+            }).catch(error => alert(error.response.data));
         }
 
         const handleDislikeComment = (e) => {
@@ -59,7 +59,7 @@ const Comments = () => {
             const req = {"username": sessionStorage.getItem('username')}
             dislikeComment(comment.id, req).then(() => {
                 setVote(!vote)
-            }).catch((error) => alert(error.response.data))
+            }).catch((error) => alert(error.response.data));
         }
         return (
             <div className="comment-row">
@@ -86,6 +86,33 @@ const Comments = () => {
         )
     }
 
+    const SubmitComment = () => {
+        const [commentText, setCommentText] = useState("");
+
+        const handleSubmitComment = (e) => {
+            e.preventDefault();
+            const req = {"username": sessionStorage.getItem('username'), "commodityId": commodityId, "text": commentText}
+            addComment(req).then(() => {
+                setVote(!vote);
+                setCommentText("");
+            }).catch(error => alert(error.response.data));
+        }
+
+        return (
+            <div className="comment-row" id="submit-comment-section">
+                <div className="comment-section-title-font">
+                    Submit your opinion
+                </div>
+                <div className="submit-comment-form">
+                    <form>
+                        <textarea name="comment" value={commentText} onChange={(event) => {setCommentText(event.target.value)}}></textarea>
+                        <button type="submit" onClick={async (e) => await handleSubmitComment(e, commentText)}>Post</button>
+                    </form>
+                </div>
+            </div>
+        )
+    }
+
     return (
         <div>
             <CommentTableHeader/>
@@ -95,19 +122,8 @@ const Comments = () => {
                         <Comment key={index} comment={item}/>
                     )) : <></>
                 }
-
-                <div className="comment-row" id="submit-comment-section">
-                    <div className="comment-section-title-font">
-                        Submit your opinion
-                    </div>
-                    <div className="submit-comment-form">
-                        <form action="/submit-comment" method="POST">
-                            <textarea name="comment"></textarea>
-                            <button type="submit">Post</button>
-                        </form>
-                    </div>
-                </div>
             </div>
+            <SubmitComment/>
         </div>
 
     )

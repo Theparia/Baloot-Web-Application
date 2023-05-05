@@ -14,3 +14,7 @@ export function likeComment(commentId, data){
 export function dislikeComment(commentId, data){
     return axios.post("/comments/" + commentId + "/dislike/", data);
 }
+
+export function addComment(data){
+    return axios.post("/comments/add/", data)
+}
