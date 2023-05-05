@@ -15,6 +15,13 @@ import java.util.List;
 @RestController
 @RequestMapping
 public class CommoditiesController {
+
+    @RequestMapping(value = "/commodities/{commodityId}/comments/",method = RequestMethod.GET)
+    public ResponseEntity<List<Comment>> getCommentsCommodity(@PathVariable String commodityId) {
+        System.out.println("COMMENT");
+        return ResponseEntity.ok(Baloot.getInstance().getCommodityComments(Integer.valueOf(commodityId)));
+    }
+
     @RequestMapping(value = "/commodities/{id}", method = RequestMethod.GET)
     protected ResponseEntity<Commodity> getCommodity(@PathVariable String id) {
         try {

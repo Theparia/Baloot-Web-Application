@@ -207,9 +207,9 @@ const Home = () => {
         <>
             <Header searchBar={true} searchFunc={search} username={sessionStorage.getItem('username')}/>
             <main id="home-main">
-            <FilterCommodities/>
-            <CommoditiesTable/>
-            <Pagination/>
+                <FilterCommodities/>
+                <CommoditiesTable/>
+                <Pagination/>
             </main>
             <Footer/>
         </>

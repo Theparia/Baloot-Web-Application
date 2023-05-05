@@ -13,3 +13,7 @@ export function getCommodities(data) {
     console.log('Filtering Commodities ', data);
     return axios.get('/commodities/', {params: data});
 }
+
+export function getComments(commodityId){
+    return axios.get("/commodities/" + commodityId + "/comments/");
+}

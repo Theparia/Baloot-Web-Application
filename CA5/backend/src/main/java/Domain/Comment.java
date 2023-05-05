@@ -15,6 +15,7 @@ public class Comment {
     private String userEmail;
     private String text;
     private String date;
+    private String username;
     private HashMap<String, Integer> votes = new HashMap<String, Integer>(); // username ---> {-1, 0, 1}
 
     public Comment(Integer commodityId, String userEmail, String text, String date){
