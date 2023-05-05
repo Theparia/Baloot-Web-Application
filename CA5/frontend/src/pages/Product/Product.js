@@ -151,7 +151,7 @@ const ProductInfo = () => {
 
     const AddCommodityToUsersBuyListButton = () => {
         if (Array.isArray(buyList)) {
-            const isCommodityInBuyList = buyList.some((item) => item.id === commodityId.id);
+            const isCommodityInBuyList = buyList.some((item) => item.id === commodity.id);
             const buyListItem = buyList.filter(item => item.id === commodity.id).find(item => item);
             if (isCommodityInBuyList && commodity.inStock > 0) {
                 return (

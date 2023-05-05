@@ -145,6 +145,11 @@
     line-height: 44px;
     color: var(--dark_theme);
     cursor: pointer;
+    margin: 1rem;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    align-items: center;
 }
 
 .comment-section-title{
