@@ -23,7 +23,7 @@ public class Commodity {
     private Integer providerId;
     private Float price;
     private List<String> categories;
-    @JsonIgnore
+//    @JsonIgnore
     private HashMap<String, Float> usersRating = new HashMap<>();
     private Float rating;
     private int inStock;

@@ -138,18 +138,6 @@ const UserBody = () => {
                         </div>
                     </>
                 )}
-
-
-                {/*    <Modal show={showModal} onHide={() => setShowModal(false)}>*/}
-                {/*        <Modal.Header>*/}
-                {/*            <Modal.Title>Add Credit</Modal.Title>*/}
-                {/*        </Modal.Header>*/}
-                {/*        <Modal.Body>Are you sure you want to add {amount}$ to your account?</Modal.Body>*/}
-                {/*        <Modal.Footer>*/}
-                {/*            <Button onClick={() => setShowModal(false)}>Close</Button>*/}
-                {/*            <Button onClick={handleConfirm}>Confirm!</Button>*/}
-                {/*        </Modal.Footer>*/}
-                {/*    </Modal>*/}
             </>
         )
     }
@@ -205,7 +193,7 @@ const UserBody = () => {
             useEffect(() => {
                 const applyDiscount = async () => {
                     try {
-                        const response = await applyDiscountCode(user.username, { "code": discountCode });
+                        const response = await applyDiscountCode(user.username, {"code": discountCode});
                         setDiscountPercentage(response.data);
                     } catch (error) {
                         alert("Invalid Discount Code");
@@ -227,12 +215,13 @@ const UserBody = () => {
                 <div>
                     <form onSubmit={handleSubmitDiscount} className="discount">
                         <div>
-                            <input className="btn-font" id="code-input" placeholder="Code" name="code" />
+                            <input className="btn-font" id="code-input" placeholder="Code" name="code"/>
                         </div>
                         <div>
-                            <button id={`${discountPercentage > 0 ? "submit-discount-btn-on" : "submit-discount-btn-off"}`}
-                                    className="btn btn-font" type="submit"
-                                    disabled={discountPercentage > 0}>
+                            <button
+                                id={`${discountPercentage > 0 ? "submit-discount-btn-on" : "submit-discount-btn-off"}`}
+                                className="btn btn-font" type="submit"
+                                disabled={discountPercentage > 0}>
                                 {discountPercentage > 0 ? "Submitted" : "Submit"}
                             </button>
                         </div>
@@ -255,8 +244,8 @@ const UserBody = () => {
             const price = getBuylistPrice();
             return (
                 <div className="total-price">
-                    <div> total </div>
-                    <div className={`${discountPercentage > 0 ? "discounted-price" : "price"}`}> {price}$ </div>
+                    <div> total</div>
+                    <div className={`${discountPercentage > 0 ? "discounted-price" : "price"}`}> {price}$</div>
                 </div>
             )
         }
@@ -265,8 +254,8 @@ const UserBody = () => {
             const price = getBuylistPrice();
             return (
                 <div className="total-price">
-                    <div> with discount </div>
-                    <div className="price"> {price * (100 - discountPercentage) / 100}$ </div>
+                    <div> with discount</div>
+                    <div className="price"> {price * (100 - discountPercentage) / 100}$</div>
                 </div>
             )
         }
@@ -306,7 +295,8 @@ const UserBody = () => {
                                     setDiscountPercentage(0);
                                 }}>Close
                                 </button>
-                                <button id="buy-btn" className="btn btn-font" onClick={handleFinalizePayment}>Buy!</button>
+                                <button id="buy-btn" className="btn btn-font" onClick={handleFinalizePayment}>Buy!
+                                </button>
                             </Modal.Footer>
                         </div>
                     </>
@@ -388,7 +378,7 @@ const UserBody = () => {
                 <a className="col-font col-header-font" href={"/commodities/" + commodity.id}>
                     {commodity.name}
                 </a>
-                <div className="col-font col-header-font">
+                <div className="col-font col-header-font" style={{flexBasis: 2}}>
                     {commodity.categories.join(", ")}
                 </div>
                 <div className="col-font col-header-font">
