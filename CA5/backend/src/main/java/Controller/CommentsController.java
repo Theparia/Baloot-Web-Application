@@ -3,6 +3,7 @@ package Controller;
 
 import Database.Database;
 import Domain.Comment;
+import Domain.Commodity;
 import Service.Baloot;
 import Service.Exceptions.CommentNotFound;
 import Service.Exceptions.InvalidCommentVote;
@@ -26,7 +27,7 @@ public class CommentsController {
     }
 
     @RequestMapping(value = "/comments/{commentId}/like/", method = RequestMethod.POST)
-    public ResponseEntity<String> likeComment(@PathVariable String commentId, @RequestBody Map<String, String> info) throws UserNotFound, InvalidCommentVote, CommentNotFound {
+    public ResponseEntity<String> likeComment(@PathVariable String commentId, @RequestBody Map<String, String> info){
         try {
             Baloot.getInstance().voteComment(UUID.fromString(commentId), info.get("username"), 1);
             return ResponseEntity.ok("ok");
@@ -36,9 +37,19 @@ public class CommentsController {
     }
 
     @RequestMapping(value = "/comments/{commentId}/dislike/", method = RequestMethod.POST)
-    public ResponseEntity<String> dislikeComment(@PathVariable String commentId, @RequestBody Map<String, String> info) throws UserNotFound, InvalidCommentVote, CommentNotFound {
+    public ResponseEntity<String> dislikeComment(@PathVariable String commentId, @RequestBody Map<String, String> info){
         try {
             Baloot.getInstance().voteComment(UUID.fromString(commentId), info.get("username"), -1);
+            return ResponseEntity.ok("ok");
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).body(e.getMessage());
+        }
+    }
+
+    @RequestMapping(value = "/comments/add/", method = RequestMethod.POST)
+    public ResponseEntity<String> dislikeComment(@RequestBody Map<String, String> info)  {
+        try {
+            Baloot.getInstance().addComment(Baloot.getInstance().getEmailByUsername(info.get("username")), Integer.valueOf(info.get("commodityId")), info.get("text"));
             return ResponseEntity.ok("ok");
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.FORBIDDEN).body(e.getMessage());

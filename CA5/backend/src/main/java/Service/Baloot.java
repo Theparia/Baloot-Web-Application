@@ -203,9 +203,10 @@ public class Baloot {
         user.deleteCurrentDiscount();
     }
 
-    public void addComment(String userEmail, Integer commodityId, String text){
+    public void addComment(String userEmail, Integer commodityId, String text) throws UserNotFound {
         Comment comment = new Comment(commodityId, userEmail, text, LocalDate.now().toString());
         Database.getInstance().addComment(comment);
+        setCommentsUsername();
     }
 
      public void addCommodity(Commodity newCommodity) throws ProviderNotFound {
@@ -278,6 +279,15 @@ public class Baloot {
         }
         throw new UserNotFound();
      }
+
+    public String getEmailByUsername(String username) throws UserNotFound {
+        for (User user : Database.getInstance().getUsers()){
+            if (user.getUsername().equals(username)){
+                return user.getEmail();
+            }
+        }
+        throw new UserNotFound();
+    }
 
     public Comment findCommentById(UUID commentId) throws CommentNotFound {
         for (Comment comment : Database.getInstance().getComments()){
