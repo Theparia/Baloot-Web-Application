@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, {useEffect, useState} from 'react';
 import Header from "../../components/Header/Header.js";
 import Footer from "../../components/Footer/Footer.js";
 
@@ -8,6 +8,7 @@ import {getCommodities, rateCommodity, getCommodity} from "../../apis/Commoditie
 import {likeComment, dislikeComment, getComments, getCommentVotes} from "../../apis/CommentsRequest.js"
 import {getProvider} from "../../apis/Provider.js"
 import {getBuyList, addToBuyList, removeFromBuyList} from "../../apis/UserRequest.js"
+import {Modal} from "react-bootstrap";
 
 const Comments = () => {
     const {commodityId} = useParams();
@@ -212,7 +213,6 @@ const ProductInfo = () => {
         };
 
 
-
         return (
             <div className="submit-part">
                 <div>
@@ -236,12 +236,103 @@ const ProductInfo = () => {
                         </div>
                     </div>
                 </div>
-                <button id="submit-btn" onClick={(e)=> handleSubmitRate(e)}>
+                <button id="submit-btn" onClick={(e) => handleSubmitRate(e)}>
                     submit
                 </button>
             </div>
         );
     };
+
+    const Categories = () => {
+        const [showCategoriesModal, setShowCategoriesModal] = useState(false);
+
+        const handleShowMore = (e) => {
+            e.preventDefault();
+            setShowCategoriesModal(true);
+        }
+        return (
+            <div id="categories" className="product-info-font">
+                Category(s)
+                {commodity.categories && commodity.categories.length <= 4 ?
+
+                    <ul>
+                        {commodity.categories.map((category, index) => (
+                            <li key={index}>{category}</li>
+                        ))}
+                    </ul>
+
+                    : commodity.categories && (
+                    <>
+                        <ul>
+                            <li>{commodity.categories[0]}</li>
+                            <li>{commodity.categories[1]}</li>
+                            <li>{commodity.categories[2]}</li>
+                            <li>{commodity.categories[3]}</li>
+                        </ul>
+                        <div id="show-more" onClick={(e) => handleShowMore(e)}>Show more...</div>
+                        {showCategoriesModal && (
+                            <>
+                                <div className="modal-overlay"/>
+                                <div className="modal">
+                                    <Modal.Header className="modal-header">
+                                        <Modal.Title className="modal-title">Categories:</Modal.Title>
+                                    </Modal.Header>
+                                    <Modal.Body className="modal-body">
+                                        <ul>
+                                            {commodity.categories.map((category, index) => (
+                                                <li key={index}>{category}</li>
+                                            ))}
+                                        </ul>
+                                    </Modal.Body>
+                                    <Modal.Footer className="modal-footer">
+                                        <button onClick={() => setShowCategoriesModal(false)}>Close</button>
+                                    </Modal.Footer>
+                                </div>
+                            </>
+                        )}
+                    </>
+                )}
+            </div>
+        )
+    }
+
+    const Information = () => {
+        return (
+            <div className="category-part">
+                <div>
+                    <div id="product-name">
+                        {commodity.name}
+                    </div>
+                    <div id="stock" className="product-info-font">
+                        {commodity.inStock} left in stock
+                    </div>
+                    <div className="provider-name product-info-font">
+                        by <a href={"/providers/" + commodity.providerId}>{providerName}</a>
+                    </div>
+                    <Categories/>
+                </div>
+                <div id="rating">
+                    <img src="/images/star-on.png"/>
+                    <div id="rating-font" className="product-info-font">
+                        {commodity.rating}
+                    </div>
+                    {commodity?.usersRating && <div id="number-of-ratings" className="product-info-font">
+                        ({Object.keys(commodity.usersRating).length})</div>}
+                </div>
+            </div>
+        )
+    }
+
+    const CartPart = () => {
+        return(
+            <div className="cart-part">
+                <div id="price" className="product-info-font">
+                    {commodity.price}$
+                </div>
+                <AddCommodityToUsersBuyListButton/>
+            </div>
+        )
+    }
 
     return (
         <div className="product-info-section">
@@ -249,47 +340,8 @@ const ProductInfo = () => {
                 <img src={commodity.image}/>
             </div>
             <div className="product-info">
-                <div className="category-part">
-                    <div>
-                        <div id="product-name">
-                            {commodity.name}
-                        </div>
-                        <div id="stock" className="product-info-font">
-                            {commodity.inStock} left in stock
-                        </div>
-                        <div className="provider-name product-info-font">
-                            by <a href={"/providers/" + commodity.providerId}>{providerName}</a>
-                        </div>
-                        <div id="categories" className="product-info-font">
-                            Category(s)
-                            <ul>
-                                {
-                                    commodity.categories?.map((category, index) => (
-                                        <li key={index}>
-                                            {category}
-                                        </li>
-                                    ))}
-                            </ul>
-                        </div>
-                    </div>
-                    <div id="rating">
-                        <img src="/images/star-on.png"/>
-                        <div id="rating-font" className="product-info-font">
-                            {commodity.rating}
-                        </div>
-                        {commodity?.usersRating && <div id="number-of-ratings" className="product-info-font">
-                            ({Object.keys(commodity.usersRating).length})</div>}
-                    </div>
-                </div>
-                <div className="cart-part">
-                    <div id="price" className="product-info-font">
-                        {commodity.price}$
-                    </div>
-                    <AddCommodityToUsersBuyListButton/>
-                    {/*<button id="add-to-cart-btn" className="product-info-font">*/}
-                    {/*    add to cart*/}
-                    {/*</button>*/}
-                </div>
+                <Information/>
+                <CartPart/>
                 <StarRating/>
             </div>
         </div>
