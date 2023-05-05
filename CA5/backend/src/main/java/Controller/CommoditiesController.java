@@ -16,12 +16,6 @@ import java.util.List;
 @RequestMapping
 public class CommoditiesController {
 
-    @RequestMapping(value = "/commodities/{commodityId}/comments/",method = RequestMethod.GET)
-    public ResponseEntity<List<Comment>> getCommentsCommodity(@PathVariable String commodityId) {
-        System.out.println("COMMENT");
-        return ResponseEntity.ok(Baloot.getInstance().getCommodityComments(Integer.valueOf(commodityId)));
-    }
-
     @RequestMapping(value = "/commodities/{id}", method = RequestMethod.GET)
     protected ResponseEntity<Commodity> getCommodity(@PathVariable String id) {
         try {
@@ -52,6 +46,18 @@ public class CommoditiesController {
 
         List<Commodity> commodities = filterCommodities(sortMethod, searchMethod, searchedText, commoditiesAvailable);
         return ResponseEntity.ok(Baloot.getInstance().getCommoditiesByPage(pageNumber, pageSize, commodities));
+    }
+
+    @RequestMapping(value = "/commodities/{commodityId}/comments/",method = RequestMethod.GET)
+    public ResponseEntity<List<Comment>> getCommentsCommodity(@PathVariable String commodityId) {
+        System.out.println("COMMENT");
+        return ResponseEntity.ok(Baloot.getInstance().getCommodityComments(Integer.valueOf(commodityId)));
+    }
+
+    @RequestMapping(value = "/commodities/{commodityId}/comments/like",method = RequestMethod.POST)
+    public ResponseEntity<List<Comment>> likeComment(@PathVariable String commodityId, @RequestParam("commentId") String sortMethod) {
+        System.out.println("COMMENT");
+        return ResponseEntity.ok(Baloot.getInstance().getCommodityComments(Integer.valueOf(commodityId)));
     }
 
     private List<Commodity> filterCommodities(String sortMethod, String searchMethod, String searchedText, Boolean commoditiesAvailable){
