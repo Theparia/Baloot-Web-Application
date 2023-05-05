@@ -18,11 +18,13 @@ public class Provider {
     private String name;
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-DD")
     private Date registryDate;
+    private String image;
 
-    public Provider(Integer id, String name, Date registryDate) {
+    public Provider(Integer id, String name, Date registryDate, String image) {
         this.id = id;
         this.name = name;
         this.registryDate = registryDate;
+        this.image = image;
     }
 
     public boolean isEqual(Integer providerId) {

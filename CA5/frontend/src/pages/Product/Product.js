@@ -316,7 +316,7 @@ const ProductInfo = () => {
         return (
             <div className="category-part">
                 <div>
-                    <div id="product-name">
+                    <div className="product-name">
                         {commodity.name}
                     </div>
                     <div id="stock" className="product-info-font">

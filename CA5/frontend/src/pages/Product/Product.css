@@ -56,12 +56,11 @@
 }
 
 
-#product-name{
+.product-name{
     font-weight: 600;
     font-size: 40px;
     line-height: 70px;
     color: var(--dark_theme);
-
 }
 
 .product-info-font{

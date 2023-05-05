@@ -8,6 +8,7 @@ import User from "./pages/user/User.js";
 import Home from "./pages/home/Home.js";
 import Signup from "./pages/auth/Signup.js";
 import Product from "./pages/Product/Product.js";
+import Provider from "./pages/provider/Provider.js";
 
 
 function App() {
@@ -19,6 +20,7 @@ function App() {
                 <Route path="/signup" element={<Signup/>}/>
                 <Route path="/users/:username" element={<User/>}/>
                 <Route path="/commodities/:commodityId" element={<Product/>}/>
+                <Route path="/providers/:providerId" element={<Provider/>}/>
             </Routes>
         </Router>
     );

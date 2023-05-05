@@ -48,7 +48,7 @@ public class Baloot {
     public void importDatabase() throws Exception {
         final String USERS_URI = "http://5.253.25.110:5000/api/users";
         final String COMMODITIES_URI = "http://5.253.25.110:5000/api/v2/commodities";
-        final String PROVIDERS_URI = "http://5.253.25.110:5000/api/providers";
+        final String PROVIDERS_URI = "http://5.253.25.110:5000/api/v2/providers";
         final String COMMENTS_URI = "http://5.253.25.110:5000/api/comments";
         final String DISCOUNT_URI = "http://5.253.25.110:5000/api/discount";
 
