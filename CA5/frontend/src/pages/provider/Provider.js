@@ -27,7 +27,7 @@ const ProviderInfo = () => {
 }
 
 
-const ProvidersProducts = () => {
+const ProvidersProducts = ({setItemCount}) => {
     const {providerId} = useParams();
     const [providerCommoditiesList, setProviderCommoditiesList] = useState([]);
     const [buyList, setBuyList] = useState([]);
@@ -50,6 +50,7 @@ const ProvidersProducts = () => {
         const buyListResponse = await getBuyList(sessionStorage.getItem('username'));
         const commodities = await extractCommodities(buyListResponse.data);
         setBuyList(commodities);
+        setItemCount(commodities.length)
     }
 
     const extractCommodities = async (data) => {
@@ -149,6 +150,7 @@ const ProvidersProducts = () => {
 
 
 const Provider = () => {
+    const [itemCount, setItemCount] = useState(0);
     if (sessionStorage.getItem('username') === null) {
         window.location.replace("/login")
         return;
@@ -156,9 +158,9 @@ const Provider = () => {
 
     return (
         <>
-            <Header username={sessionStorage.getItem('username')}/>
+            <Header itemCount={itemCount}/>
             <ProviderInfo/>
-            <ProvidersProducts/>
+            <ProvidersProducts setItemCount={setItemCount}/>
             <Footer/>
         </>
     )

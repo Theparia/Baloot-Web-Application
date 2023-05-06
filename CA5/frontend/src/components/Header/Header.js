@@ -92,10 +92,10 @@ const Header = (props) => {
         <header>
             <nav className="navbar">
                 <BalootLogo />
-                {props.username!=null && <Username username={username}/>}
+                {username != null && <Username username={username}/>}
                 {location.pathname === "/" && <CommoditiesSearchFrom searchFunc={props.searchFunc}/>}
-                {props.username!=null && <CartButton itemCount={props.itemCount} username={username}/>}
-                {props.username==null && <RegisterLoginButtons/>}
+                {username != null && <CartButton itemCount={props.itemCount} username={username}/>}
+                {username == null && <RegisterLoginButtons/>}
             </nav>
         </header>
     )

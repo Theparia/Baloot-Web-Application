@@ -23,7 +23,7 @@ function JSONList(props) {
 }
 
 JSONList.propTypes = {data: PropTypes.any};
-const UserBody = () => {
+const UserBody = ({setItemCount}) => {
     const [buyList, setBuyList] = useState([]);
     const [user, setUser] = useState({});
     const [purchasedList, setPurchasedList] = useState([]);
@@ -53,6 +53,7 @@ const UserBody = () => {
         const buyListResponse = await getBuyList(sessionStorage.getItem('username'));
         const commodities = await extractCommodities(buyListResponse.data);
         setBuyList(commodities);
+        setItemCount(commodities.length);
     }
 
     const fetchPurchasedList = async () => {
@@ -503,6 +504,7 @@ const UserBody = () => {
 
 
 const User = () => {
+    const [itemCount, setItemCount] = useState(0);
     const {username} = useParams();
     if (username !== sessionStorage.getItem('username')) {
         window.location.replace("/login") //TODO
@@ -510,8 +512,8 @@ const User = () => {
     return (
         <>
             <ToastContainer/>
-            <Header username={username}/>
-            <UserBody/>
+            <Header itemCount={itemCount}/>
+            <UserBody setItemCount={setItemCount}/>
             <Footer/>
         </>
     )

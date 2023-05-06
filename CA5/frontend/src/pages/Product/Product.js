@@ -132,7 +132,7 @@ const Comments = () => {
     )
 }
 
-const SuggestedProducts = () => {
+const SuggestedProducts = ({setItemCount}) => {
     const {commodityId} = useParams();
     const [suggestedCommoditiesList, setSuggestedCommoditiesList] = useState([]);
     const [buyList, setBuyList] = useState([]);
@@ -155,6 +155,7 @@ const SuggestedProducts = () => {
         const buyListResponse = await getBuyList(sessionStorage.getItem('username'));
         const commodities = await extractCommodities(buyListResponse.data);
         setBuyList(commodities);
+        setItemCount(commodities.length);
     }
 
     const extractCommodities = async (data) => {
@@ -490,17 +491,18 @@ const ProductInfo = () => {
 
 
 const Product = () => {
+    const [itemCount, setItemCount] = useState(0);
     if (sessionStorage.getItem('username') === null) {
         window.location.replace("/login")
         return;
     }
     return (
         <>
-            <Header username={sessionStorage.getItem('username')}/>
+            <Header itemCount={itemCount}/>
             <main id="main-product">
                 <ProductInfo/>
                 <Comments/>
-                <SuggestedProducts/>
+                <SuggestedProducts setItemCount={setItemCount}/>
             </main>
             <Footer/>
         </>
