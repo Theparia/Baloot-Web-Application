@@ -262,7 +262,7 @@ const UserBody = ({setItemCount}) => {
         }
 
         const deleteCurrentDiscountCode = () => {
-            deleteDiscountCode(user.username).then().catch((error) => console.log(error.response.data));
+            deleteDiscountCode(user.username).then().catch((error) => alert(error.response.data));
         }
 
 
@@ -313,10 +313,8 @@ const UserBody = ({setItemCount}) => {
         const handleLogout = (e) => {
             e.preventDefault();
             logout().then((response) => {
-                console.log(response.data);
                 sessionStorage.removeItem('username');
                 window.location.replace("/login");
-                console.log("AFTER LOGOUT: " + sessionStorage.getItem('username'))
             })
         }
 
@@ -345,20 +343,15 @@ const UserBody = ({setItemCount}) => {
         const handleAddToBuyList = (e) => {
             e.preventDefault();
             addToBuyList(sessionStorage.getItem('username'), {"id": commodity.id}).then(async (response) => {
-                console.log("ADD TO BUY LIST");
                 await fetchBuyList();
-                buyList.forEach((item) => {
-                    console.log(item.id + " ===> " + item.quantity)
-                })
             }).catch((error) => alert(error.response.data))
         }
 
         const handleRemoveFromBuyList = (e) => {
             e.preventDefault();
             removeFromBuyList(sessionStorage.getItem('username'), {"id": commodity.id}).then(async (response) => {
-                console.log("REMOVE FROM BUY LIST");
                 await fetchBuyList();
-            }).catch((error) => console.log("ERROR: " + error.data))
+            }).catch((error) => alert(error.response.data))
         }
 
         return (

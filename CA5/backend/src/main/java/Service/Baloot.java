@@ -64,10 +64,7 @@ public class Baloot {
         List<Provider> providers = objectMapper.readValue(HTTPRequestHandler.getRequest(PROVIDERS_URI), typeFactory.constructCollectionType(List.class, Provider.class));
         Database.getInstance().setProviders(providers);
 
-//        List<Comment> comments = objectMapper.readValue(HTTPRequestHandler.getRequest(COMMENTS_URI), typeFactory.constructCollectionType(List.class, Comment.class));
-        List<Comment> comments = new ArrayList<>();
-        comments.add(new Comment(1, "amir@gmail.com", "OKKKKKKKKKK", "2023-01-01"));
-        comments.add(new Comment(1, "hamid@gmail.com", "BADDDDDDDDDDDD", "2022-03-14"));
+        List<Comment> comments = objectMapper.readValue(HTTPRequestHandler.getRequest(COMMENTS_URI), typeFactory.constructCollectionType(List.class, Comment.class));
         Database.getInstance().setComments(comments);
 
         List<Discount> discounts = objectMapper.readValue(HTTPRequestHandler.getRequest(DISCOUNT_URI), typeFactory.constructCollectionType(List.class, Discount.class));

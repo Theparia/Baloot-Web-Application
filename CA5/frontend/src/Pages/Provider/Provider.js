@@ -43,7 +43,7 @@ const ProvidersProducts = ({setItemCount}) => {
                 result.push(response.data[i]);
             }
             setProviderCommoditiesList(result);
-        }).catch(console.error);
+        }).catch((error)=> alert(error.response.data));
     },[]);
 
     const fetchBuyList = async () => {
@@ -102,7 +102,6 @@ const ProvidersProducts = ({setItemCount}) => {
         const handleAddToBuyList = (e) => {
             e.preventDefault();
             addToBuyList(sessionStorage.getItem('username'), {"id": commodity.id}).then(async (response) => {
-                console.log("ADD TO BUY LIST");
                 await fetchBuyList();
             }).catch((error) => alert(error.response.data))
         }
@@ -110,7 +109,6 @@ const ProvidersProducts = ({setItemCount}) => {
         const handleRemoveFromBuyList = (e) => {
             e.preventDefault();
             removeFromBuyList(sessionStorage.getItem('username'), {"id": commodity.id}).then(async(response) => {
-                console.log("REMOVE FROM BUY LIST");
                 await fetchBuyList();
             }).catch((error) => alert(error.response.data))
         }
