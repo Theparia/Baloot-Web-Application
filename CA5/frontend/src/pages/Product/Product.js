@@ -491,6 +491,10 @@ const ProductInfo = () => {
 
 const Product = () => {
     //TODO: If not logged in
+    if (sessionStorage.getItem('username') === null) {
+        window.location.replace("/login")
+        return;
+    }
     return (
         <>
             <Header searchBar={false} username={sessionStorage.getItem('username')}/>
