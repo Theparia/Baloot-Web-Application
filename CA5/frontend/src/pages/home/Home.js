@@ -203,7 +203,7 @@ const Home = () => {
 
     return(
         <>
-            <Header searchBar={true} searchFunc={search} username={sessionStorage.getItem('username')}/>
+            <Header itemCount={buyList.length} searchFunc={search} username={sessionStorage.getItem('username')}/>
             <main id="home-main">
                 <FilterCommodities/>
                 <CommoditiesTable/>

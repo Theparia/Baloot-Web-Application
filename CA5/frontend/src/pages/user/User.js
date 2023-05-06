@@ -505,17 +505,12 @@ const UserBody = () => {
 const User = () => {
     const {username} = useParams();
     if (username !== sessionStorage.getItem('username')) {
-        // toast.error('An error occurred while fetching data.', {autoClose: 5000, closeOnClick: true});
-        // setTimeout(() => {
-        //     window.location.replace("/login");
-        // }, 2000);
-        // alert("You don't have access")
         window.location.replace("/login") //TODO
     }
     return (
         <>
             <ToastContainer/>
-            <Header searchBar={false} username={username}/>
+            <Header username={username}/>
             <UserBody/>
             <Footer/>
         </>

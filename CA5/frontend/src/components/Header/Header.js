@@ -1,6 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import './Header.css';
 import {getBuyList} from "../../apis/UserRequest.js";
+import {useLocation} from "react-router-dom";
 
 const BalootLogo = () => {
     return (
@@ -27,14 +28,14 @@ const Username = ({username}) => {
     )
 }
 
-const CartButton = ({username}) => {
-    const [itemCount, setItemCount] = useState(0);
-    useEffect(() => { // TODO: hook other than useEffect?
-        getBuyList(username).then(response => {
-                setItemCount(Object.keys(response.data).length)
-            }
-        )
-    }, []); //TODO: Update Cart Item after adding to buylist
+const CartButton = ({itemCount, username}) => {
+    // const [itemCount, setItemCount] = useState(0);
+    // useEffect(() => { // TODO: hook other than useEffect?
+    //     getBuyList(username).then(response => {
+    //             setItemCount(Object.keys(response.data).length)
+    //         }
+    //     )
+    // }, []); //TODO: Update Cart Item after adding to buylist
 
     return (
         <a className={`cart ${itemCount > 0 ? 'cart-on' : 'cart-off'} font`} href={"/users/" + username}>
@@ -85,13 +86,15 @@ const RegisterLoginButtons = () => {
 }
 
 const Header = (props) => {
+    const location = useLocation();
+    const username = sessionStorage.getItem('username');
     return(
         <header>
             <nav className="navbar">
                 <BalootLogo />
-                {props.username!=null && <Username username={props.username}/>}
-                {props.searchBar && <CommoditiesSearchFrom searchFunc={props.searchFunc}/>}
-                {props.username!=null && <CartButton username={props.username}/>}
+                {props.username!=null && <Username username={username}/>}
+                {location.pathname === "/" && <CommoditiesSearchFrom searchFunc={props.searchFunc}/>}
+                {props.username!=null && <CartButton itemCount={props.itemCount} username={username}/>}
                 {props.username==null && <RegisterLoginButtons/>}
             </nav>
         </header>

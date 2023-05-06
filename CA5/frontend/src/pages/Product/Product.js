@@ -496,7 +496,7 @@ const Product = () => {
     }
     return (
         <>
-            <Header searchBar={false} username={sessionStorage.getItem('username')}/>
+            <Header username={sessionStorage.getItem('username')}/>
             <main id="main-product">
                 <ProductInfo/>
                 <Comments/>

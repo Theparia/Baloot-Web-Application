@@ -21,7 +21,7 @@ const Login = () => {
 
     return (
         <>
-            <Header searchBar={false} username={null}/>
+            <Header username={null}/>
             <div className="form-container">
                 <h2 id="login-title">LOGIN</h2>
                 <form action="" method="post" id="login-form">

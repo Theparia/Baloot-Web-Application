@@ -30,7 +30,7 @@ const Signup = () => {
 
     return (
         <>
-            <Header searchBar={false} username={null}/>
+            <Header username={null}/>
             <div className="form-container">
                 <h2>Create Account</h2>
                 <form action="signup.html" method="post" id="signup-form">
