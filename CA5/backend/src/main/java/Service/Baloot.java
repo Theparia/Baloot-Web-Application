@@ -349,14 +349,15 @@ public class Baloot {
         return averageRating;
     }
 
+
     public List<Commodity> getSuggestedCommodities(Integer commodityId) throws CommodityNotFound {
         Commodity commodity = findCommodityById(commodityId);
 
         return Database.getInstance().getCommodities().stream()
+                .filter(c -> !c.getId().equals(commodityId)) // exclude the commodity with the same ID
                 .sorted(Comparator.comparing(c -> 11 * (commodity.isInSimilarCategory(c.getCategories()) ? 1 : 0) + c.getRating(), Comparator.reverseOrder()))
-                .limit(5)
+                .limit(4)
                 .collect(Collectors.toList());
-
     }
 
     public List<Commodity> getAvailableCommodities(List<Commodity> commodities_){
