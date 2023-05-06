@@ -8,7 +8,7 @@ import '../home/Home.css'
 import {useParams} from "react-router-dom";
 import {getCommodities, rateCommodity, getCommodity, getSuggestedCommodities} from "../../apis/CommoditiesRequest.js";
 import {likeComment, dislikeComment, getComments, getCommentVotes, addComment} from "../../apis/CommentsRequest.js"
-import {getProvider} from "../../apis/Provider.js"
+import {getProvider} from "../../apis/ProviderRequest.js"
 import {getBuyList, addToBuyList, removeFromBuyList} from "../../apis/UserRequest.js"
 import {Modal} from "react-bootstrap";
 
@@ -490,7 +490,6 @@ const ProductInfo = () => {
 
 
 const Product = () => {
-    //TODO: If not logged in
     if (sessionStorage.getItem('username') === null) {
         window.location.replace("/login")
         return;

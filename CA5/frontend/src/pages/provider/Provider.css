@@ -1,12 +1,15 @@
 .provider-info {
-    position: relative;
     display: flex;
     flex-direction: column;
     width: 35em;
-    padding-top: 50em;
+    justify-content: center;
+    margin-top: 10%;
+    margin-left: 32%;
     left: 50%;
-    transform: translate(-50%, -50%);
+}
 
+#provider-product-topic{
+    margin-left: 11%;
 }
 
 .provider-info img{
@@ -25,4 +28,17 @@
 #provider-name{
     padding: 0;
     margin: 0;
+}
+
+#product-container-provider {
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: row;
+    justify-content: flex-start;
+    margin-left: 10%;
+    margin-top: 0;
+}
+
+.provider-product-topic {
+
 }

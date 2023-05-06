@@ -302,10 +302,10 @@ public class Baloot {
         findCommodityById(commodityId).addUserRating(findUserByUsername(username).getUsername(), score);
     }
 
-    public List<Commodity> findCommoditiesByProvider(Integer proveiderId){
+    public List<Commodity> findCommoditiesByProvider(Integer providerId){
         List<Commodity> commodities = new ArrayList<>();
         for(Commodity commodity : Database.getInstance().getCommodities()){
-            if(commodity.getProviderId().equals(proveiderId))
+            if(commodity.getProviderId().equals(providerId))
                 commodities.add(commodity);
         }
         return commodities;
