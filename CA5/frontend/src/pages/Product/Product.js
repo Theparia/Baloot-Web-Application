@@ -255,7 +255,7 @@ const SuggestedProducts = ({setItemCount}) => {
 
 }
 
-const ProductInfo = () => {
+const ProductInfo = ({setItemCount}) => {
     const {commodityId} = useParams();
     const [commodity, setCommodity] = useState({});
     const [providerName, setProviderName] = useState("");
@@ -289,6 +289,7 @@ const ProductInfo = () => {
         const buyListResponse = await getBuyList(sessionStorage.getItem('username'));
         const commodities = await extractCommodities(buyListResponse.data);
         setBuyList(commodities);
+        setItemCount(commodities.length);
     }
 
     const AddCommodityToUsersBuyListButton = () => {
@@ -500,7 +501,7 @@ const Product = () => {
         <>
             <Header itemCount={itemCount}/>
             <main id="main-product">
-                <ProductInfo/>
+                <ProductInfo setItemCount={setItemCount}/>
                 <Comments/>
                 <SuggestedProducts setItemCount={setItemCount}/>
             </main>
