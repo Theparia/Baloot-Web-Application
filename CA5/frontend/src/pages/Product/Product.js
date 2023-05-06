@@ -11,6 +11,8 @@ import {likeComment, dislikeComment, getComments, getCommentVotes, addComment} f
 import {getProvider} from "../../apis/ProviderRequest.js"
 import {getBuyList, addToBuyList, removeFromBuyList} from "../../apis/UserRequest.js"
 import {Modal} from "react-bootstrap";
+import Card from "../../components/Card/Card.js";
+import {fetchBuyList} from "../../components/utils.js";
 
 const Comments = () => {
     const {commodityId} = useParams();
@@ -135,11 +137,6 @@ const Comments = () => {
 const SuggestedProducts = () => {
     const {commodityId} = useParams();
     const [suggestedCommoditiesList, setSuggestedCommoditiesList] = useState([]);
-    const [buyList, setBuyList] = useState([]);
-
-    useEffect(() => {
-        fetchBuyList().then();
-    }, []);
 
     useEffect(()=>{
         getSuggestedCommodities(commodityId).then((response) => {
@@ -151,94 +148,14 @@ const SuggestedProducts = () => {
         }).catch(console.error);
         },[]);
 
-    const fetchBuyList = async () => {
-        const buyListResponse = await getBuyList(sessionStorage.getItem('username'));
-        const commodities = await extractCommodities(buyListResponse.data);
-        setBuyList(commodities);
-    }
-
-    const extractCommodities = async (data) => {
-        const commodities = [];
-        for (const [commodityId, quantity] of Object.entries(data)) {
-            const CommodityResponse = await getCommodity(commodityId);
-            const commodity = {...CommodityResponse.data, quantity: quantity};
-            commodities.push(commodity);
-        }
-        return commodities;
-    }
-
     const SuggestedCommoditiesTable = () => {
         return (
             <div id="product-container-commodity">
                 {suggestedCommoditiesList.length > 0 ?
                     suggestedCommoditiesList.map((item, index) => (
-                        <SuggestedProductCard key={index} commodity={item}/>
+                        <Card key={index} commodity={item}/>
                     )) : <></>
                 }
-            </div>
-        )
-    }
-
-    const SuggestedProductCard = ({commodity}) => {
-        const AddCommodityToUsersBuyListButton = ({commodity_in}) => {
-            const isCommodityInBuyList = buyList.some((item) => item.id === commodity_in.id);
-            const buyListItem = buyList.filter(item => item.id === commodity.id).find(item => item);
-            if(commodity.inStock <= 0){
-                return (
-                    <button className="add-to-cart-button-disabled" type="button" disabled={true}>add to cart</button>
-                )
-            }
-            if (isCommodityInBuyList) {
-                return (
-                    <div className="add-remove-button-home">
-                        <div className="add-remove-buttons" onClick={(e) => handleRemoveFromBuyList(e)}>-</div>
-                        <div> {buyListItem.quantity}</div>
-                        <div className="add-remove-buttons" onClick={(e) => handleAddToBuyList(e)}>+</div>
-                    </div>
-                )
-            } else {
-                return (
-                    <button className="add-to-cart-button-home" type="button" onClick={(e) => handleAddToBuyList(e)}>add to cart</button>
-                )
-            }
-        }
-
-        const handleAddToBuyList = (e) => {
-            e.preventDefault();
-            addToBuyList(sessionStorage.getItem('username'), {"id": commodity.id}).then(async (response) => {
-                console.log("ADD TO BUY LIST");
-                await fetchBuyList();
-            }).catch((error) => alert(error.response.data))
-        }
-
-        const handleRemoveFromBuyList = (e) => {
-            e.preventDefault();
-            removeFromBuyList(sessionStorage.getItem('username'), {"id": commodity.id}).then(async(response) => {
-                console.log("REMOVE FROM BUY LIST");
-                await fetchBuyList();
-            }).catch((error) => alert(error.response.data))
-        }
-
-
-        return (
-            <div className="product-card" id="suggested-product-card">
-                <a href={"/commodities/" + commodity.id}>
-                    <div className="product-title">
-                        {commodity.name}
-                    </div>
-                </a>
-                <div className="product-inStock">
-                    <span> {commodity.inStock} </span> left in stock
-                </div>
-                <a href={"/commodities/" + commodity.id}>
-                    <img className="w-100" src={commodity.image} alt="ProductImage"/>
-                </a>
-                <div className="product-price">
-                    <div>
-                        <span>{commodity.price}</span>$
-                    </div>
-                    <AddCommodityToUsersBuyListButton commodity_in={commodity}/>
-                </div>
             </div>
         )
     }

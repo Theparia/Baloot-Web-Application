@@ -3,13 +3,18 @@ import Header from "../../components/Header/Header.js";
 import './Home.css'
 import {
     getCommoditiesSize,
-    getCommodities, getCommodity,
+    getCommodities,
 } from "../../apis/CommoditiesRequest.js";
-import {addToBuyList, getBuyList, removeFromBuyList} from "../../apis/UserRequest.js";
 import Footer from "../../components/Footer/Footer.js";
+import Card from "../../components/Card/Card.js";
+import {fetchBuyList} from "../../components/utils.js";
 
 
-const Home = () => {
+const Home = ({buyList, setBuyList}) => {
+
+    // const { buyList = [] } = props;
+
+    console.log("------------> " + buyList);
 
     const [commoditiesList, setCommoditiesList] = useState([]);
     const [commoditiesSize, setCommoditiesSize] = useState(0);
@@ -17,14 +22,16 @@ const Home = () => {
     const [searchedText, setSearchedText] = useState("");
     const [sortMethod, setSortMethod] = useState("");
     const [commoditiesAvailable, setCommoditiesAvailable] = useState(false);
-    const [buyList, setBuyList] = useState([]);
     const [pageNumber, setPageNumber] = useState(0);
     const [pageSize, setPageSize] = useState(12);
     const [totalPages, setTotalPages] = useState(Math.ceil(commoditiesSize / pageSize));
 
 
+
     useEffect(() => {
-        fetchBuyList();
+        fetchBuyList().then(response => {
+            setBuyList(response.data);
+        });
         setTotalPages(Math.ceil(commoditiesSize / pageSize));
     }, []);
 
@@ -78,84 +85,6 @@ const Home = () => {
         setSearchedText(text)
     }
 
-    const fetchBuyList = async () => {
-        const buyListResponse = await getBuyList(sessionStorage.getItem('username'));
-        const commodities = await extractCommodities(buyListResponse.data);
-        setBuyList(commodities);
-    }
-
-    const extractCommodities = async (data) => {
-        const commodities = [];
-        for (const [commodityId, quantity] of Object.entries(data)) {
-            const CommodityResponse = await getCommodity(commodityId);
-            const commodity = {...CommodityResponse.data, quantity: quantity};
-            commodities.push(commodity);
-        }
-        return commodities;
-    }
-
-    const CommodityCard = ({commodity}) => {
-        const AddCommodityToUsersBuyListButton = ({commodity_in}) => {
-            const isCommodityInBuyList = buyList.some((item) => item.id === commodity_in.id);
-            const buyListItem = buyList.filter(item => item.id === commodity.id).find(item => item);
-            if(commodity.inStock <= 0){
-                return (
-                    <button className="add-to-cart-button-disabled" type="button" disabled={true}>add to cart</button>
-                )
-            }
-            if (isCommodityInBuyList) {
-                return (
-                    <div className="add-remove-button-home">
-                        <div className="add-remove-buttons" onClick={(e) => handleRemoveFromBuyList(e)}>-</div>
-                        <div> {buyListItem.quantity}</div>
-                        <div className="add-remove-buttons" onClick={(e) => handleAddToBuyList(e)}>+</div>
-                    </div>
-                )
-            } else {
-                return (
-                    <button className="add-to-cart-button-home" type="button" onClick={(e) => handleAddToBuyList(e)}>add to cart</button>
-                )
-            }
-        }
-
-        const handleAddToBuyList = (e) => {
-            e.preventDefault();
-            addToBuyList(sessionStorage.getItem('username'), {"id": commodity.id}).then(async (response) => {
-                console.log("ADD TO BUY LIST");
-                await fetchBuyList();
-            }).catch((error) => alert(error.response.data))
-        }
-
-        const handleRemoveFromBuyList = (e) => {
-            e.preventDefault();
-            removeFromBuyList(sessionStorage.getItem('username'), {"id": commodity.id}).then(async(response) => {
-                console.log("REMOVE FROM BUY LIST");
-                await fetchBuyList();
-            }).catch((error) => alert(error.response.data))
-        }
-
-        return (
-            <div className="product-card">
-                <a href={"/commodities/" + commodity.id}>
-                    <div className="product-title">
-                        {commodity.name}
-                    </div>
-                </a>
-                <div className="product-inStock">
-                    <span> {commodity.inStock} </span> left in stock
-                </div>
-                <a href={"/commodities/" + commodity.id}>
-                    <img className="w-100" src={commodity.image} alt="ProductImage"/>
-                </a>
-                <div className="product-price">
-                    <div>
-                        <span>{commodity.price}</span>$
-                    </div>
-                    <AddCommodityToUsersBuyListButton commodity_in={commodity}/>
-                </div>
-            </div>
-        )
-    }
     const Pagination = () => {
         const handlePageClick = (e, pageNumber) => {
             e.preventDefault();
@@ -181,13 +110,13 @@ const Home = () => {
         )
     }
 
-    const CommoditiesTable = () => {
+    const CommoditiesTable = ({buyList, setBuyList}) => {
         return (
             <div className="main-container-home">
                 <div className="product-container">
                     {commoditiesList.length > 0 ?
                         commoditiesList.map((item, index) => (
-                            <CommodityCard key={index} commodity={item}/>
+                            <Card key={index} commodity={item} buyList={buyList} setBuyList={setBuyList}/>
                         )) : <></>
                     }
                 </div>
@@ -203,10 +132,10 @@ const Home = () => {
 
     return(
         <>
-            <Header itemCount={buyList.length} searchFunc={search} username={sessionStorage.getItem('username')}/>
+            <Header itemCount={!buyList ? 0 : buyList.length} searchFunc={search} username={sessionStorage.getItem('username')}/>
             <main id="home-main">
                 <FilterCommodities/>
-                <CommoditiesTable/>
+                <CommoditiesTable buyList={!buyList ? [] : buyList} setBuyList={setBuyList}/>
                 <Pagination/>
             </main>
             <Footer/>
