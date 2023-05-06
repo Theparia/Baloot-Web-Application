@@ -1,11 +1,11 @@
-import Header from "../../components/Header/Header.js";
-import Footer from "../../components/Footer/Footer.js";
+import Header from "../../Components/Header/Header.js";
+import Footer from "../../Components/Footer/Footer.js";
 import React, {useEffect, useState} from "react";
 import {useParams} from "react-router-dom";
-import {getProvider, getProviderCommodities} from "../../apis/ProviderRequest.js";
+import {getProvider, getProviderCommodities} from "../../APIs/ProviderRequest.js";
 import "./Provider.css"
-import {getCommodity, getSuggestedCommodities} from "../../apis/CommoditiesRequest.js";
-import {addToBuyList, getBuyList, removeFromBuyList} from "../../apis/UserRequest.js";
+import {getCommodity, getSuggestedCommodities} from "../../APIs/CommoditiesRequest.js";
+import {addToBuyList, getBuyList, removeFromBuyList} from "../../APIs/UserRequest.js";
 
 const ProviderInfo = () => {
     const {providerId} = useParams();

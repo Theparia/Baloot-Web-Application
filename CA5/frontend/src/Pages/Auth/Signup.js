@@ -1,7 +1,7 @@
 import React, {useState} from 'react';
-import {signup} from "../../apis/AuthRequest.js";
+import {signup} from "../../APIs/AuthRequest.js";
 import "./Signup.css"
-import Header from "../../components/Header/Header.js";
+import Header from "../../Components/Header/Header.js";
 
 const Signup = () => {
     const [username, setUsername] = useState("");

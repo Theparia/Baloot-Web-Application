@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import './Header.css';
-import {getBuyList} from "../../apis/UserRequest.js";
+import {getBuyList} from "../../APIs/UserRequest.js";
 import {useLocation} from "react-router-dom";
 
 const BalootLogo = () => {

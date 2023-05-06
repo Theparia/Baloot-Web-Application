@@ -1,15 +1,15 @@
 import React, {useEffect, useState} from 'react';
-import Header from "../../components/Header/Header.js";
-import Footer from "../../components/Footer/Footer.js";
+import Header from "../../Components/Header/Header.js";
+import Footer from "../../Components/Footer/Footer.js";
 
 import './Product.css'
-import '../home/Home.css'
+import '../Home/Home.css'
 
 import {useParams} from "react-router-dom";
-import {getCommodities, rateCommodity, getCommodity, getSuggestedCommodities} from "../../apis/CommoditiesRequest.js";
-import {likeComment, dislikeComment, getComments, getCommentVotes, addComment} from "../../apis/CommentsRequest.js"
-import {getProvider} from "../../apis/ProviderRequest.js"
-import {getBuyList, addToBuyList, removeFromBuyList} from "../../apis/UserRequest.js"
+import {getCommodities, rateCommodity, getCommodity, getSuggestedCommodities} from "../../APIs/CommoditiesRequest.js";
+import {likeComment, dislikeComment, getComments, getCommentVotes, addComment} from "../../APIs/CommentsRequest.js"
+import {getProvider} from "../../APIs/ProviderRequest.js"
+import {getBuyList, addToBuyList, removeFromBuyList} from "../../APIs/UserRequest.js"
 import {Modal} from "react-bootstrap";
 
 const Comments = () => {

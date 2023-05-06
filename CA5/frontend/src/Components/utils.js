@@ -1,5 +1,5 @@
-import {getCommodity} from "../apis/CommoditiesRequest.js";
-import {getBuyList} from "../apis/UserRequest.js";
+import {getCommodity} from "../APIs/CommoditiesRequest.js";
+import {getBuyList} from "../APIs/UserRequest.js";
 
 export const extractCommodities = async (data) => {
     const commodities = [];

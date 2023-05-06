@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from 'react';
-import Header from "../../components/Header/Header.js";
+import Header from "../../Components/Header/Header.js";
 import {useParams} from "react-router-dom";
-import Footer from "../../components/Footer/Footer.js";
+import Footer from "../../Components/Footer/Footer.js";
 import "./User.css"
 import {
     addCredit,
@@ -10,9 +10,9 @@ import {
     getPurchasedList,
     getUser,
     removeFromBuyList
-} from "../../apis/UserRequest.js";
-import {getCommodity} from "../../apis/CommoditiesRequest.js";
-import {logout} from "../../apis/AuthRequest.js";
+} from "../../APIs/UserRequest.js";
+import {getCommodity} from "../../APIs/CommoditiesRequest.js";
+import {logout} from "../../APIs/AuthRequest.js";
 import {toast, ToastContainer} from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import {Modal} from 'react-bootstrap';

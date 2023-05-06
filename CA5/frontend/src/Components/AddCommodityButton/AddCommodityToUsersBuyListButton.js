@@ -1,4 +1,4 @@
-import {addToBuyList, removeFromBuyList} from "../../apis/UserRequest.js";
+import {addToBuyList, removeFromBuyList} from "../../APIs/UserRequest.js";
 import {fetchBuyList} from "../utils.js";
 import React, {useEffect, useState} from "react";
 

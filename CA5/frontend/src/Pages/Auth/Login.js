@@ -1,7 +1,7 @@
 import React, {useState} from 'react';
 import "./Login.css"
-import Header from "../../components/Header/Header.js";
-import {login} from "../../apis/AuthRequest.js";
+import Header from "../../Components/Header/Header.js";
+import {login} from "../../APIs/AuthRequest.js";
 
 const Login = () => {
     const [username, setUsername] = useState("");
