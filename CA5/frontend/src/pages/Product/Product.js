@@ -3,8 +3,10 @@ import Header from "../../components/Header/Header.js";
 import Footer from "../../components/Footer/Footer.js";
 
 import './Product.css'
+import '../home/Home.css'
+
 import {useParams} from "react-router-dom";
-import {getCommodities, rateCommodity, getCommodity} from "../../apis/CommoditiesRequest.js";
+import {getCommodities, rateCommodity, getCommodity, getSuggestedCommodities} from "../../apis/CommoditiesRequest.js";
 import {likeComment, dislikeComment, getComments, getCommentVotes, addComment} from "../../apis/CommentsRequest.js"
 import {getProvider} from "../../apis/Provider.js"
 import {getBuyList, addToBuyList, removeFromBuyList} from "../../apis/UserRequest.js"
@@ -115,7 +117,7 @@ const Comments = () => {
     }
 
     return (
-        <div>
+        <div id="comment-section">
             <CommentTableHeader/>
             <div className="cart-table">
                 {commentsList.length > 0 ?
@@ -128,6 +130,128 @@ const Comments = () => {
         </div>
 
     )
+}
+
+const SuggestedProducts = () => {
+    const {commodityId} = useParams();
+    const [suggestedCommoditiesList, setSuggestedCommoditiesList] = useState([]);
+    const [buyList, setBuyList] = useState([]);
+
+    useEffect(() => {
+        fetchBuyList().then();
+    }, []);
+
+    useEffect(()=>{
+        getSuggestedCommodities(commodityId).then((response) => {
+            let result = [];
+            for (let i in response.data) {
+                result.push(response.data[i]);
+            }
+            setSuggestedCommoditiesList(result);
+        }).catch(console.error);
+        },[]);
+
+    const fetchBuyList = async () => {
+        const buyListResponse = await getBuyList(sessionStorage.getItem('username'));
+        const commodities = await extractCommodities(buyListResponse.data);
+        setBuyList(commodities);
+    }
+
+    const extractCommodities = async (data) => {
+        const commodities = [];
+        for (const [commodityId, quantity] of Object.entries(data)) {
+            const CommodityResponse = await getCommodity(commodityId);
+            const commodity = {...CommodityResponse.data, quantity: quantity};
+            commodities.push(commodity);
+        }
+        return commodities;
+    }
+
+    const SuggestedCommoditiesTable = () => {
+        return (
+            <div id="product-container-commodity">
+                {suggestedCommoditiesList.length > 0 ?
+                    suggestedCommoditiesList.map((item, index) => (
+                        <SuggestedProductCard key={index} commodity={item}/>
+                    )) : <></>
+                }
+            </div>
+        )
+    }
+
+    const SuggestedProductCard = ({commodity}) => {
+        const AddCommodityToUsersBuyListButton = ({commodity_in}) => {
+            const isCommodityInBuyList = buyList.some((item) => item.id === commodity_in.id);
+            const buyListItem = buyList.filter(item => item.id === commodity.id).find(item => item);
+            if(commodity.inStock <= 0){
+                return (
+                    <button className="add-to-cart-button-disabled" type="button" disabled={true}>add to cart</button>
+                )
+            }
+            if (isCommodityInBuyList) {
+                return (
+                    <div className="add-remove-button-home">
+                        <div className="add-remove-buttons" onClick={(e) => handleRemoveFromBuyList(e)}>-</div>
+                        <div> {buyListItem.quantity}</div>
+                        <div className="add-remove-buttons" onClick={(e) => handleAddToBuyList(e)}>+</div>
+                    </div>
+                )
+            } else {
+                return (
+                    <button className="add-to-cart-button-home" type="button" onClick={(e) => handleAddToBuyList(e)}>add to cart</button>
+                )
+            }
+        }
+
+        const handleAddToBuyList = (e) => {
+            e.preventDefault();
+            addToBuyList(sessionStorage.getItem('username'), {"id": commodity.id}).then(async (response) => {
+                console.log("ADD TO BUY LIST");
+                await fetchBuyList();
+            }).catch((error) => alert(error.response.data))
+        }
+
+        const handleRemoveFromBuyList = (e) => {
+            e.preventDefault();
+            removeFromBuyList(sessionStorage.getItem('username'), {"id": commodity.id}).then(async(response) => {
+                console.log("REMOVE FROM BUY LIST");
+                await fetchBuyList();
+            }).catch((error) => alert(error.response.data))
+        }
+
+
+        return (
+            <div className="product-card" id="suggested-product-card">
+                <a href={"/commodities/" + commodity.id}>
+                    <div className="product-title">
+                        {commodity.name}
+                    </div>
+                </a>
+                <div className="product-inStock">
+                    <span> {commodity.inStock} </span> left in stock
+                </div>
+                <a href={"/commodities/" + commodity.id}>
+                    <img className="w-100" src={commodity.image} alt="ProductImage"/>
+                </a>
+                <div className="product-price">
+                    <div>
+                        <span>{commodity.price}</span>$
+                    </div>
+                    <AddCommodityToUsersBuyListButton commodity_in={commodity}/>
+                </div>
+            </div>
+        )
+    }
+
+    return (
+        <div>
+            <div className="suggested-product-topic">
+                You also might like...
+            </div>
+            <SuggestedCommoditiesTable/>
+        </div>
+    )
+
 }
 
 const ProductInfo = () => {
@@ -373,6 +497,7 @@ const Product = () => {
             <main id="main-product">
                 <ProductInfo/>
                 <Comments/>
+                <SuggestedProducts/>
             </main>
             <Footer/>
         </>

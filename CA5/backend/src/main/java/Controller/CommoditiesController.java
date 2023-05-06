@@ -4,6 +4,7 @@ import Domain.Comment;
 import Domain.Commodity;
 import Domain.User;
 import Service.Baloot;
+import Service.Exceptions.CommodityNotFound;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -47,6 +48,11 @@ public class CommoditiesController {
 
         List<Commodity> commodities = filterCommodities(sortMethod, searchMethod, searchedText, commoditiesAvailable);
         return ResponseEntity.ok(Baloot.getInstance().getCommoditiesByPage(pageNumber, pageSize, commodities));
+    }
+
+    @RequestMapping(value = "/commodities/{commodityId}/suggested/",method = RequestMethod.GET)
+    public ResponseEntity<List<Commodity>> getSuggestedCommodities(@PathVariable String commodityId) throws CommodityNotFound {
+        return ResponseEntity.ok(Baloot.getInstance().getSuggestedCommodities(Integer.valueOf(commodityId)));
     }
 
     @RequestMapping(value = "/commodities/{commodityId}/comments/",method = RequestMethod.GET)

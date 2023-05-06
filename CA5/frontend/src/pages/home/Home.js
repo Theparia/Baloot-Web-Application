@@ -135,19 +135,19 @@ const Home = () => {
         }
 
         return (
-            <div className="product-card-home">
+            <div className="product-card">
                 <a href={"/commodities/" + commodity.id}>
-                    <div className="product-title-home">
+                    <div className="product-title">
                         {commodity.name}
                     </div>
                 </a>
-                <div className="product-inStock-home">
+                <div className="product-inStock">
                     <span> {commodity.inStock} </span> left in stock
                 </div>
                 <a href={"/commodities/" + commodity.id}>
                     <img className="w-100" src={commodity.image} alt="ProductImage"/>
                 </a>
-                <div className="product-price-home">
+                <div className="product-price">
                     <div>
                         <span>{commodity.price}</span>$
                     </div>
@@ -184,7 +184,7 @@ const Home = () => {
     const CommoditiesTable = () => {
         return (
             <div className="main-container-home">
-                <div className="product-container-home">
+                <div className="product-container">
                     {commoditiesList.length > 0 ?
                         commoditiesList.map((item, index) => (
                             <CommodityCard key={index} commodity={item}/>

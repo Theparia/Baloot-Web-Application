@@ -55,6 +55,22 @@
     height: 25px;
 }
 
+#comment-section{
+    width: 97%;
+}
+
+#product-container-commodity {
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: row;
+    justify-content: left;
+    padding: 0;
+    margin: 0;
+}
+
+#suggested-product-card {
+    margin: 0.1221em;
+}
 
 .product-name{
     font-weight: 600;
