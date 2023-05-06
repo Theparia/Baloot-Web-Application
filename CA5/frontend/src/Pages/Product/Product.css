@@ -328,3 +328,7 @@ div.suggested-product {
     color: var(--medium_theme);
     cursor: pointer;
 }
+
+#loading{
+    background-color: #D8C1A8;
+}

@@ -10,7 +10,7 @@ import {getCommodities, rateCommodity, getCommodity, getSuggestedCommodities} fr
 import {likeComment, dislikeComment, getComments, getCommentVotes, addComment} from "../../APIs/CommentsRequest.js"
 import {getProvider} from "../../APIs/ProviderRequest.js"
 import {getBuyList, addToBuyList, removeFromBuyList} from "../../APIs/UserRequest.js"
-import {Modal} from "react-bootstrap";
+import {Modal, Spinner} from "react-bootstrap";
 
 const Comments = () => {
     const {commodityId} = useParams();
@@ -91,14 +91,17 @@ const Comments = () => {
 
     const SubmitComment = () => {
         const [commentText, setCommentText] = useState("");
+        const [isLoading, setIsLoading] = useState(false);
 
         const handleSubmitComment = (e) => {
             e.preventDefault();
+            setIsLoading(true);
             const req = {"username": sessionStorage.getItem('username'), "commodityId": commodityId, "text": commentText}
             addComment(req).then(() => {
                 setVote(!vote);
                 setCommentText("");
-            }).catch(error => alert(error.response.data));
+                setIsLoading(false);
+            }).catch(error => {alert(error.response.data); setIsLoading(false);});
         }
 
         return (
@@ -109,7 +112,9 @@ const Comments = () => {
                 <div className="submit-comment-form">
                     <form>
                         <textarea name="comment" value={commentText} onChange={(event) => {setCommentText(event.target.value)}}></textarea>
-                        <button type="submit" onClick={async (e) => await handleSubmitComment(e, commentText)}>Post</button>
+                        <button type="submit" id={isLoading ? "loading" : ""} onClick={async (e) => await handleSubmitComment(e, commentText)} disabled={isLoading}>
+                            {isLoading ? "Loading..." : "Post"}
+                        </button>
                     </form>
                 </div>
             </div>
@@ -260,7 +265,7 @@ const ProductInfo = ({setItemCount}) => {
     const [commodity, setCommodity] = useState({});
     const [providerName, setProviderName] = useState("");
     const [buyList, setBuyList] = useState([]);
-
+    const [isSubmitting, setIsSubmitting] = useState(false);
 
     useEffect(() => {
         fetchCommodity().then();
@@ -335,11 +340,16 @@ const ProductInfo = ({setItemCount}) => {
 
         const handleSubmitRate = (e) => {
             e.preventDefault();
+            setIsSubmitting(true);
             rateCommodity(commodityId, {"username": sessionStorage.getItem('username'), "score": rating})
                 .then((response) => {
                     fetchCommodity().then();
+
                 })
-                .catch((error) => alert(error.response.data))
+                .catch((error) => {
+                    alert(error.response.data);
+                });
+            setIsSubmitting(false);
         }
 
         const handleStarClick = (index) => {
@@ -378,9 +388,14 @@ const ProductInfo = ({setItemCount}) => {
                         </div>
                     </div>
                 </div>
-                <button id="submit-btn" onClick={(e) => handleSubmitRate(e)}>
-                    submit
-                </button>
+                <div>
+                    <button id="submit-btn" onClick={handleSubmitRate} disabled={isSubmitting}>
+                        {isSubmitting ? <Spinner animation="border" size="sm" /> : "Submit"}
+                    </button>
+                </div>
+                {/*<button id="submit-btn" onClick={(e) => handleSubmitRate(e)}>*/}
+                {/*    submit*/}
+                {/*</button>*/}
             </div>
         );
     };

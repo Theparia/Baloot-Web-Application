@@ -10,7 +10,6 @@ import Footer from "../../Components/Footer/Footer.js";
 
 
 const Home = () => {
-
     const [commoditiesList, setCommoditiesList] = useState([]);
     const [commoditiesSize, setCommoditiesSize] = useState(0);
     const [searchMethod, setSearchMethod] = useState(null);
@@ -36,7 +35,7 @@ const Home = () => {
                 result.push(response.data[i]);
             }
             setCommoditiesList(result);
-        }).catch(console.error);
+        });
 
         getCommoditiesSize(req).then((response) => {
             setCommoditiesSize(response.data);
@@ -44,9 +43,8 @@ const Home = () => {
             if(pageNumber+1 > Math.ceil(response.data / pageSize)){
                 setPageNumber(0);
             }
-        }).catch(console.error);
+        });
     }, [sortMethod, commoditiesAvailable, totalPages, pageNumber, searchMethod, searchedText]);
-
 
     const FilterCommodities = () => {
         return (
@@ -121,7 +119,6 @@ const Home = () => {
         const handleAddToBuyList = (e) => {
             e.preventDefault();
             addToBuyList(sessionStorage.getItem('username'), {"id": commodity.id}).then(async (response) => {
-                console.log("ADD TO BUY LIST");
                 await fetchBuyList();
             }).catch((error) => alert(error.response.data))
         }
@@ -129,7 +126,6 @@ const Home = () => {
         const handleRemoveFromBuyList = (e) => {
             e.preventDefault();
             removeFromBuyList(sessionStorage.getItem('username'), {"id": commodity.id}).then(async(response) => {
-                console.log("REMOVE FROM BUY LIST");
                 await fetchBuyList();
             }).catch((error) => alert(error.response.data))
         }
@@ -199,7 +195,6 @@ const Home = () => {
         window.location.replace("/login")
         return;
     }
-
 
     return(
         <>

@@ -43,14 +43,17 @@
 }
 
 .username{
+    color: var(--dark_theme);
+}
+
+.username-header{
+    text-decoration: none;
     position: relative;
     width: 127px;
     height: 34px;
     left: 65%;
     text-align: center;
-    color: var(--dark_theme);
 }
-
 
 .cart{
     position: relative;

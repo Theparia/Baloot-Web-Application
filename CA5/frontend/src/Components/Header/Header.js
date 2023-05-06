@@ -22,21 +22,15 @@ const BalootLogo = () => {
 
 const Username = ({username}) => {
     return (
-        <div className="username font">
-            #{username}
-        </div>
+        <a href={"/users/" + username} className="username-header">
+            <div className="username font">
+                #{username}
+            </div>
+        </a>
     )
 }
 
 const CartButton = ({itemCount, username}) => {
-    // const [itemCount, setItemCount] = useState(0);
-    // useEffect(() => { // TODO: hook other than useEffect?
-    //     getBuyList(username).then(response => {
-    //             setItemCount(Object.keys(response.data).length)
-    //         }
-    //     )
-    // }, []); //TODO: Update Cart Item after adding to buylist
-
     return (
         <a className={`cart ${itemCount > 0 ? 'cart-on' : 'cart-off'} font`} href={"/users/" + username}>
             <div>
