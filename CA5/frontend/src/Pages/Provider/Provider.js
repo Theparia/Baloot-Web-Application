@@ -109,6 +109,7 @@ const ProvidersProducts = ({setItemCount}) => {
         const handleRemoveFromBuyList = (e) => {
             e.preventDefault();
             removeFromBuyList(sessionStorage.getItem('username'), {"id": commodity.id}).then(async(response) => {
+
                 await fetchBuyList();
             }).catch((error) => alert(error.response.data))
         }
