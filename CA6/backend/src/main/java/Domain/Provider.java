@@ -1,23 +1,28 @@
 package Domain;
 
-
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import javax.persistence.*;
 import java.util.Date;
 
 @Getter
 @Setter
 @NoArgsConstructor
-
+@Entity
+@Table(name = "provider")
 public class Provider {
-    //@Id
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer id;
+
     private String name;
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-DD")
+
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
     private Date registryDate;
+
     private String image;
 
     public Provider(Integer id, String name, Date registryDate, String image) {
@@ -30,5 +35,4 @@ public class Provider {
     public boolean isEqual(Integer providerId) {
         return this.id.equals(providerId);
     }
-
 }

@@ -2,38 +2,47 @@ package Service;
 
 import Database.Database;
 import Domain.*;
+import Repository.ProviderRepository;
 import Service.Exceptions.*;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.type.TypeFactory;
-import lombok.Data;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import HTTPRequestHandler.HTTPRequestHandler;
+import org.springframework.beans.factory.annotation.Autowired;
+
 import java.time.LocalDate;
 import java.util.*;
 import java.util.stream.Collectors;
+import org.springframework.stereotype.Service;
+
 
 @Getter
 @Setter
+@Service
 public class Baloot {
 
-    private static Baloot instance = null;
+//    private static Baloot instance = null;
     private User loggedInUser = null;
+    private final ProviderRepository providerRepository;
 
 
-    private Baloot(){
+    @Autowired
+    private Baloot(ProviderRepository providerRepository){
+        this.providerRepository = providerRepository;
         try {
             importDatabase();
         } catch (Exception e) {
         }
     }
 
-    public static Baloot getInstance() {
-        if (instance == null) {
-            instance = new Baloot();
-        }
-        return instance;
-    }
+//    public static Baloot getInstance() {
+//        if (instance == null) {
+//            instance = new Baloot(providerRepository);
+//        }
+//        return instance;
+//    }
     public List<Commodity> getCommodities(){
         return Database.getInstance().getCommodities();
     }
@@ -58,11 +67,13 @@ public class Baloot {
         List<User> users = objectMapper.readValue(HTTPRequestHandler.getRequest(USERS_URI), typeFactory.constructCollectionType(List.class, User.class));
         Database.getInstance().setUsers(users);
 
+
         List<Commodity> commodities = objectMapper.readValue(HTTPRequestHandler.getRequest(COMMODITIES_URI), typeFactory.constructCollectionType(List.class, Commodity.class));
         Database.getInstance().setCommodities(commodities);
 
         List<Provider> providers = objectMapper.readValue(HTTPRequestHandler.getRequest(PROVIDERS_URI), typeFactory.constructCollectionType(List.class, Provider.class));
-        Database.getInstance().setProviders(providers);
+//        Database.getInstance().setProviders(providers);
+//        providerRepository.saveAll(providers);
 
         List<Comment> comments = objectMapper.readValue(HTTPRequestHandler.getRequest(COMMENTS_URI), typeFactory.constructCollectionType(List.class, Comment.class));
         Database.getInstance().setComments(comments);
