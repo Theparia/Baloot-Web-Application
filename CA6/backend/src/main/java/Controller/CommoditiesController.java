@@ -5,6 +5,7 @@ import Domain.Commodity;
 import Domain.User;
 import Service.Baloot;
 import Service.Exceptions.CommodityNotFound;
+import lombok.NoArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -13,12 +14,16 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 import java.util.Map;
 
+@NoArgsConstructor
 @CrossOrigin(origins = "http://localhost:3000")
 @RestController
 @RequestMapping
 public class CommoditiesController {
-    @Autowired
     private Baloot baloot;
+
+    public CommoditiesController(Baloot baloot){
+        this.baloot = baloot;
+    }
     @RequestMapping(value = "/commodities/{id}", method = RequestMethod.GET)
     protected ResponseEntity<Commodity> getCommodity(@PathVariable String id) {
         try {

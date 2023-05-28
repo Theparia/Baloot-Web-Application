@@ -6,6 +6,7 @@ import Domain.User;
 import Service.Baloot;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import lombok.NoArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -16,12 +17,17 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+@NoArgsConstructor
 @CrossOrigin(origins = "http://localhost:3000")
 @RestController
 @RequestMapping
 public class UserController {
-    @Autowired
     private Baloot baloot;
+
+    public UserController(Baloot baloot){
+        this.baloot = baloot;
+    }
+
     @RequestMapping(value = "/users/{username}", method = RequestMethod.GET)
     protected ResponseEntity<User> getUser(@PathVariable String username) {
         try {

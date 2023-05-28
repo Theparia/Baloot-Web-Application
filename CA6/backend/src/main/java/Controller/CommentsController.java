@@ -8,6 +8,7 @@ import Service.Baloot;
 import Service.Exceptions.CommentNotFound;
 import Service.Exceptions.InvalidCommentVote;
 import Service.Exceptions.UserNotFound;
+import lombok.NoArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -18,12 +19,18 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
+@NoArgsConstructor
 @CrossOrigin(origins = "http://localhost:3000")
 @RestController
 @RequestMapping
 public class CommentsController {
-    @Autowired
+
     private Baloot baloot;
+
+    public CommentsController(Baloot baloot){
+        this.baloot = baloot;
+    }
+
     @RequestMapping(value = "/comments/{commodityId}/", method = RequestMethod.GET)
     public ResponseEntity<List<Comment>> getCommentsCommodity(@PathVariable String commodityId) {
         return ResponseEntity.ok(baloot.getCommodityComments(Integer.valueOf(commodityId)));

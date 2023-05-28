@@ -18,6 +18,7 @@ import java.util.stream.Collectors;
 import org.springframework.stereotype.Service;
 
 
+@NoArgsConstructor
 @Getter
 @Setter
 @Service
@@ -25,10 +26,8 @@ public class Baloot {
 
 //    private static Baloot instance = null;
     private User loggedInUser = null;
-    private final ProviderRepository providerRepository;
+    private ProviderRepository providerRepository;
 
-
-    @Autowired
     private Baloot(ProviderRepository providerRepository){
         this.providerRepository = providerRepository;
         try {
