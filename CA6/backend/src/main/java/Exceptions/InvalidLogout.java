@@ -1,4 +1,4 @@
-package Service.Exceptions;
+package Exceptions;
 
 public class InvalidLogout extends Exception{
     public String getMessage() {

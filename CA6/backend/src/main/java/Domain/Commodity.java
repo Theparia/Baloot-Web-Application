@@ -1,10 +1,9 @@
 package Domain;
 
 
-import Service.Exceptions.CommodityOutOfStock;
-import Service.Exceptions.RatingOutOfRange;
+import Exceptions.CommodityOutOfStock;
+import Exceptions.RatingOutOfRange;
 import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -16,7 +15,6 @@ import java.util.List;
 @Getter
 @Setter
 @NoArgsConstructor
-
 public class Commodity {
     private Integer id;
     private String name; //unique validation + handling !@#

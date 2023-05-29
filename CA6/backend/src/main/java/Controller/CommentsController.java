@@ -1,20 +1,13 @@
 package Controller;
 
 
-import Database.Database;
 import Domain.Comment;
-import Domain.Commodity;
 import Service.Baloot;
-import Service.Exceptions.CommentNotFound;
-import Service.Exceptions.InvalidCommentVote;
-import Service.Exceptions.UserNotFound;
 import lombok.NoArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;

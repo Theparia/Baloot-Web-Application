@@ -1,4 +1,4 @@
-package Service.Exceptions;
+package Exceptions;
 
 public class InvalidPriceInterval extends Exception{
     public String getMessage() {

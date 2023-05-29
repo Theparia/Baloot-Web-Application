@@ -1,6 +1,10 @@
 package Domain;
 
 
+import Exceptions.CommodityNotInBuyList;
+import Exceptions.ExpiredDiscount;
+import Exceptions.NegativeCredit;
+import Exceptions.NotEnoughCredit;
 import Service.Exceptions.*;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;

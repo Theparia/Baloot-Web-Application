@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.JsonTypeId;
 import lombok.Getter;
 import lombok.Setter;
 
+import jakarta.persistence.Table;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Objects;

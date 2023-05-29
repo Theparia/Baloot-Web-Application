@@ -1,4 +1,4 @@
-package Service.Exceptions;
+package Exceptions;
 
 public class InvalidCredentials extends Exception {
     public String getMessage() {

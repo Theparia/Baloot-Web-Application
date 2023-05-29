@@ -2,15 +2,18 @@ package Service;
 
 import Database.Database;
 import Domain.*;
+import Exceptions.*;
 import Repository.ProviderRepository;
 import Service.Exceptions.*;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.type.TypeFactory;
+import org.hibernate.Session;
+import org.hibernate.SessionFactory;
+import org.hibernate.Transaction;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import HTTPRequestHandler.HTTPRequestHandler;
-import org.springframework.beans.factory.annotation.Autowired;
 
 import java.time.LocalDate;
 import java.util.*;
@@ -62,24 +65,56 @@ public class Baloot {
 
         ObjectMapper objectMapper = new ObjectMapper();
         TypeFactory typeFactory = objectMapper.getTypeFactory();
-
-        List<User> users = objectMapper.readValue(HTTPRequestHandler.getRequest(USERS_URI), typeFactory.constructCollectionType(List.class, User.class));
-        Database.getInstance().setUsers(users);
-
-
-        List<Commodity> commodities = objectMapper.readValue(HTTPRequestHandler.getRequest(COMMODITIES_URI), typeFactory.constructCollectionType(List.class, Commodity.class));
-        Database.getInstance().setCommodities(commodities);
-
         List<Provider> providers = objectMapper.readValue(HTTPRequestHandler.getRequest(PROVIDERS_URI), typeFactory.constructCollectionType(List.class, Provider.class));
-//        Database.getInstance().setProviders(providers);
+
+        // save data to database
+//        SessionFactory sessionFactory = (SessionFactory) HibernateUtil.getSessionFactory();
+//        Session session = sessionFactory.openSession();
+//        Transaction transaction = session.beginTransaction();
+//        for (Provider provider : providers) {
+//            session.save(provider);
+//        }
+//        transaction.commit();
+//        session.close();
+
+        // save data to database
+        SessionFactory sessionFactory = (SessionFactory) HibernateUtil.getSessionFactory();
+        Session session = sessionFactory.openSession();
+        Transaction transaction = session.beginTransaction();
+        try {
+            for (Provider provider : providers) {
+                session.persist(provider);
+            }
+            transaction.commit();
+        } catch (Exception e) {
+            if (transaction != null && transaction.isActive()) {
+                transaction.rollback();
+            }
+            throw e;
+        } finally {
+            session.close();
+        }
+
+//        ObjectMapper objectMapper = new ObjectMapper();
+//        TypeFactory typeFactory = objectMapper.getTypeFactory();
+//
+//        List<User> users = objectMapper.readValue(HTTPRequestHandler.getRequest(USERS_URI), typeFactory.constructCollectionType(List.class, User.class));
+//        Database.getInstance().setUsers(users);
+//
+//
+//        List<Commodity> commodities = objectMapper.readValue(HTTPRequestHandler.getRequest(COMMODITIES_URI), typeFactory.constructCollectionType(List.class, Commodity.class));
+//        Database.getInstance().setCommodities(commodities);
+//
+//        List<Provider> providers = objectMapper.readValue(HTTPRequestHandler.getRequest(PROVIDERS_URI), typeFactory.constructCollectionType(List.class, Provider.class));
+////        Database.getInstance().setProviders(providers);
 //        providerRepository.saveAll(providers);
-
-        List<Comment> comments = objectMapper.readValue(HTTPRequestHandler.getRequest(COMMENTS_URI), typeFactory.constructCollectionType(List.class, Comment.class));
-        Database.getInstance().setComments(comments);
-
-        List<Discount> discounts = objectMapper.readValue(HTTPRequestHandler.getRequest(DISCOUNT_URI), typeFactory.constructCollectionType(List.class, Discount.class));
-        Database.getInstance().setDiscounts(discounts);
-        setCommentsUsername();
+//
+//        List<Comment> comments = objectMapper.readValue(HTTPRequestHandler.getRequest(COMMENTS_URI), typeFactory.constructCollectionType(List.class, Comment.class));
+//        Database.getInstance().setComments(comments);
+//
+//        List<Discount> discounts = objectMapper.readValue(HTTPRequestHandler.getRequest(DISCOUNT_URI), typeFactory.constructCollectionType(List.class, Discount.class));
+//        Database.getInstance().setDiscounts(discounts);
+//        setCommentsUsername();
     }
 
     public void setCommentsUsername() throws UserNotFound {

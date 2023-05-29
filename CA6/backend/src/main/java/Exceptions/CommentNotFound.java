@@ -1,4 +1,4 @@
-package Service.Exceptions;
+package Exceptions;
 
 public class CommentNotFound extends Exception{
     public String getMessage() {
