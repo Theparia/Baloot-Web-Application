@@ -4,7 +4,7 @@ import Database.Database;
 import Domain.*;
 import Exceptions.*;
 import Repository.ProviderRepository;
-import Service.Exceptions.*;
+import Exceptions.*;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.type.TypeFactory;
 import org.hibernate.Session;
@@ -66,34 +66,7 @@ public class Baloot {
         ObjectMapper objectMapper = new ObjectMapper();
         TypeFactory typeFactory = objectMapper.getTypeFactory();
         List<Provider> providers = objectMapper.readValue(HTTPRequestHandler.getRequest(PROVIDERS_URI), typeFactory.constructCollectionType(List.class, Provider.class));
-
-        // save data to database
-//        SessionFactory sessionFactory = (SessionFactory) HibernateUtil.getSessionFactory();
-//        Session session = sessionFactory.openSession();
-//        Transaction transaction = session.beginTransaction();
-//        for (Provider provider : providers) {
-//            session.save(provider);
-//        }
-//        transaction.commit();
-//        session.close();
-
-        // save data to database
-        SessionFactory sessionFactory = (SessionFactory) HibernateUtil.getSessionFactory();
-        Session session = sessionFactory.openSession();
-        Transaction transaction = session.beginTransaction();
-        try {
-            for (Provider provider : providers) {
-                session.persist(provider);
-            }
-            transaction.commit();
-        } catch (Exception e) {
-            if (transaction != null && transaction.isActive()) {
-                transaction.rollback();
-            }
-            throw e;
-        } finally {
-            session.close();
-        }
+        providerRepository.saveAll(providers);
 
 //        ObjectMapper objectMapper = new ObjectMapper();
 //        TypeFactory typeFactory = objectMapper.getTypeFactory();
