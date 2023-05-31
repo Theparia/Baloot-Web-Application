@@ -21,7 +21,7 @@ import java.util.stream.Collectors;
 import org.springframework.stereotype.Service;
 
 
-@NoArgsConstructor
+//@NoArgsConstructor
 @Getter
 @Setter
 @Service
@@ -32,6 +32,7 @@ public class Baloot {
     private ProviderRepository providerRepository;
 
     private Baloot(ProviderRepository providerRepository){
+        System.out.println("CONSTRUCTOR");
         this.providerRepository = providerRepository;
         try {
             importDatabase();
