@@ -15,7 +15,6 @@ import java.util.Date;
 @Table(name = "provider")
 public class Provider {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer id;
 
     private String name;
@@ -25,12 +24,12 @@ public class Provider {
 
     private String image;
 
-    public Provider(Integer id, String name, Date registryDate, String image) {
-        this.id = id;
-        this.name = name;
-        this.registryDate = registryDate;
-        this.image = image;
-    }
+//    public Provider(Integer id, String name, Date registryDate, String image) {
+//        this.id = id;
+//        this.name = name;
+//        this.registryDate = registryDate;
+//        this.image = image;
+//    }
 
     public boolean isEqual(Integer providerId) {
         return this.id.equals(providerId);

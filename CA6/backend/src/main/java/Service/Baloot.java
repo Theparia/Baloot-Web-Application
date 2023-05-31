@@ -3,6 +3,7 @@ package Service;
 import Database.Database;
 import Domain.*;
 import Exceptions.*;
+import Repository.DiscountRepository;
 import Repository.ProviderRepository;
 import Exceptions.*;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -27,13 +28,14 @@ import org.springframework.stereotype.Service;
 @Service
 public class Baloot {
 
-//    private static Baloot instance = null;
     private User loggedInUser = null;
-    private ProviderRepository providerRepository;
+    private final ProviderRepository providerRepository;
+    private final DiscountRepository discountRepository;
 
-    private Baloot(ProviderRepository providerRepository){
+    private Baloot(ProviderRepository providerRepository, DiscountRepository discountRepository){
         System.out.println("CONSTRUCTOR");
         this.providerRepository = providerRepository;
+        this.discountRepository = discountRepository;
         try {
             importDatabase();
         } catch (Exception e) {
@@ -86,8 +88,10 @@ public class Baloot {
 //        List<Comment> comments = objectMapper.readValue(HTTPRequestHandler.getRequest(COMMENTS_URI), typeFactory.constructCollectionType(List.class, Comment.class));
 //        Database.getInstance().setComments(comments);
 //
-//        List<Discount> discounts = objectMapper.readValue(HTTPRequestHandler.getRequest(DISCOUNT_URI), typeFactory.constructCollectionType(List.class, Discount.class));
+        List<Discount> discounts = objectMapper.readValue(HTTPRequestHandler.getRequest(DISCOUNT_URI), typeFactory.constructCollectionType(List.class, Discount.class));
+        discountRepository.saveAll(discounts);
 //        Database.getInstance().setDiscounts(discounts);
+
 //        setCommentsUsername();
     }
 
