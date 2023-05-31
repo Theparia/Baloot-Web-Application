@@ -22,6 +22,7 @@ public class Provider {
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
     private Date registryDate;
 
+    @Column(length = 1024)
     private String image;
 
 //    public Provider(Integer id, String name, Date registryDate, String image) {

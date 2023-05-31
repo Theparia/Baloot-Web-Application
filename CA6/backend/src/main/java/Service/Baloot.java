@@ -29,25 +29,15 @@ import org.springframework.stereotype.Service;
 public class Baloot {
 
     private User loggedInUser = null;
-    private final ProviderRepository providerRepository;
-    private final DiscountRepository discountRepository;
 
-    private Baloot(ProviderRepository providerRepository, DiscountRepository discountRepository){
+    private Baloot(){
         System.out.println("CONSTRUCTOR");
-        this.providerRepository = providerRepository;
-        this.discountRepository = discountRepository;
         try {
             importDatabase();
         } catch (Exception e) {
         }
     }
 
-//    public static Baloot getInstance() {
-//        if (instance == null) {
-//            instance = new Baloot(providerRepository);
-//        }
-//        return instance;
-//    }
     public List<Commodity> getCommodities(){
         return Database.getInstance().getCommodities();
     }
@@ -62,14 +52,10 @@ public class Baloot {
     public void importDatabase() throws Exception {
         final String USERS_URI = "http://5.253.25.110:5000/api/users";
         final String COMMODITIES_URI = "http://5.253.25.110:5000/api/v2/commodities";
-        final String PROVIDERS_URI = "http://5.253.25.110:5000/api/v2/providers";
         final String COMMENTS_URI = "http://5.253.25.110:5000/api/comments";
-        final String DISCOUNT_URI = "http://5.253.25.110:5000/api/discount";
 
         ObjectMapper objectMapper = new ObjectMapper();
         TypeFactory typeFactory = objectMapper.getTypeFactory();
-        List<Provider> providers = objectMapper.readValue(HTTPRequestHandler.getRequest(PROVIDERS_URI), typeFactory.constructCollectionType(List.class, Provider.class));
-        providerRepository.saveAll(providers);
 
 //        ObjectMapper objectMapper = new ObjectMapper();
 //        TypeFactory typeFactory = objectMapper.getTypeFactory();
@@ -77,20 +63,12 @@ public class Baloot {
 //        List<User> users = objectMapper.readValue(HTTPRequestHandler.getRequest(USERS_URI), typeFactory.constructCollectionType(List.class, User.class));
 //        Database.getInstance().setUsers(users);
 //
-//
 //        List<Commodity> commodities = objectMapper.readValue(HTTPRequestHandler.getRequest(COMMODITIES_URI), typeFactory.constructCollectionType(List.class, Commodity.class));
 //        Database.getInstance().setCommodities(commodities);
 //
-//        List<Provider> providers = objectMapper.readValue(HTTPRequestHandler.getRequest(PROVIDERS_URI), typeFactory.constructCollectionType(List.class, Provider.class));
-////        Database.getInstance().setProviders(providers);
-//        providerRepository.saveAll(providers);
 //
 //        List<Comment> comments = objectMapper.readValue(HTTPRequestHandler.getRequest(COMMENTS_URI), typeFactory.constructCollectionType(List.class, Comment.class));
 //        Database.getInstance().setComments(comments);
-//
-        List<Discount> discounts = objectMapper.readValue(HTTPRequestHandler.getRequest(DISCOUNT_URI), typeFactory.constructCollectionType(List.class, Discount.class));
-        discountRepository.saveAll(discounts);
-//        Database.getInstance().setDiscounts(discounts);
 
 //        setCommentsUsername();
     }
