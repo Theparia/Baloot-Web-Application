@@ -56,9 +56,9 @@ public class CommentsController {
     }
 
     @RequestMapping(value = "/comments/add/", method = RequestMethod.POST)
-    public ResponseEntity<String> dislikeComment(@RequestBody Map<String, String> info)  {
+    public ResponseEntity<String> addComment(@RequestBody Map<String, String> info)  {
         try {
-            commentService.addComment(info.get("username"), Integer.valueOf(info.get("commodityId")), info.get("text")); //todo: Add getEmailByUsername(info.get("username") after creating user table
+            commentService.addComment(commentService.getEmailByUsername(info.get("username")), Integer.valueOf(info.get("commodityId")), info.get("text"));
 //            baloot.addComment(baloot.getEmailByUsername(info.get("username")), Integer.valueOf(info.get("commodityId")), info.get("text"));
             return ResponseEntity.ok("ok");
         } catch (Exception e) {

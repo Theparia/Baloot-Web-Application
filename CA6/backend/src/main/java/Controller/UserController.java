@@ -49,14 +49,14 @@ public class UserController {
         }
     }
 
-    @RequestMapping(value = "/users/{username}/buyList", method = RequestMethod.GET)
-    protected ResponseEntity<HashMap<Integer, Integer>> getBuyList(@PathVariable String username) {
-        try {
-            return ResponseEntity.ok(baloot.findUserByUsername(username).getBuyList());
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
-        }
-    }
+//    @RequestMapping(value = "/users/{username}/buyList", method = RequestMethod.GET)
+//    protected ResponseEntity<HashMap<Integer, Integer>> getBuyList(@PathVariable String username) {
+//        try {
+//            return ResponseEntity.ok(baloot.findUserByUsername(username).getBuyList());
+//        } catch (Exception e) {
+//            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+//        }
+//    }
 
     @RequestMapping(value = "/users/{username}/buyList/add", method = RequestMethod.POST)
     protected ResponseEntity<String> addToBuyList(@PathVariable String username, @RequestBody Map<String, String> info) {
@@ -78,14 +78,14 @@ public class UserController {
         }
     }
 
-    @RequestMapping(value = "/users/{username}/purchasedList", method = RequestMethod.GET)
-    protected ResponseEntity<HashMap<Integer, Integer>> getPurchasedList(@PathVariable String username) {
-        try {
-            return ResponseEntity.ok(baloot.findUserByUsername(username).getPurchasedList());
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
-        }
-    }
+//    @RequestMapping(value = "/users/{username}/purchasedList", method = RequestMethod.GET)
+//    protected ResponseEntity<HashMap<Integer, Integer>> getPurchasedList(@PathVariable String username) {
+//        try {
+//            return ResponseEntity.ok(baloot.findUserByUsername(username).getPurchasedList());
+//        } catch (Exception e) {
+//            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+//        }
+//    }
 
     @RequestMapping(value = "/users/{username}/credit", method = RequestMethod.POST)
     protected ResponseEntity<String> addCredit(@PathVariable String username, @RequestBody Map<String, String> info) {

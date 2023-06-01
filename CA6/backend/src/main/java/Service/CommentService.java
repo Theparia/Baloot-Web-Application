@@ -1,18 +1,13 @@
 package Service;
 
-import Domain.Comment;
-import Domain.Commodity;
+import Database.Database;
+import Domain.*;
 import Domain.Id.CommentId;
-import Domain.Provider;
-import Domain.Vote;
 import Exceptions.CommentNotFound;
 import Exceptions.InvalidCommentVote;
 import Exceptions.UserNotFound;
 import HTTPRequestHandler.HTTPRequestHandler;
-import Repository.CommentRepository;
-import Repository.CommodityRepository;
-import Repository.ProviderRepository;
-import Repository.VoteRepository;
+import Repository.*;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.DeserializationFeature;
@@ -43,10 +38,13 @@ public class CommentService {
 
     private final VoteRepository voteRepository;
 
-    private CommentService(CommentRepository commentRepository, CommodityRepository commodityRepository, VoteRepository voteRepository) throws Exception {
+    private final UserRepository userRepository;
+
+    private CommentService(CommentRepository commentRepository, CommodityRepository commodityRepository, VoteRepository voteRepository, UserRepository userRepository) throws Exception {
         this.commentRepository = commentRepository;
         this.commodityRepository = commodityRepository;
         this.voteRepository = voteRepository;
+        this.userRepository = userRepository;
         fetchData();
     }
 
@@ -56,13 +54,33 @@ public class CommentService {
         TypeFactory typeFactory = objectMapper.getTypeFactory();
         List<Comment> comments = objectMapper.readValue(HTTPRequestHandler.getRequest(COMMENTS_URI), typeFactory.constructCollectionType(List.class, Comment.class));
         commentRepository.saveAll(comments);
+        setCommentsUsername();
     }
 
     public void addComment(String userEmail, Integer commodityId, String text){
         Comment comment = new Comment(commodityId, userEmail, text, LocalDate.now().toString());
         commentRepository.save(comment);
 //        Database.getInstance().addComment(comment);
-//        setCommentsUsername(); //todo: set username by email for comments after creating user table
+        setCommentsUsername();
+    }
+
+    public void setCommentsUsername() {
+        List<Comment> comments = commentRepository.findAll();
+        for (Comment comment : comments) {
+            User user = userRepository.findByEmail(comment.getUserEmail());
+            if (user != null) {
+                comment.setUsername(user.getUsername());
+                commentRepository.save(comment);
+            }
+        }
+    }
+
+    public String getEmailByUsername(String username) {
+        User user = userRepository.findByUsername(username);
+        if (user != null) {
+            return user.getEmail();
+        }
+        return null; // or throw an exception if desired
     }
 
     public List<Comment> getCommodityComments(Integer commodityId) {

@@ -8,9 +8,7 @@ import Exceptions.NotEnoughCredit;
 import Exceptions.*;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -23,8 +21,11 @@ import java.util.List;
 @Getter
 @Setter
 @NoArgsConstructor
+@Entity
+@Table(name = "user")
 public class User {
 
+    @Id
     private String username;
     private String password;
     private String email;
@@ -33,12 +34,20 @@ public class User {
     private String address;
     private float credit;
     @JsonIgnore
-    private HashMap<Integer, Integer> buyList = new HashMap<>(); // id -> quantity
+    @OneToMany
+    private List<Item> buyList = new ArrayList<>();
     @JsonIgnore
-    private HashMap<Integer, Integer> purchasedList = new HashMap<>(); // id -> quantity
+    @OneToMany
+    private List<Item> purchasedList = new ArrayList<>();
+//    @JsonIgnore
+//    private HashMap<Integer, Integer> buyList = new HashMap<>(); // id -> quantity
+//    @JsonIgnore
+//    private HashMap<Integer, Integer> purchasedList = new HashMap<>(); // id -> quantity
     @JsonIgnore
+    @Transient
     private List<Discount> usedDiscounts = new ArrayList<>();
     @JsonIgnore
+    @Transient
     private Discount currentDiscount = null;
     public User(String username, String password, String email, String birthDate, String address, float credit) {
         this.username = username;
@@ -59,7 +68,7 @@ public class User {
         this.credit = user.getCredit();
         this.address = user.getAddress();
         this.birthDate = user.getBirthDate();
-        this.buyList = user.getBuyList();
+//        this.buyList = user.getBuyList();
         this.usedDiscounts = user.getUsedDiscounts();
         this.currentDiscount = null;
     }
@@ -102,7 +111,7 @@ public class User {
     }
 
     public void resetBuyList(){
-        this.buyList = new HashMap<>();
+//        this.buyList = new HashMap<>();
     }
 
     public void reduceCredit(float amount) throws NotEnoughCredit {
@@ -113,26 +122,26 @@ public class User {
     }
 
     public void addToBuyList(Integer commodityId) {
-        if(buyList.containsKey(commodityId))
-            buyList.replace(commodityId, buyList.get(commodityId) + 1);
-        else
-            buyList.put(commodityId, 1);
+//        if(buyList.containsKey(commodityId))
+//            buyList.replace(commodityId, buyList.get(commodityId) + 1);
+//        else
+//            buyList.put(commodityId, 1);
     }
 
     public void addToPurchasedList(Integer commodityId) {
-        if(purchasedList.containsKey(commodityId))
-            purchasedList.replace(commodityId, buyList.get(commodityId) + purchasedList.get(commodityId));
-        else
-            purchasedList.put(commodityId, buyList.get(commodityId));
+//        if(purchasedList.containsKey(commodityId))
+//            purchasedList.replace(commodityId, buyList.get(commodityId) + purchasedList.get(commodityId));
+//        else
+//            purchasedList.put(commodityId, buyList.get(commodityId));
     }
 
     public void removeFromBuyList(Integer commodityId) throws CommodityNotInBuyList {
-        if(!buyList.containsKey(commodityId))
-            throw new CommodityNotInBuyList();
-        if(buyList.get(commodityId) == 1)
-            buyList.remove(commodityId);
-        else
-            buyList.replace(commodityId, buyList.get(commodityId) - 1);
+//        if(!buyList.containsKey(commodityId))
+//            throw new CommodityNotInBuyList();
+//        if(buyList.get(commodityId) == 1)
+//            buyList.remove(commodityId);
+//        else
+//            buyList.replace(commodityId, buyList.get(commodityId) - 1);
     }
 
     public void addCredit(float creditToBeAdded) throws NegativeCredit {
@@ -141,7 +150,7 @@ public class User {
         credit += creditToBeAdded;
     }
 
-    public int getNumberOfBuyListItems(){
-        return buyList.size();
-    }
+//    public int getNumberOfBuyListItems(){
+//        return buyList.size();
+//    }
 }

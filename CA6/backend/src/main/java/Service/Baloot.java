@@ -221,46 +221,47 @@ public class Baloot {
      }
 
      public void addToBuyList(String username, Integer commodityId) throws CommodityNotFound, UserNotFound, CommodityOutOfStock, CommodityAlreadyExistsInBuyList {
-        User user = findUserByUsername(username);
-        int quantity = 1;
-        if(user.getBuyList().containsKey(commodityId))
-            quantity += user.getBuyList().get(commodityId);
-        findCommodityById(commodityId).checkInStock(quantity);
-        user.addToBuyList(commodityId);
+//        User user = findUserByUsername(username);
+//        int quantity = 1;
+//        if(user.getBuyList().containsKey(commodityId))
+//            quantity += user.getBuyList().get(commodityId);
+//        findCommodityById(commodityId).checkInStock(quantity);
+//        user.addToBuyList(commodityId);
      }
 
      public float calcBuyListPrice(String username) throws UserNotFound, CommodityNotFound { //TODO: where?
-         User user = findUserByUsername(username);
-         float totalPrice = 0;
-
-         for (var entry : user.getBuyList().entrySet()) {
-             totalPrice += entry.getValue() * findCommodityById(entry.getKey()).getPrice();
-         }
-
-         if (user.getCurrentDiscount() == null)
-             return totalPrice;
-         return totalPrice * (100 - user.getCurrentDiscount().getDiscount()) / 100;
+//         User user = findUserByUsername(username);
+//         float totalPrice = 0;
+//
+//         for (var entry : user.getBuyList().entrySet()) {
+//             totalPrice += entry.getValue() * findCommodityById(entry.getKey()).getPrice();
+//         }
+//
+//         if (user.getCurrentDiscount() == null)
+//             return totalPrice;
+//         return totalPrice * (100 - user.getCurrentDiscount().getDiscount()) / 100;
+         return 0;
      }
 
     public void finalizePayment(String username) throws UserNotFound, CommodityOutOfStock, NotEnoughCredit, CommodityNotFound {
-        User user = findUserByUsername(username);
-//        Set<Integer> buyListCommodityIds = user.getBuyList().keySet();
-
-        for (var entry : user.getBuyList().entrySet()) {
-            Integer commodityId = entry.getKey();
-            Integer quantity = entry.getValue();
-            findCommodityById(commodityId).checkInStock(quantity);
-        }
-
-        user.reduceCredit(calcBuyListPrice(username));
-        for (var entry : user.getBuyList().entrySet()) {
-            Integer commodityId = entry.getKey();
-            Integer quantity = entry.getValue();
-            user.addToPurchasedList(commodityId);
-            findCommodityById(commodityId).reduceInStock(quantity);
-        }
-        user.useDiscount();
-        user.resetBuyList();
+//        User user = findUserByUsername(username);
+////        Set<Integer> buyListCommodityIds = user.getBuyList().keySet();
+//
+//        for (var entry : user.getBuyList().entrySet()) {
+//            Integer commodityId = entry.getKey();
+//            Integer quantity = entry.getValue();
+//            findCommodityById(commodityId).checkInStock(quantity);
+//        }
+//
+//        user.reduceCredit(calcBuyListPrice(username));
+//        for (var entry : user.getBuyList().entrySet()) {
+//            Integer commodityId = entry.getKey();
+//            Integer quantity = entry.getValue();
+//            user.addToPurchasedList(commodityId);
+//            findCommodityById(commodityId).reduceInStock(quantity);
+//        }
+//        user.useDiscount();
+//        user.resetBuyList();
     }
 
      public void removeFromBuyList(String username, Integer commodityId) throws UserNotFound, CommodityNotInBuyList {
