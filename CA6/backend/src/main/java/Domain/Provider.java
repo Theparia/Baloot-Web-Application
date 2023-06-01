@@ -25,13 +25,6 @@ public class Provider {
     @Column(length = 1024)
     private String image;
 
-//    public Provider(Integer id, String name, Date registryDate, String image) {
-//        this.id = id;
-//        this.name = name;
-//        this.registryDate = registryDate;
-//        this.image = image;
-//    }
-
     public boolean isEqual(Integer providerId) {
         return this.id.equals(providerId);
     }

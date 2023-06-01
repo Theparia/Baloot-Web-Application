@@ -16,13 +16,13 @@ import java.util.Map;
 @RestController
 @RequestMapping
 public class AuthController {
-//    @Autowired
-//    private Baloot baloot;
+    @Autowired
     private Baloot baloot;
+//    private Baloot baloot;
 
-    public AuthController(Baloot baloot) {
-        this.baloot = baloot;
-    }
+//    public AuthController(Baloot baloot) {
+//        this.baloot = baloot;
+//    }
 
     @RequestMapping(value = "/login", method = RequestMethod.POST)
     protected ResponseEntity<String> login(@RequestBody Map<String, String> info){

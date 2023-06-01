@@ -18,11 +18,12 @@ import java.util.List;
 @RestController
 @RequestMapping
 public class ProviderController {
+    @Autowired
     private Baloot baloot;
 
-    public ProviderController(Baloot baloot){
-        this.baloot = baloot;
-    }
+//    public ProviderController(Baloot baloot){
+//        this.baloot = baloot;
+//    }
     @RequestMapping(value = "/providers/{id}", method = RequestMethod.GET)
     protected ResponseEntity<Provider> getProvider(@PathVariable String id) {
         try {

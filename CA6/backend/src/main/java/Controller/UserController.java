@@ -22,11 +22,12 @@ import java.util.Map;
 @RestController
 @RequestMapping
 public class UserController {
+    @Autowired
     private Baloot baloot;
 
-    public UserController(Baloot baloot){
-        this.baloot = baloot;
-    }
+//    public UserController(Baloot baloot){
+//        this.baloot = baloot;
+//    }
 
     @RequestMapping(value = "/users/{username}", method = RequestMethod.GET)
     protected ResponseEntity<User> getUser(@PathVariable String username) {

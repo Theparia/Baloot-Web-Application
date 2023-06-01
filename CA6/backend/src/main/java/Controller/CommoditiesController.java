@@ -4,6 +4,7 @@ import Domain.Comment;
 import Domain.Commodity;
 import Service.Baloot;
 import Exceptions.CommodityNotFound;
+import Service.CommentService;
 import Service.CommodityService;
 import lombok.NoArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,6 +25,9 @@ public class CommoditiesController {
 
     @Autowired
     private CommodityService commodityService;
+
+    @Autowired
+    private CommentService commentService;
 
     @RequestMapping(value = "/commodities/{id}", method = RequestMethod.GET)
     protected ResponseEntity<Commodity> getCommodity(@PathVariable String id) {
@@ -65,13 +69,14 @@ public class CommoditiesController {
 
     @RequestMapping(value = "/commodities/{commodityId}/comments/",method = RequestMethod.GET)
     public ResponseEntity<List<Comment>> getCommentsCommodity(@PathVariable String commodityId) {
-        return ResponseEntity.ok(baloot.getCommodityComments(Integer.valueOf(commodityId)));
+        return ResponseEntity.ok(commentService.getCommodityComments(Integer.valueOf(commodityId)));
+//        return ResponseEntity.ok(baloot.getCommodityComments(Integer.valueOf(commodityId)));
     }
 
-    @RequestMapping(value = "/commodities/{commodityId}/comments/like",method = RequestMethod.POST)
-    public ResponseEntity<List<Comment>> likeComment(@PathVariable String commodityId, @RequestParam("commentId") String sortMethod) {
-        return ResponseEntity.ok(baloot.getCommodityComments(Integer.valueOf(commodityId)));
-    }
+//    @RequestMapping(value = "/commodities/{commodityId}/comments/like",method = RequestMethod.POST)
+//    public ResponseEntity<List<Comment>> likeComment(@PathVariable String commodityId, @RequestParam("commentId") String sortMethod) {
+//        return ResponseEntity.ok(baloot.getCommodityComments(Integer.valueOf(commodityId)));
+//    }
 
     @RequestMapping(value = "/commodities/{id}/rating", method = RequestMethod.POST)
     protected ResponseEntity<String> rateCommodity(@PathVariable String id, @RequestBody Map<String, String> info) {

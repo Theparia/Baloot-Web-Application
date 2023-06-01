@@ -3,6 +3,7 @@ package Service;
 import Database.Database;
 import Domain.*;
 import Exceptions.*;
+import Repository.CommentRepository;
 import Repository.DiscountRepository;
 import Repository.ProviderRepository;
 import Exceptions.*;
@@ -32,8 +33,11 @@ public class Baloot {
 
     private User loggedInUser = null;
 
-    private Baloot(){
+//    private final CommentRepository commentRepository;
+
+    private Baloot(CommentRepository commentRepository){
         System.out.println("CONSTRUCTOR");
+//        this.commentRepository = commentRepository;
         try {
             importDatabase();
         } catch (Exception e) {
@@ -204,11 +208,12 @@ public class Baloot {
         user.deleteCurrentDiscount();
     }
 
-    public void addComment(String userEmail, Integer commodityId, String text) throws UserNotFound {
-        Comment comment = new Comment(commodityId, userEmail, text, LocalDate.now().toString());
-        Database.getInstance().addComment(comment);
-        setCommentsUsername();
-    }
+//    public void addComment(String userEmail, Integer commodityId, String text) throws UserNotFound {
+//        Comment comment = new Comment(commodityId, userEmail, text, LocalDate.now().toString());
+//        commentRepository.save(comment);
+////        Database.getInstance().addComment(comment);
+//        setCommentsUsername();
+//    }
 
      public void addCommodity(Commodity newCommodity) throws ProviderNotFound {
         findProviderById(newCommodity.getProviderId());
@@ -335,11 +340,11 @@ public class Baloot {
         return vote == 1 || vote == 0 || vote == -1;
     }
 
-    public void voteComment(UUID commentId, String username, int vote) throws InvalidCommentVote, CommentNotFound, UserNotFound{
-        if(!isVoteValid(vote))
-            throw new InvalidCommentVote();
-        findCommentById(commentId).addVote(findUserByUsername(username).getUsername(), vote);
-    }
+//    public void voteComment(UUID commentId, String username, int vote) throws InvalidCommentVote, CommentNotFound, UserNotFound{
+//        if(!isVoteValid(vote))
+//            throw new InvalidCommentVote();
+//        findCommentById(commentId).addVote(findUserByUsername(username).getUsername(), vote);
+//    }
 
     public double getAverageRating(String providerId){
         List<Commodity> providedCommodities = findCommoditiesByProvider(Integer.valueOf(providerId));
