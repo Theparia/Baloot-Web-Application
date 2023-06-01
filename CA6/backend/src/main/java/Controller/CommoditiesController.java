@@ -4,7 +4,9 @@ import Domain.Comment;
 import Domain.Commodity;
 import Service.Baloot;
 import Exceptions.CommodityNotFound;
+import Service.CommodityService;
 import lombok.NoArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -17,15 +19,17 @@ import java.util.Map;
 @RestController
 @RequestMapping
 public class CommoditiesController {
+    @Autowired
     private Baloot baloot;
 
-    public CommoditiesController(Baloot baloot){
-        this.baloot = baloot;
-    }
+    @Autowired
+    private CommodityService commodityService;
+
     @RequestMapping(value = "/commodities/{id}", method = RequestMethod.GET)
     protected ResponseEntity<Commodity> getCommodity(@PathVariable String id) {
         try {
-            return ResponseEntity.ok(baloot.findCommodityById(Integer.valueOf(id)));
+            return ResponseEntity.ok(commodityService.findCommodityById(Integer.valueOf(id)));
+//            return ResponseEntity.ok(baloot.findCommodityById(Integer.valueOf(id)));
         } catch (Exception e){
             return ResponseEntity.status(HttpStatus.FORBIDDEN).body(null);
         }
