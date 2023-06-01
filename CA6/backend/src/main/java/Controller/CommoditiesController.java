@@ -33,7 +33,6 @@ public class CommoditiesController {
     protected ResponseEntity<Commodity> getCommodity(@PathVariable String id) {
         try {
             return ResponseEntity.ok(commodityService.findCommodityById(Integer.valueOf(id)));
-//            return ResponseEntity.ok(baloot.findCommodityById(Integer.valueOf(id)));
         } catch (Exception e){
             return ResponseEntity.status(HttpStatus.FORBIDDEN).body(null);
         }
@@ -59,24 +58,19 @@ public class CommoditiesController {
             @RequestParam(value = "pageSize", defaultValue = "12", required = false) int pageSize) {
 
         List<Commodity> commodities = filterCommodities(sortMethod, searchMethod, searchedText, commoditiesAvailable);
-        return ResponseEntity.ok(baloot.getCommoditiesByPage(pageNumber, pageSize, commodities));
+        return ResponseEntity.ok(commodityService.getCommoditiesByPage(pageNumber, pageSize, commodities));
     }
 
     @RequestMapping(value = "/commodities/{commodityId}/suggested/",method = RequestMethod.GET)
     public ResponseEntity<List<Commodity>> getSuggestedCommodities(@PathVariable String commodityId) throws CommodityNotFound {
-        return ResponseEntity.ok(baloot.getSuggestedCommodities(Integer.valueOf(commodityId)));
+        return ResponseEntity.ok(commodityService.getSuggestedCommodities(Integer.valueOf(commodityId)));
     }
 
     @RequestMapping(value = "/commodities/{commodityId}/comments/",method = RequestMethod.GET)
     public ResponseEntity<List<Comment>> getCommentsCommodity(@PathVariable String commodityId) {
         return ResponseEntity.ok(commentService.getCommodityComments(Integer.valueOf(commodityId)));
-//        return ResponseEntity.ok(baloot.getCommodityComments(Integer.valueOf(commodityId)));
     }
 
-//    @RequestMapping(value = "/commodities/{commodityId}/comments/like",method = RequestMethod.POST)
-//    public ResponseEntity<List<Comment>> likeComment(@PathVariable String commodityId, @RequestParam("commentId") String sortMethod) {
-//        return ResponseEntity.ok(baloot.getCommodityComments(Integer.valueOf(commodityId)));
-//    }
 
     @RequestMapping(value = "/commodities/{id}/rating", method = RequestMethod.POST)
     protected ResponseEntity<String> rateCommodity(@PathVariable String id, @RequestBody Map<String, String> info) {
@@ -89,25 +83,25 @@ public class CommoditiesController {
     }
 
     private List<Commodity> filterCommodities(String sortMethod, String searchMethod, String searchedText, Boolean commoditiesAvailable){
-        List<Commodity> commodities = baloot.getCommodities();
+        List<Commodity> commodities = commodityService.getCommodities();
 
         if (searchMethod != null && !searchedText.equals("")) {
             if (searchMethod.equals("category")) {
-                commodities = baloot.searchCommoditiesByCategory(searchedText);
+                commodities = commodityService.searchCommoditiesByCategory(searchedText);
             } else if (searchMethod.equals("name")) {
-                commodities = baloot.searchCommoditiesByName(searchedText);
+                commodities = commodityService.searchCommoditiesByName(searchedText);
             } else if (searchMethod.equals("provider")) {
-                commodities = baloot.searchCommoditiesByProviderName(searchedText);
+                commodities = commodityService.searchCommoditiesByProviderName(searchedText);
             }
         }
         if (commoditiesAvailable) {
-            commodities = baloot.getAvailableCommodities(commodities);
+            commodities = commodityService.getAvailableCommodities(commodities);
         }
         if (sortMethod.equals("name")) {
-            commodities = baloot.sortCommoditiesByName(commodities);
+            commodities = commodityService.sortCommoditiesByName(commodities);
         }
         if (sortMethod.equals("price")) {
-            commodities = baloot.sortCommoditiesByPrice(commodities);
+            commodities = commodityService.sortCommoditiesByPrice(commodities);
         }
         return commodities;
     }

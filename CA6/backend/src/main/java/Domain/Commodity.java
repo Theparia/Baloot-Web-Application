@@ -65,21 +65,11 @@ public class Commodity {
     }
 
     public boolean isInCategory(String category){
-//        for(String cat: categories){
-//            if (cat.equals(category)){
-//                return true;
-//            }
-//        }
-        return false;
+        return categories.contains(category);
     }
 
-    public boolean isInSimilarCategory(List<String> categories1){
-//        for(String cat: categories){
-//            if (categories1.contains(cat)){
-//                return true;
-//            }
-//        }
-        return false;
+    public boolean isInSimilarCategory(List<String> categories_) {
+        return categories.stream().anyMatch(categories_::contains);
     }
 
     public void reduceInStock(Integer quantity) throws CommodityOutOfStock {

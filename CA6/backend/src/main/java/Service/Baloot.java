@@ -44,16 +44,16 @@ public class Baloot {
         }
     }
 
-    public List<Commodity> getCommodities(){
-        return Database.getInstance().getCommodities();
-    }
+//    public List<Commodity> getCommodities(){
+//        return Database.getInstance().getCommodities();
+//    }
 
-    public List<Commodity> getCommoditiesByPage(int pageNumber, int itemsPerPage, List<Commodity> allCommodities) {
-        int startIndex = pageNumber * itemsPerPage;
-        int endIndex = Math.min(startIndex + itemsPerPage, allCommodities.size());
-        allCommodities = allCommodities.subList(startIndex, endIndex);
-        return allCommodities;
-    }
+//    public List<Commodity> getCommoditiesByPage(int pageNumber, int itemsPerPage, List<Commodity> allCommodities) {
+//        int startIndex = pageNumber * itemsPerPage;
+//        int endIndex = Math.min(startIndex + itemsPerPage, allCommodities.size());
+//        allCommodities = allCommodities.subList(startIndex, endIndex);
+//        return allCommodities;
+//    }
 
     public void importDatabase() throws Exception {
         final String USERS_URI = "http://5.253.25.110:5000/api/users";
@@ -147,45 +147,45 @@ public class Baloot {
         throw new CommodityNotFound();
     }
 
-    public List<Commodity> searchCommoditiesByName(String name) {
-        return Database.getInstance().getCommodities().stream()
-                .filter(commodity -> commodity.getName().toLowerCase().contains(name.toLowerCase()))
-                .collect(Collectors.toList());
-    }
+//    public List<Commodity> searchCommoditiesByName(String name) {
+//        return Database.getInstance().getCommodities().stream()
+//                .filter(commodity -> commodity.getName().toLowerCase().contains(name.toLowerCase()))
+//                .collect(Collectors.toList());
+//    }
 
-    public List<Commodity> searchCommoditiesByCategory(String category) {
-        return Database.getInstance().getCommodities().stream()
-                .filter(commodity -> commodity.getCategories().contains(category))
-                .collect(Collectors.toList());
-    }
+//    public List<Commodity> searchCommoditiesByCategory(String category) {
+//        return Database.getInstance().getCommodities().stream()
+//                .filter(commodity -> commodity.getCategories().contains(category))
+//                .collect(Collectors.toList());
+//    }
 
-    public List<Commodity> searchCommoditiesByProviderName(String name) {
-        return Database.getInstance().getCommodities().stream()
-                .filter(commodity -> findProviderById(commodity.getProviderId()).getName().toLowerCase().contains(name.toLowerCase()))
-                .collect(Collectors.toList());
-    }
+//    public List<Commodity> searchCommoditiesByProviderName(String name) {
+//        return Database.getInstance().getCommodities().stream()
+//                .filter(commodity -> findProviderById(commodity.getProviderId()).getName().toLowerCase().contains(name.toLowerCase()))
+//                .collect(Collectors.toList());
+//    }
 
-    public List<Commodity> sortCommoditiesByPrice(List<Commodity> commodities){
-        return commodities.stream()
-                .sorted(Comparator.comparing(Commodity::getPrice))
-                .collect(Collectors.toList());
-    }
+//    public List<Commodity> sortCommoditiesByPrice(List<Commodity> commodities){
+//        return commodities.stream()
+//                .sorted(Comparator.comparing(Commodity::getPrice))
+//                .collect(Collectors.toList());
+//    }
 
-    public List<Commodity> sortCommoditiesByName(List<Commodity> commodities){
-        return commodities.stream()
-                .sorted(Comparator.comparing(Commodity::getName))
-                .collect(Collectors.toList());
-    }
+//    public List<Commodity> sortCommoditiesByName(List<Commodity> commodities){
+//        return commodities.stream()
+//                .sorted(Comparator.comparing(Commodity::getName))
+//                .collect(Collectors.toList());
+//    }
 
-    public List<Commodity> findCommoditiesByCategory(String category){
-        List<Commodity> commoditiesInCategory = new ArrayList<>();
-        for (Commodity commodity : Database.getInstance().getCommodities()){
-            if(commodity.isInCategory(category)){
-                commoditiesInCategory.add(commodity);
-            }
-        }
-        return commoditiesInCategory;
-    }
+//    public List<Commodity> findCommoditiesByCategory(String category){
+//        List<Commodity> commoditiesInCategory = new ArrayList<>();
+//        for (Commodity commodity : Database.getInstance().getCommodities()){
+//            if(commodity.isInCategory(category)){
+//                commoditiesInCategory.add(commodity);
+//            }
+//        }
+//        return commoditiesInCategory;
+//    }
 
     public Discount findDiscountByCode(String code) throws InvalidDiscount {
         for(Discount discount : Database.getInstance().getDiscounts()){
@@ -318,20 +318,20 @@ public class Baloot {
         return commodities;
     }
 
-    private boolean isPriceIntervalValid(float startPrice, float endPrice){
-        return startPrice >= 0 && endPrice >=0 && startPrice <= endPrice;
-    }
-
-    public List<Commodity> searchCommoditiesByPrice(float startPrice, float endPrice) throws InvalidPriceInterval {
-        if(!isPriceIntervalValid(startPrice, endPrice))
-            throw new InvalidPriceInterval();
-        List<Commodity> commodities = new ArrayList<>();
-        for(Commodity commodity : Database.getInstance().getCommodities()){
-            if(commodity.getPrice() >= startPrice && commodity.getPrice() <= endPrice)
-                commodities.add(commodity);
-        }
-        return commodities;
-    }
+//    private boolean isPriceIntervalValid(float startPrice, float endPrice){
+//        return startPrice >= 0 && endPrice >=0 && startPrice <= endPrice;
+//    }
+//
+//    public List<Commodity> searchCommoditiesByPrice(float startPrice, float endPrice) throws InvalidPriceInterval {
+//        if(!isPriceIntervalValid(startPrice, endPrice))
+//            throw new InvalidPriceInterval();
+//        List<Commodity> commodities = new ArrayList<>();
+//        for(Commodity commodity : Database.getInstance().getCommodities()){
+//            if(commodity.getPrice() >= startPrice && commodity.getPrice() <= endPrice)
+//                commodities.add(commodity);
+//        }
+//        return commodities;
+//    }
 
     public void addUserCredit(String username, float credit) throws UserNotFound, NegativeCredit {
         findUserByUsername(username).addCredit(credit);
@@ -357,25 +357,25 @@ public class Baloot {
     }
 
 
-    public List<Commodity> getSuggestedCommodities(Integer commodityId) throws CommodityNotFound {
-        Commodity commodity = findCommodityById(commodityId);
+//    public List<Commodity> getSuggestedCommodities(Integer commodityId) throws CommodityNotFound {
+//        Commodity commodity = findCommodityById(commodityId);
+//
+//        return Database.getInstance().getCommodities().stream()
+//                .filter(c -> !c.getId().equals(commodityId)) // exclude the commodity with the same ID
+////                .sorted(Comparator.comparing(c -> 11 * (commodity.isInSimilarCategory(c.getCategories()) ? 1 : 0) + c.getRating(), Comparator.reverseOrder()))
+//                .limit(4)
+//                .collect(Collectors.toList());
+//    }
 
-        return Database.getInstance().getCommodities().stream()
-                .filter(c -> !c.getId().equals(commodityId)) // exclude the commodity with the same ID
-//                .sorted(Comparator.comparing(c -> 11 * (commodity.isInSimilarCategory(c.getCategories()) ? 1 : 0) + c.getRating(), Comparator.reverseOrder()))
-                .limit(4)
-                .collect(Collectors.toList());
-    }
-
-    public List<Commodity> getAvailableCommodities(List<Commodity> commodities_){
-        List<Commodity> availableCommodities = new ArrayList<>();
-        for (Commodity commodity : commodities_){
-            if(commodity.getInStock() > 0){
-                availableCommodities.add(commodity);
-            }
-        }
-        return availableCommodities;
-    }
+//    public List<Commodity> getAvailableCommodities(List<Commodity> commodities_){
+//        List<Commodity> availableCommodities = new ArrayList<>();
+//        for (Commodity commodity : commodities_){
+//            if(commodity.getInStock() > 0){
+//                availableCommodities.add(commodity);
+//            }
+//        }
+//        return availableCommodities;
+//    }
 
     public void printData(){
         System.out.println("Users:");
