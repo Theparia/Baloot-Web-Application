@@ -19,13 +19,15 @@ import HTTPRequestHandler.HTTPRequestHandler;
 import java.time.LocalDate;
 import java.util.*;
 import java.util.stream.Collectors;
+
+import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
 
 //@NoArgsConstructor
 @Getter
 @Setter
-@Service
+@Component
 public class Baloot {
 
     private User loggedInUser = null;
@@ -53,24 +55,25 @@ public class Baloot {
         final String USERS_URI = "http://5.253.25.110:5000/api/users";
         final String COMMODITIES_URI = "http://5.253.25.110:5000/api/v2/commodities";
         final String COMMENTS_URI = "http://5.253.25.110:5000/api/comments";
+        final String PROVIDERS_URI = "http://5.253.25.110:5000/api/v2/providers";
 
         ObjectMapper objectMapper = new ObjectMapper();
         TypeFactory typeFactory = objectMapper.getTypeFactory();
 
-//        ObjectMapper objectMapper = new ObjectMapper();
-//        TypeFactory typeFactory = objectMapper.getTypeFactory();
-//
-//        List<User> users = objectMapper.readValue(HTTPRequestHandler.getRequest(USERS_URI), typeFactory.constructCollectionType(List.class, User.class));
-//        Database.getInstance().setUsers(users);
-//
-//        List<Commodity> commodities = objectMapper.readValue(HTTPRequestHandler.getRequest(COMMODITIES_URI), typeFactory.constructCollectionType(List.class, Commodity.class));
-//        Database.getInstance().setCommodities(commodities);
-//
-//
-//        List<Comment> comments = objectMapper.readValue(HTTPRequestHandler.getRequest(COMMENTS_URI), typeFactory.constructCollectionType(List.class, Comment.class));
-//        Database.getInstance().setComments(comments);
+        List<Provider> providers = objectMapper.readValue(HTTPRequestHandler.getRequest(PROVIDERS_URI), typeFactory.constructCollectionType(List.class, Provider.class));
+        Database.getInstance().setProviders(providers);
 
-//        setCommentsUsername();
+        List<User> users = objectMapper.readValue(HTTPRequestHandler.getRequest(USERS_URI), typeFactory.constructCollectionType(List.class, User.class));
+        Database.getInstance().setUsers(users);
+
+        List<Commodity> commodities = objectMapper.readValue(HTTPRequestHandler.getRequest(COMMODITIES_URI), typeFactory.constructCollectionType(List.class, Commodity.class));
+        Database.getInstance().setCommodities(commodities);
+
+
+        List<Comment> comments = objectMapper.readValue(HTTPRequestHandler.getRequest(COMMENTS_URI), typeFactory.constructCollectionType(List.class, Comment.class));
+        Database.getInstance().setComments(comments);
+
+        setCommentsUsername();
     }
 
     public void setCommentsUsername() throws UserNotFound {
@@ -353,7 +356,7 @@ public class Baloot {
 
         return Database.getInstance().getCommodities().stream()
                 .filter(c -> !c.getId().equals(commodityId)) // exclude the commodity with the same ID
-                .sorted(Comparator.comparing(c -> 11 * (commodity.isInSimilarCategory(c.getCategories()) ? 1 : 0) + c.getRating(), Comparator.reverseOrder()))
+//                .sorted(Comparator.comparing(c -> 11 * (commodity.isInSimilarCategory(c.getCategories()) ? 1 : 0) + c.getRating(), Comparator.reverseOrder()))
                 .limit(4)
                 .collect(Collectors.toList());
     }
