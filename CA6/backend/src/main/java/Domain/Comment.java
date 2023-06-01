@@ -1,10 +1,6 @@
 package Domain;
 
-import Domain.Id.CommentId;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeId;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -12,7 +8,6 @@ import lombok.Setter;
 
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
-import org.apache.catalina.LifecycleState;
 
 import java.util.*;
 
@@ -27,10 +22,10 @@ public class Comment {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer id;
     private String userEmail;
-    private Integer commodityId;
+//    private Integer commodityId;
     private String text;
     private String date;
-    private String username;
+//    private String username;
     private Integer likeCount = 0;
     private Integer dislikeCount = 0;
 //    @JsonIgnore
@@ -40,14 +35,27 @@ public class Comment {
     @OneToMany
     private List<Vote> votes;
 
+    @ManyToOne
+    @JoinColumn(name = "commodityId", referencedColumnName = "id")
+    private Commodity commodity;
+
+    @ManyToOne
+    @JoinColumn(name = "username", referencedColumnName = "username")
+    private User user;
+
+
     public Comment(Integer commodityId, String userEmail, String text, String date){
 //        this.id = UUID.randomUUID();
         this.date = date;
-        this.commodityId = commodityId;
+//        this.commodityId = commodityId;
         this.text = text;
         this.userEmail = userEmail;
         this.likeCount = 0;
         this.dislikeCount = 0;
+    }
+
+    public void setCommodity(Commodity commodity){
+        this.commodity = commodity;
     }
 //
 //    public Comment(){

@@ -13,6 +13,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.type.TypeFactory;
 import lombok.Getter;
 import lombok.Setter;
+import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -22,7 +23,7 @@ import java.util.stream.Collectors;
 
 @Getter
 @Setter
-@Service
+@Service("commodityService")
 public class CommodityService {
     private final CommodityRepository commodityRepository;
     private final ProviderRepository providerRepository;

@@ -1,6 +1,7 @@
 package Controller;
 
 
+import DTO.CommentDTO;
 import Domain.Comment;
 import Service.Baloot;
 import Service.CommentService;
@@ -10,6 +11,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
@@ -28,9 +30,26 @@ public class CommentsController {
 
 
     @RequestMapping(value = "/comments/{commodityId}/", method = RequestMethod.GET)
-    public ResponseEntity<List<Comment>> getCommentsCommodity(@PathVariable String commodityId) {
-        return ResponseEntity.ok(commentService.getCommodityComments(Integer.valueOf(commodityId)));
+    public ResponseEntity<List<CommentDTO>> getCommentsCommodity(@PathVariable String commodityId) {
+//        return ResponseEntity.ok(commentService.getCommodityComments(Integer.valueOf(commodityId)));
 //        return ResponseEntity.ok(baloot.getCommodityComments(Integer.valueOf(commodityId)));
+
+        List<Comment> comments = commentService.getCommodityComments(Integer.valueOf(commodityId));
+        List<CommentDTO> commentDTOs = new ArrayList<>();
+        for (Comment comment : comments) {
+            CommentDTO commentDTO = new CommentDTO();
+            commentDTO.setId(comment.getId());
+            commentDTO.setUsername(comment.getUser().getUsername());
+            commentDTO.setCommodityId(comment.getCommodity().getId());
+            commentDTO.setUserEmail(comment.getUserEmail());
+            commentDTO.setText(comment.getText());
+            commentDTO.setDate(comment.getDate());
+            commentDTO.setLikeCount(comment.getLikeCount());
+            commentDTO.setDislikeCount(comment.getDislikeCount());
+            commentDTOs.add(commentDTO);
+        }
+
+        return ResponseEntity.ok(commentDTOs);
     }
 
     @RequestMapping(value = "/comments/{commentId}/like/", method = RequestMethod.POST)

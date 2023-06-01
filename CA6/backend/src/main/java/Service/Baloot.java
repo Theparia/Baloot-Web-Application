@@ -81,9 +81,9 @@ public class Baloot {
     }
 
     public void setCommentsUsername() throws UserNotFound {
-        for (Comment comment : Database.getInstance().getComments()){
-            comment.setUsername(getUsernameByEmail(comment.getUserEmail()));
-        }
+//        for (Comment comment : Database.getInstance().getComments()){
+//            comment.setUsername(getUsernameByEmail(comment.getUserEmail()));
+//        }
     }
 
     public boolean isUserLoggedIn() {
@@ -268,15 +268,15 @@ public class Baloot {
             findUserByUsername(username).removeFromBuyList(commodityId);
      }
 
-     public List<Comment> getCommodityComments(Integer commodityId){
-        List<Comment> comments = new ArrayList<>();
-        for (Comment comment : Database.getInstance().getComments()){
-            if (comment.getCommodityId().equals(commodityId)){
-                comments.add(comment);
-            }
-        }
-        return comments;
-     }
+//     public List<Comment> getCommodityComments(Integer commodityId){
+//        List<Comment> comments = new ArrayList<>();
+//        for (Comment comment : Database.getInstance().getComments()){
+//            if (comment.getCommodityId().equals(commodityId)){
+//                comments.add(comment);
+//            }
+//        }
+//        return comments;
+//     }
 
      public String getUsernameByEmail(String email) throws UserNotFound {
         for (User user : Database.getInstance().getUsers()){
