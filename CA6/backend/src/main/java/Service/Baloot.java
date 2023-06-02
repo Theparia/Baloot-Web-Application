@@ -129,14 +129,14 @@ public class Baloot {
          Database.getInstance().addProvider(newProvider);
      }
 
-     public Provider findProviderById(Integer providerId) {
-        for (Provider provider : Database.getInstance().getProviders()){
-            if(provider.isEqual(providerId)){
-                return provider;
-            }
-        }
-        return null;
-     }
+//     public Provider findProviderById(Integer providerId) {
+//        for (Provider provider : Database.getInstance().getProviders()){
+//            if(provider.isEqual(providerId)){
+//                return provider;
+//            }
+//        }
+//        return null;
+//     }
 
     public Commodity findCommodityById(Integer commodityId) throws CommodityNotFound {
         for (Commodity commodity : Database.getInstance().getCommodities()){

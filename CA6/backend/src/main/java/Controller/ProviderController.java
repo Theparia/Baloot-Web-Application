@@ -4,6 +4,7 @@ import Domain.Commodity;
 import Domain.Provider;
 import Domain.User;
 import Service.Baloot;
+import Service.ProviderService;
 import lombok.NoArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -19,15 +20,12 @@ import java.util.List;
 @RequestMapping
 public class ProviderController {
     @Autowired
-    private Baloot baloot;
+    private ProviderService providerService;
 
-//    public ProviderController(Baloot baloot){
-//        this.baloot = baloot;
-//    }
     @RequestMapping(value = "/providers/{id}", method = RequestMethod.GET)
     protected ResponseEntity<Provider> getProvider(@PathVariable String id) {
         try {
-            Provider provider = baloot.findProviderById(Integer.valueOf(id));
+            Provider provider = providerService.findProviderById(Integer.valueOf(id));
             return ResponseEntity.ok(provider);
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.FORBIDDEN).body(null);
@@ -37,7 +35,7 @@ public class ProviderController {
     @RequestMapping(value = "/providers/{providerId}/commodities/", method = RequestMethod.GET)
     protected ResponseEntity<List<Commodity>> getProviderCommodities(@PathVariable String providerId) {
         try {
-            return ResponseEntity.ok(baloot.findCommoditiesByProvider(Integer.valueOf(providerId)));
+            return ResponseEntity.ok(providerService.findCommoditiesByProvider(Integer.valueOf(providerId)));
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.FORBIDDEN).body(null);
         }
