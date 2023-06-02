@@ -23,8 +23,12 @@ import java.util.List;
 public class Commodity {
     @Id
     private Integer id;
-    private String name; //unique validation + handling !@#
-    private Integer providerId; //TODO: foreign key constraint
+    private String name;
+
+    @ManyToOne
+    @JoinColumn(name = "providerId", referencedColumnName = "id")
+    private Provider provider;
+//    private Integer providerId; //TODO: foreign key constraint
     private Float price;
     @Column
     @ElementCollection(targetClass=String.class)

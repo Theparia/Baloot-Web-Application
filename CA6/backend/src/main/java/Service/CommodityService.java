@@ -8,20 +8,25 @@ import HTTPRequestHandler.HTTPRequestHandler;
 import Repository.CommodityRepository;
 import Repository.ProviderRepository;
 import Repository.RatingRepository;
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.type.TypeFactory;
 import lombok.Getter;
 import lombok.Setter;
+import org.springframework.context.annotation.DependsOn;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 @Getter
 @Setter
 @Service("commodityService")
+@DependsOn({"providerService"})
 public class CommodityService {
     private final CommodityRepository commodityRepository;
     private final ProviderRepository providerRepository;
@@ -37,13 +42,19 @@ public class CommodityService {
     private void fetchData() throws Exception {
         final String COMMODITIES_URI = "http://5.253.25.110:5000/api/v2/commodities";
         ObjectMapper objectMapper = new ObjectMapper();
+        objectMapper.disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
         TypeFactory typeFactory = objectMapper.getTypeFactory();
-        List<Commodity> commodities = objectMapper.readValue(HTTPRequestHandler.getRequest(COMMODITIES_URI), typeFactory.constructCollectionType(List.class, Commodity.class));
-        for(Commodity commodity: commodities){
+        String rawJsonData = HTTPRequestHandler.getRequest(COMMODITIES_URI);
+        List<Commodity> commodities = objectMapper.readValue(rawJsonData, typeFactory.constructCollectionType(List.class, Commodity.class));
+        List<Map<String, Object>> rawDataList = objectMapper.readValue(rawJsonData, new TypeReference<>() {});
+        for(int i = 0 ; i < commodities.size(); i++){
+            Commodity commodity = commodities.get(i);
+            Integer providerId = (Integer) rawDataList.get(i).get("providerId");
+            Provider provider = providerRepository.findById(providerId).orElseThrow(ProviderNotFound::new);
+            commodity.setProvider(provider);
             commodityRepository.save(commodity);
-            rateCommodity("#InitialRating", commodity.getId(), commodity.getRating());
+            rateCommodity("#InitialRating", commodity.getId(),commodity.getRating());
         }
-        commodityRepository.saveAll(commodities);
     }
 
     public Commodity findCommodityById(Integer id) throws CommodityNotFound {

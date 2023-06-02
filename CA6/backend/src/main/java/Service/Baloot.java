@@ -215,10 +215,10 @@ public class Baloot {
 //        setCommentsUsername();
 //    }
 
-     public void addCommodity(Commodity newCommodity) throws ProviderNotFound {
-        findProviderById(newCommodity.getProviderId());
-        Database.getInstance().addCommodity(newCommodity);
-     }
+//     public void addCommodity(Commodity newCommodity) throws ProviderNotFound {
+//        findProviderById(newCommodity.getProviderId());
+//        Database.getInstance().addCommodity(newCommodity);
+//     }
 
      public void addToBuyList(String username, Integer commodityId) throws CommodityNotFound, UserNotFound, CommodityOutOfStock, CommodityAlreadyExistsInBuyList {
 //        User user = findUserByUsername(username);
@@ -308,7 +308,7 @@ public class Baloot {
     public List<Commodity> findCommoditiesByProvider(Integer providerId){
         List<Commodity> commodities = new ArrayList<>();
         for(Commodity commodity : Database.getInstance().getCommodities()){
-            if(commodity.getProviderId().equals(providerId))
+            if(commodity.getProvider().getId().equals(providerId))
                 commodities.add(commodity);
         }
         return commodities;

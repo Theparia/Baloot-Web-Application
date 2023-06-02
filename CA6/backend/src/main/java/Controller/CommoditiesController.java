@@ -1,5 +1,7 @@
 package Controller;
 
+import DTO.CommentDTO;
+import DTO.CommodityDTO;
 import Domain.Comment;
 import Domain.Commodity;
 import Exceptions.CommodityNotFound;
@@ -27,9 +29,13 @@ public class CommoditiesController {
     private CommentService commentService;
 
     @RequestMapping(value = "/commodities/{id}", method = RequestMethod.GET)
-    protected ResponseEntity<Commodity> getCommodity(@PathVariable String id) {
+    protected ResponseEntity<CommodityDTO> getCommodity(@PathVariable String id) {
         try {
-            return ResponseEntity.ok(commodityService.findCommodityById(Integer.valueOf(id)));
+            Commodity commodity = commodityService.findCommodityById(Integer.valueOf(id));
+            CommodityDTO commodityDTO = new CommodityDTO(commodity.getId(), commodity.getName(),
+                    commodity.getProvider().getId(), commodity.getProvider().getName(), commodity.getPrice(),
+                    commodity.getCategories(), commodity.getRating(), commodity.getInStock(), commodity.getImage());
+            return ResponseEntity.ok(commodityDTO);
         } catch (Exception e){
             return ResponseEntity.status(HttpStatus.FORBIDDEN).body(null);
         }

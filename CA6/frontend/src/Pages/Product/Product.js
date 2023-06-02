@@ -263,7 +263,6 @@ const SuggestedProducts = ({setItemCount}) => {
 const ProductInfo = ({setItemCount}) => {
     const {commodityId} = useParams();
     const [commodity, setCommodity] = useState({});
-    const [providerName, setProviderName] = useState("");
     const [buyList, setBuyList] = useState([]);
     const [isSubmitting, setIsSubmitting] = useState(false);
 
@@ -275,9 +274,6 @@ const ProductInfo = ({setItemCount}) => {
     const fetchCommodity = async () => {
         await getCommodity(commodityId).then(async (responseCommodity) => {
             setCommodity(responseCommodity.data)
-            await getProvider(responseCommodity.data.providerId).then((responseProvider) => {
-                setProviderName(responseProvider.data.name);
-            }).catch((error) => console.log("Provider Not Found"));
         }).catch((error) => console.log("Commodity Not Found"));
     }
 
@@ -464,7 +460,7 @@ const ProductInfo = ({setItemCount}) => {
                         {commodity.inStock} left in stock
                     </div>
                     <div className="provider-name product-info-font">
-                        by <a href={"/providers/" + commodity.providerId}>{providerName}</a>
+                        by <a href={"/providers/" + commodity.providerId}>{commodity.providerName}</a>
                     </div>
                     <Categories/>
                 </div>
