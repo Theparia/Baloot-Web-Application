@@ -142,11 +142,11 @@ public class User {
 //            buyList.replace(commodityId, buyList.get(commodityId) - 1);
     }
 
-    public void addCredit(float creditToBeAdded) throws NegativeCredit {
-        if(creditToBeAdded <= 0)
-            throw new NegativeCredit();
-        credit += creditToBeAdded;
-    }
+//    public void addCredit(float creditToBeAdded) throws NegativeCredit {
+//        if(creditToBeAdded <= 0)
+//            throw new NegativeCredit();
+//        credit += creditToBeAdded;
+//    }
 
 //    public int getNumberOfBuyListItems(){
 //        return buyList.size();

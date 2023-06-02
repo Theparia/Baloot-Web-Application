@@ -73,7 +73,6 @@ public class UserController {
     protected ResponseEntity<String> removeFromBuyList(@PathVariable String username, @RequestBody Map<String, String> info) {
         try {
             userService.removeFromBuyList(username, Integer.valueOf(info.get("id")));
-//            baloot.removeFromBuyList(username, Integer.valueOf(info.get("id")));
             return ResponseEntity.ok("ok");
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.FORBIDDEN).body(e.getMessage());
@@ -92,7 +91,7 @@ public class UserController {
     @RequestMapping(value = "/users/{username}/credit", method = RequestMethod.POST)
     protected ResponseEntity<String> addCredit(@PathVariable String username, @RequestBody Map<String, String> info) {
         try {
-            baloot.findUserByUsername(username).addCredit(Float.parseFloat(info.get("amount")));
+            userService.addCredit(username, Float.parseFloat(info.get("amount")));
             return ResponseEntity.ok("ok");
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.FORBIDDEN).body(e.getMessage());

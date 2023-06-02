@@ -12,9 +12,9 @@ import lombok.Setter;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = "buyList")
+@Table(name = "purchasedList")
 @IdClass(ItemId.class)
-public class BuyListItem {
+public class PurchasedListItem {
     @Id
     @ManyToOne
     @JoinColumn(name = "commodityId", referencedColumnName = "id")

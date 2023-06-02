@@ -329,9 +329,9 @@ public class Baloot {
 //        return commodities;
 //    }
 
-    public void addUserCredit(String username, float credit) throws UserNotFound, NegativeCredit {
-        findUserByUsername(username).addCredit(credit);
-    }
+//    public void addUserCredit(String username, float credit) throws UserNotFound, NegativeCredit {
+//        findUserByUsername(username).addCredit(credit);
+//    }
 
     private boolean isVoteValid(int vote){
         return vote == 1 || vote == 0 || vote == -1;

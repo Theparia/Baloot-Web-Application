@@ -13,7 +13,7 @@ import java.io.Serializable;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class BuyListId implements Serializable{
+public class ItemId implements Serializable{
     private Commodity commodity;
     private User user;
 
