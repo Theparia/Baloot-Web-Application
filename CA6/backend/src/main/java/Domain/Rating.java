@@ -12,11 +12,16 @@ import org.springframework.boot.autoconfigure.web.WebProperties;
 @Entity
 @Table(name = "rating")
 public class Rating {
-    @Id
+    @Id  //TODO: composite key
     @GeneratedValue(strategy=GenerationType.AUTO)
     private Integer id;
-
-    private String username;
-    private Integer commodityId;
+    private String username; //TODO: foreign key
+    private Integer commodityId; //TODO: foreign key
     private float score;
+
+    public Rating(String username, Integer commodityId, float score){
+        this.username = username;
+        this.commodityId = commodityId;
+        this.score = score;
+    }
 }

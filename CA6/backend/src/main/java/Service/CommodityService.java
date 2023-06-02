@@ -1,19 +1,17 @@
 package Service;
 
-import Database.Database;
 import Domain.Commodity;
 import Domain.Provider;
-import Exceptions.CommodityNotFound;
-import Exceptions.InvalidPriceInterval;
-import Exceptions.ProviderNotFound;
+import Domain.Rating;
+import Exceptions.*;
 import HTTPRequestHandler.HTTPRequestHandler;
 import Repository.CommodityRepository;
 import Repository.ProviderRepository;
+import Repository.RatingRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.type.TypeFactory;
 import lombok.Getter;
 import lombok.Setter;
-import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -27,10 +25,12 @@ import java.util.stream.Collectors;
 public class CommodityService {
     private final CommodityRepository commodityRepository;
     private final ProviderRepository providerRepository;
+    private final RatingRepository ratingRepository;
 
-    private CommodityService(CommodityRepository commodityRepository, ProviderRepository providerRepository) throws Exception {
+    private CommodityService(CommodityRepository commodityRepository, ProviderRepository providerRepository, RatingRepository ratingRepository) throws Exception {
         this.commodityRepository = commodityRepository;
         this.providerRepository = providerRepository;
+        this.ratingRepository = ratingRepository;
         fetchData();
     }
 
@@ -39,6 +39,10 @@ public class CommodityService {
         ObjectMapper objectMapper = new ObjectMapper();
         TypeFactory typeFactory = objectMapper.getTypeFactory();
         List<Commodity> commodities = objectMapper.readValue(HTTPRequestHandler.getRequest(COMMODITIES_URI), typeFactory.constructCollectionType(List.class, Commodity.class));
+        for(Commodity commodity: commodities){
+            commodityRepository.save(commodity);
+            rateCommodity("#InitialRating", commodity.getId(), commodity.getRating());
+        }
         commodityRepository.saveAll(commodities);
     }
 
@@ -102,5 +106,16 @@ public class CommodityService {
                 .sorted(Comparator.comparing(c -> 11 * (commodity.isInSimilarCategory(c.getCategories()) ? 1 : 0) + c.getRating(), Comparator.reverseOrder()))
                 .limit(4)
                 .collect(Collectors.toList());
+    }
+
+    public void rateCommodity(String username, Integer commodityId, Float score) throws RatingOutOfRange, CommodityNotFound { //TODO: solve repeated ratings with same username
+        if (score < 1 || score > 10)
+            throw new RatingOutOfRange();
+        Commodity commodity = findCommodityById(commodityId);
+        Rating rating = new Rating(username, commodityId, score); //TODO: check existence of username and commodityId
+        ratingRepository.save(rating);
+        List<Float> scores = ratingRepository.findScoresByCommodityId(commodityId);
+        commodity.updateRatingBasedOnUserRatings(scores);
+        commodityRepository.save(commodity);
     }
 }

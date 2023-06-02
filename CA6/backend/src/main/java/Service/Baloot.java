@@ -305,10 +305,6 @@ public class Baloot {
         throw new CommentNotFound();
     }
 
-    public void rateCommodity(String username, Integer commodityId, Integer score) throws UserNotFound, CommodityNotFound, RatingOutOfRange {
-        findCommodityById(commodityId).addUserRating(findUserByUsername(username).getUsername(), score);
-    }
-
     public List<Commodity> findCommoditiesByProvider(Integer providerId){
         List<Commodity> commodities = new ArrayList<>();
         for(Commodity commodity : Database.getInstance().getCommodities()){

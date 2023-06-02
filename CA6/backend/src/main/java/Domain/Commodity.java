@@ -40,7 +40,7 @@ public class Commodity {
         if(inStock < quantity)
             throw new CommodityOutOfStock(); //TODO: name?
     }
-    public void addUserRating(String username, Integer rating) throws RatingOutOfRange {
+//    public void addUserRating(String username, Integer rating) throws RatingOutOfRange {
 //        if(rating < 1 || rating > 10)
 //            throw new RatingOutOfRange();
 //        if (usersRating.containsKey(username)){
@@ -49,15 +49,23 @@ public class Commodity {
 //        else {
 //            usersRating.put(username, (float) rating);
 //        }
-        updateRating();
-    }
+//        updateRating();
+//    }
 
-    private void updateRating(){
-        float sum = 0;
+//    private void updateRating(){
+//        float sum = 0;
 //        for (HashMap.Entry<String, Float> entry : usersRating.entrySet()) {
 //            sum += entry.getValue();
 //        }
 //        rating = sum / usersRating.size();
+//    }
+
+    public void updateRatingBasedOnUserRatings(List<Float> scores){
+        float sum = 0.0f;
+        for (Float score : scores) {
+            sum += score;
+        }
+        this.rating = sum / scores.size();
     }
 
     public boolean isEqual(Integer id) {

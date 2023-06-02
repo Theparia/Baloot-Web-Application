@@ -2,7 +2,6 @@ package Controller;
 
 import Domain.Comment;
 import Domain.Commodity;
-import Service.Baloot;
 import Exceptions.CommodityNotFound;
 import Service.CommentService;
 import Service.CommodityService;
@@ -20,8 +19,6 @@ import java.util.Map;
 @RestController
 @RequestMapping
 public class CommoditiesController {
-    @Autowired
-    private Baloot baloot;
 
     @Autowired
     private CommodityService commodityService;
@@ -75,7 +72,7 @@ public class CommoditiesController {
     @RequestMapping(value = "/commodities/{id}/rating", method = RequestMethod.POST)
     protected ResponseEntity<String> rateCommodity(@PathVariable String id, @RequestBody Map<String, String> info) {
         try {
-            baloot.rateCommodity(info.get("username"), Integer.valueOf(id), Integer.valueOf(info.get("score")));
+            commodityService.rateCommodity(info.get("username"), Integer.valueOf(id), Float.valueOf(info.get("score")));
             return ResponseEntity.ok("ok");
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.FORBIDDEN).body(e.getMessage());
