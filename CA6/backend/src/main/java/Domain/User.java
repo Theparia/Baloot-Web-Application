@@ -5,7 +5,6 @@ import Exceptions.CommodityNotInBuyList;
 import Exceptions.ExpiredDiscount;
 import Exceptions.NegativeCredit;
 import Exceptions.NotEnoughCredit;
-import Exceptions.*;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
@@ -14,7 +13,6 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
 
@@ -33,12 +31,12 @@ public class User {
     private String birthDate;
     private String address;
     private float credit;
-    @JsonIgnore
-    @OneToMany
-    private List<Item> buyList = new ArrayList<>();
-    @JsonIgnore
-    @OneToMany
-    private List<Item> purchasedList = new ArrayList<>();
+//    @JsonIgnore
+//    @OneToMany
+//    private List<BuyListItem> buyList = new ArrayList<>();
+//    @JsonIgnore
+//    @OneToMany
+//    private List<BuyListItem> purchasedList = new ArrayList<>();
 //    @JsonIgnore
 //    private HashMap<Integer, Integer> buyList = new HashMap<>(); // id -> quantity
 //    @JsonIgnore

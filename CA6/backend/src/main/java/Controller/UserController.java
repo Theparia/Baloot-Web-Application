@@ -4,6 +4,7 @@ import Database.Database;
 import Domain.Commodity;
 import Domain.User;
 import Service.Baloot;
+import Service.UserService;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.NoArgsConstructor;
@@ -24,15 +25,14 @@ import java.util.Map;
 public class UserController {
     @Autowired
     private Baloot baloot;
+    @Autowired
+    private UserService userService;
 
-//    public UserController(Baloot baloot){
-//        this.baloot = baloot;
-//    }
 
     @RequestMapping(value = "/users/{username}", method = RequestMethod.GET)
     protected ResponseEntity<User> getUser(@PathVariable String username) {
         try {
-            User user = baloot.findUserByUsername(username);
+            User user = userService.findUserByUsername(username);
             return ResponseEntity.ok(user);
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.FORBIDDEN).body(null);
@@ -49,19 +49,20 @@ public class UserController {
         }
     }
 
-//    @RequestMapping(value = "/users/{username}/buyList", method = RequestMethod.GET)
-//    protected ResponseEntity<HashMap<Integer, Integer>> getBuyList(@PathVariable String username) {
-//        try {
+    @RequestMapping(value = "/users/{username}/buyList", method = RequestMethod.GET)
+    protected ResponseEntity<HashMap<Integer, Integer>> getBuyList(@PathVariable String username) {
+        try {
+            return ResponseEntity.ok(userService.getBuyList(username));
 //            return ResponseEntity.ok(baloot.findUserByUsername(username).getBuyList());
-//        } catch (Exception e) {
-//            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
-//        }
-//    }
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+        }
+    }
 
     @RequestMapping(value = "/users/{username}/buyList/add", method = RequestMethod.POST)
     protected ResponseEntity<String> addToBuyList(@PathVariable String username, @RequestBody Map<String, String> info) {
         try {
-            baloot.addToBuyList(username, Integer.valueOf(info.get("id")));
+            userService.addToBuyList(username, Integer.valueOf(info.get("id")));
             return ResponseEntity.ok("ok");
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.FORBIDDEN).body(e.getMessage());
@@ -71,7 +72,8 @@ public class UserController {
     @RequestMapping(value = "/users/{username}/buyList/remove", method = RequestMethod.POST)
     protected ResponseEntity<String> removeFromBuyList(@PathVariable String username, @RequestBody Map<String, String> info) {
         try {
-            baloot.removeFromBuyList(username, Integer.valueOf(info.get("id")));
+            userService.removeFromBuyList(username, Integer.valueOf(info.get("id")));
+//            baloot.removeFromBuyList(username, Integer.valueOf(info.get("id")));
             return ResponseEntity.ok("ok");
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.FORBIDDEN).body(e.getMessage());

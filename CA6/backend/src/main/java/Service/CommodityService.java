@@ -127,12 +127,12 @@ public class CommodityService {
                 .collect(Collectors.toList());
     }
 
-    public void rateCommodity(String username, Integer commodityId, Float score) throws RatingOutOfRange, CommodityNotFound { //TODO: solve repeated ratings with same username
+    public void rateCommodity(String username, Integer commodityId, Float score) throws RatingOutOfRange, CommodityNotFound, UserNotFound {
         if (score < 1 || score > 10)
             throw new RatingOutOfRange();
         Commodity commodity = findCommodityById(commodityId);
-        User user = userRepository.findByUsername(username);
-        Rating rating = new Rating(user, commodity, score); //TODO: check existence of username and commodityId
+        User user = userRepository.findByUsername(username).orElseThrow(UserNotFound::new);
+        Rating rating = new Rating(user, commodity, score);
         ratingRepository.save(rating);
         updateCommodityAverageRating(commodity);
         commodityRepository.save(commodity);

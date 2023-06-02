@@ -10,23 +10,14 @@ import Exceptions.InvalidCommentVote;
 import Exceptions.UserNotFound;
 import HTTPRequestHandler.HTTPRequestHandler;
 import Repository.*;
-import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.introspect.VisibilityChecker;
 import com.fasterxml.jackson.databind.type.TypeFactory;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.Getter;
 import lombok.Setter;
-import org.apache.http.client.methods.CloseableHttpResponse;
-import org.apache.http.client.methods.HttpGet;
-import org.apache.http.impl.client.CloseableHttpClient;
-import org.apache.http.impl.client.HttpClients;
-import org.apache.http.util.EntityUtils;
-import org.springframework.boot.autoconfigure.kafka.KafkaProperties;
 import org.springframework.context.annotation.DependsOn;
-import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
@@ -81,12 +72,9 @@ public class CommentService {
         Comment comment = new Comment(user, commodity, userEmail, text, LocalDate.now().toString());
         commentRepository.save(comment);
     }
-    public String getEmailByUsername(String username) {
-        User user = userRepository.findByUsername(username);
-        if (user != null) {
-            return user.getEmail();
-        }
-        return null;
+    public String getEmailByUsername(String username) throws UserNotFound {
+        User user = userRepository.findByUsername(username).orElseThrow(UserNotFound::new);
+        return user.getEmail();
     }
 
     public List<Comment> getCommodityComments(Integer commodityId) {
@@ -104,13 +92,13 @@ public class CommentService {
         return commentRepository.findById(id)
                 .orElseThrow(CommodityNotFound::new);
     }
-    public void voteComment(String username, Integer commodityId, String usernameComment, int value) throws InvalidCommentVote, CommodityNotFound {
+    public void voteComment(String username, Integer commodityId, String usernameComment, int value) throws InvalidCommentVote, CommodityNotFound, UserNotFound {
         if(!isVoteValid(value))
             throw new InvalidCommentVote();
-        User user = userRepository.findByUsername(username);
-        User userComment = userRepository.findByUsername(usernameComment);
+        User user = userRepository.findByUsername(username).orElseThrow(UserNotFound::new);
+        User userComment = userRepository.findByUsername(usernameComment).orElseThrow(UserNotFound::new);
         Commodity commodity = commodityRepository.findById(commodityId)
-                .orElseThrow(() -> new IllegalArgumentException("Commodity not found"));
+                .orElseThrow(CommodityNotFound::new);
         CommentId commentId = new CommentId(commodity, userComment);
         Vote vote = new Vote(user, commodity, userComment, value);
         voteRepository.save(vote);
