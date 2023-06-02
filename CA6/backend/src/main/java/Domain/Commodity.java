@@ -38,42 +38,29 @@ public class Commodity {
     @JsonIgnore
     @Column
     @ElementCollection(targetClass=Float.class)
-    private List<Float> userRatings; //TODO: add initial rating
+    private List<Float> userRatings;
 
-    private Float rating;
+    private Float rating; // Initial Rating
+    private Float averageRating;
     private int inStock;
     private String image;
 
     public void checkInStock(Integer quantity) throws CommodityOutOfStock {
         if(inStock < quantity)
-            throw new CommodityOutOfStock(); //TODO: name?
+            throw new CommodityOutOfStock();
     }
-//    public void addUserRating(String username, Integer rating) throws RatingOutOfRange {
-//        if(rating < 1 || rating > 10)
-//            throw new RatingOutOfRange();
-//        if (usersRating.containsKey(username)){
-//            usersRating.replace(username, (float) rating);
-//        }
-//        else {
-//            usersRating.put(username, (float) rating);
-//        }
-//        updateRating();
-//    }
 
-//    private void updateRating(){
-//        float sum = 0;
-//        for (HashMap.Entry<String, Float> entry : usersRating.entrySet()) {
-//            sum += entry.getValue();
-//        }
-//        rating = sum / usersRating.size();
-//    }
+    public void setUserRatings(List<Float> scores){
+        userRatings = scores;
+        userRatings.add(rating);
+    }
 
-    public void updateRating(){
+    public void updateAverageRating(){
         float sum = 0.0f;
         for (Float score : userRatings) {
             sum += score;
         }
-        this.rating = sum / userRatings.size();
+        averageRating = sum / userRatings.size();
     }
 
     public boolean isEqual(Integer id) {

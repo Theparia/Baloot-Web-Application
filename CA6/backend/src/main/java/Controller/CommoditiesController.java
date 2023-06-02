@@ -34,7 +34,7 @@ public class CommoditiesController {
             Commodity commodity = commodityService.findCommodityById(Integer.valueOf(id));
             CommodityDTO commodityDTO = new CommodityDTO(commodity.getId(), commodity.getName(),
                     commodity.getProvider().getId(), commodity.getProvider().getName(), commodity.getPrice(),
-                    commodity.getCategories(), commodity.getRating(), commodity.getInStock(),
+                    commodity.getCategories(), commodity.getAverageRating(), commodity.getInStock(),
                     commodity.getImage(), commodity.getUserRatings());
             return ResponseEntity.ok(commodityDTO);
         } catch (Exception e) {

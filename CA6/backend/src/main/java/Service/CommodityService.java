@@ -19,6 +19,7 @@ import lombok.Setter;
 import org.springframework.context.annotation.DependsOn;
 import org.springframework.stereotype.Service;
 
+import javax.persistence.criteria.CriteriaBuilder;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
@@ -57,6 +58,7 @@ public class CommodityService {
             Integer providerId = (Integer) rawDataList.get(i).get("providerId");
             Provider provider = providerRepository.findById(providerId).orElseThrow(ProviderNotFound::new);
             commodity.setProvider(provider);
+            updateCommodityAverageRating(commodity);
             commodityRepository.save(commodity);
             //TODO: Save the first rating
 //            rateCommodity("#InitialRating", commodity.getId(),commodity.getRating());
@@ -132,9 +134,13 @@ public class CommodityService {
         User user = userRepository.findByUsername(username);
         Rating rating = new Rating(user, commodity, score); //TODO: check existence of username and commodityId
         ratingRepository.save(rating);
-        List<Float> scores = ratingRepository.findScoresByCommodityId(commodityId);
-        commodity.setUserRatings(scores);
-        commodity.updateRating();
+        updateCommodityAverageRating(commodity);
         commodityRepository.save(commodity);
+    }
+
+    public void updateCommodityAverageRating(Commodity commodity){
+        List<Float> scores = ratingRepository.findScoresByCommodityId(commodity.getId());
+        commodity.setUserRatings(scores);
+        commodity.updateAverageRating();
     }
 }
