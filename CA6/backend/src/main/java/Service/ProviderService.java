@@ -14,7 +14,7 @@ import java.util.List;
 
 @Getter
 @Setter
-@Service
+@Service("providerService")
 public class ProviderService {
     private final ProviderRepository providerRepository;
 

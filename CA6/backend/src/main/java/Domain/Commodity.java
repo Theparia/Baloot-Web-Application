@@ -28,17 +28,21 @@ public class Commodity {
     @ManyToOne
     @JoinColumn(name = "providerId", referencedColumnName = "id")
     private Provider provider;
-//    private Integer providerId; //TODO: foreign key constraint
+
     private Float price;
+
     @Column
     @ElementCollection(targetClass=String.class)
-    private List<String> categories = new ArrayList<>(); //TODO: Category class?
+    private List<String> categories; //TODO: Category class?
+
     @JsonIgnore
-    @OneToMany
-    private List<Rating> userRatings = new ArrayList<>(); //TODO: add initial rating
+    @Column
+    @ElementCollection(targetClass=Float.class)
+    private List<Float> userRatings; //TODO: add initial rating
+
     private Float rating;
     private int inStock;
-    String image;
+    private String image;
 
     public void checkInStock(Integer quantity) throws CommodityOutOfStock {
         if(inStock < quantity)
@@ -64,12 +68,12 @@ public class Commodity {
 //        rating = sum / usersRating.size();
 //    }
 
-    public void updateRatingBasedOnUserRatings(List<Float> scores){
+    public void updateRating(){
         float sum = 0.0f;
-        for (Float score : scores) {
+        for (Float score : userRatings) {
             sum += score;
         }
-        this.rating = sum / scores.size();
+        this.rating = sum / userRatings.size();
     }
 
     public boolean isEqual(Integer id) {

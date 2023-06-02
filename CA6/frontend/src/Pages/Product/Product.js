@@ -469,8 +469,8 @@ const ProductInfo = ({setItemCount}) => {
                     <div id="rating-font" className="product-info-font">
                         {commodity.rating}
                     </div>
-                    {commodity?.usersRating && <div id="number-of-ratings" className="product-info-font">
-                        ({Object.keys(commodity.usersRating).length})</div>}
+                    {commodity?.userRatings && <div id="number-of-ratings" className="product-info-font">
+                        ({Object(commodity.userRatings).length})</div>}
                 </div>
             </div>
         )

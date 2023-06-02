@@ -3,11 +3,13 @@ package Service;
 import Domain.Commodity;
 import Domain.Provider;
 import Domain.Rating;
+import Domain.User;
 import Exceptions.*;
 import HTTPRequestHandler.HTTPRequestHandler;
 import Repository.CommodityRepository;
 import Repository.ProviderRepository;
 import Repository.RatingRepository;
+import Repository.UserRepository;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -26,16 +28,19 @@ import java.util.stream.Collectors;
 @Getter
 @Setter
 @Service("commodityService")
-@DependsOn({"providerService"})
+@DependsOn({"providerService", "userService"})
 public class CommodityService {
     private final CommodityRepository commodityRepository;
     private final ProviderRepository providerRepository;
     private final RatingRepository ratingRepository;
+    private final UserRepository userRepository;
 
-    private CommodityService(CommodityRepository commodityRepository, ProviderRepository providerRepository, RatingRepository ratingRepository) throws Exception {
+    private CommodityService(CommodityRepository commodityRepository, ProviderRepository providerRepository,
+                             RatingRepository ratingRepository, UserRepository userRepository) throws Exception {
         this.commodityRepository = commodityRepository;
         this.providerRepository = providerRepository;
         this.ratingRepository = ratingRepository;
+        this.userRepository = userRepository;
         fetchData();
     }
 
@@ -53,7 +58,8 @@ public class CommodityService {
             Provider provider = providerRepository.findById(providerId).orElseThrow(ProviderNotFound::new);
             commodity.setProvider(provider);
             commodityRepository.save(commodity);
-            rateCommodity("#InitialRating", commodity.getId(),commodity.getRating());
+            //TODO: Save the first rating
+//            rateCommodity("#InitialRating", commodity.getId(),commodity.getRating());
         }
     }
 
@@ -123,10 +129,12 @@ public class CommodityService {
         if (score < 1 || score > 10)
             throw new RatingOutOfRange();
         Commodity commodity = findCommodityById(commodityId);
-        Rating rating = new Rating(username, commodityId, score); //TODO: check existence of username and commodityId
+        User user = userRepository.findByUsername(username);
+        Rating rating = new Rating(user, commodity, score); //TODO: check existence of username and commodityId
         ratingRepository.save(rating);
         List<Float> scores = ratingRepository.findScoresByCommodityId(commodityId);
-        commodity.updateRatingBasedOnUserRatings(scores);
+        commodity.setUserRatings(scores);
+        commodity.updateRating();
         commodityRepository.save(commodity);
     }
 }

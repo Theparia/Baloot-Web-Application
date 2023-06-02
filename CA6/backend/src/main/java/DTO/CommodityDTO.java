@@ -23,5 +23,6 @@ public class CommodityDTO {
     private List<String> categories;
     private Float rating;
     private int inStock;
-    String image;
+    private String image;
+    private List<Float> userRatings;
 }

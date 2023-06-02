@@ -34,14 +34,15 @@ public class CommoditiesController {
             Commodity commodity = commodityService.findCommodityById(Integer.valueOf(id));
             CommodityDTO commodityDTO = new CommodityDTO(commodity.getId(), commodity.getName(),
                     commodity.getProvider().getId(), commodity.getProvider().getName(), commodity.getPrice(),
-                    commodity.getCategories(), commodity.getRating(), commodity.getInStock(), commodity.getImage());
+                    commodity.getCategories(), commodity.getRating(), commodity.getInStock(),
+                    commodity.getImage(), commodity.getUserRatings());
             return ResponseEntity.ok(commodityDTO);
-        } catch (Exception e){
+        } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.FORBIDDEN).body(null);
         }
     }
 
-    @RequestMapping(value = "/commodities/size/",method = RequestMethod.GET)
+    @RequestMapping(value = "/commodities/size/", method = RequestMethod.GET)
     public ResponseEntity<Integer> sortCommoditiesSize(
             @RequestParam("sortMethod") String sortMethod,
             @RequestParam(value = "searchMethod", required = false) String searchMethod,
@@ -51,7 +52,7 @@ public class CommoditiesController {
         return ResponseEntity.ok(size);
     }
 
-    @RequestMapping(value = "/commodities/",method = RequestMethod.GET)
+    @RequestMapping(value = "/commodities/", method = RequestMethod.GET)
     public ResponseEntity<List<Commodity>> getCommodities(
             @RequestParam("sortMethod") String sortMethod,
             @RequestParam(value = "searchMethod", required = false) String searchMethod,
@@ -64,12 +65,12 @@ public class CommoditiesController {
         return ResponseEntity.ok(commodityService.getCommoditiesByPage(pageNumber, pageSize, commodities));
     }
 
-    @RequestMapping(value = "/commodities/{commodityId}/suggested/",method = RequestMethod.GET)
+    @RequestMapping(value = "/commodities/{commodityId}/suggested/", method = RequestMethod.GET)
     public ResponseEntity<List<Commodity>> getSuggestedCommodities(@PathVariable String commodityId) throws CommodityNotFound {
         return ResponseEntity.ok(commodityService.getSuggestedCommodities(Integer.valueOf(commodityId)));
     }
 
-    @RequestMapping(value = "/commodities/{commodityId}/comments/",method = RequestMethod.GET)
+    @RequestMapping(value = "/commodities/{commodityId}/comments/", method = RequestMethod.GET)
     public ResponseEntity<List<Comment>> getCommentsCommodity(@PathVariable String commodityId) {
         return ResponseEntity.ok(commentService.getCommodityComments(Integer.valueOf(commodityId)));
     }
@@ -85,7 +86,7 @@ public class CommoditiesController {
         }
     }
 
-    private List<Commodity> filterCommodities(String sortMethod, String searchMethod, String searchedText, Boolean commoditiesAvailable){
+    private List<Commodity> filterCommodities(String sortMethod, String searchMethod, String searchedText, Boolean commoditiesAvailable) {
         List<Commodity> commodities = commodityService.getCommodities();
 
         if (searchMethod != null && !searchedText.equals("")) {
