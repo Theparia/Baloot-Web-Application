@@ -1,14 +1,15 @@
 package Service;
 
-import Database.Database;
-import Domain.*;
 //import Domain.Id.CommentId;
-import Domain.Id.CommentId;
-import Exceptions.CommentNotFound;
+import Model.Comment;
+import Model.Commodity;
+import Model.Id.CommentId;
 import Exceptions.CommodityNotFound;
 import Exceptions.InvalidCommentVote;
 import Exceptions.UserNotFound;
 import HTTPRequestHandler.HTTPRequestHandler;
+import Model.User;
+import Model.Vote;
 import Repository.*;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.DeserializationFeature;
@@ -20,7 +21,6 @@ import lombok.Setter;
 import org.springframework.context.annotation.DependsOn;
 import org.springframework.stereotype.Service;
 
-import java.io.IOException;
 import java.time.LocalDate;
 import java.util.*;
 
@@ -54,10 +54,15 @@ public class CommentService {
 
         List<Map<String, Object>> rawDataList = objectMapper.readValue(rawJsonData, new TypeReference<List<Map<String, Object>>>() {});
         for (int i = 0 ; i < comments.size(); i++) {
-            comments.get(i).setUser(userRepository.findByEmail(((String) rawDataList.get(i).get("userEmail"))));
-            comments.get(i).setCommodity(findCommodityById((Integer) rawDataList.get(i).get("commodityId")));
+            User user = userRepository.findByEmail(((String) rawDataList.get(i).get("userEmail")));
+            Commodity commodity = findCommodityById((Integer) rawDataList.get(i).get("commodityId"));
+            comments.get(i).setUser(user);
+            comments.get(i).setCommodity(commodity);
+            Optional<Comment> existingComment = commentRepository.findById(new CommentId(commodity, user));
+            if (existingComment.isPresent())
+                continue;
+            commentRepository.save(comments.get(i));
         }
-        commentRepository.saveAll(comments);
 
     }
 

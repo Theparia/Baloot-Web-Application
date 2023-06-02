@@ -1,7 +1,7 @@
 package Service;
 
-import Domain.Commodity;
-import Domain.Provider;
+import Model.Commodity;
+import Model.Provider;
 import Exceptions.CommodityNotFound;
 import HTTPRequestHandler.HTTPRequestHandler;
 import Repository.CommodityRepository;

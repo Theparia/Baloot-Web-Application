@@ -1,4 +1,4 @@
-package Domain;
+package Model;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Getter;
@@ -24,8 +24,4 @@ public class Provider {
 
     @Column(length = 1024)
     private String image;
-
-    public boolean isEqual(Integer providerId) {
-        return this.id.equals(providerId);
-    }
 }

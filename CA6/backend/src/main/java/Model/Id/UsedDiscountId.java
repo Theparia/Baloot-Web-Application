@@ -1,10 +1,8 @@
-package Domain.Id;
+package Model.Id;
 
-import Domain.Discount;
-import Domain.User;
-import lombok.AllArgsConstructor;
+import Model.Discount;
+import Model.User;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.io.Serializable;

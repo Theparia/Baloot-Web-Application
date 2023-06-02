@@ -1,7 +1,6 @@
-package Domain;
+package Model;
 
-import Domain.Id.UsedDiscountId;
-import Service.DiscountService;
+import Model.Id.UsedDiscountId;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;

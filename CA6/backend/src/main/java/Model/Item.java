@@ -1,6 +1,6 @@
-package Domain;
+package Model;
 
-import Domain.Id.ItemId;
+import Model.Id.ItemId;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;

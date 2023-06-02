@@ -1,9 +1,9 @@
 package Service;
 
-import Domain.Commodity;
-import Domain.Provider;
-import Domain.Rating;
-import Domain.User;
+import Model.Commodity;
+import Model.Provider;
+import Model.Rating;
+import Model.User;
 import Exceptions.*;
 import HTTPRequestHandler.HTTPRequestHandler;
 import Repository.CommodityRepository;
@@ -19,11 +19,7 @@ import lombok.Setter;
 import org.springframework.context.annotation.DependsOn;
 import org.springframework.stereotype.Service;
 
-import javax.persistence.criteria.CriteriaBuilder;
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Getter
@@ -55,13 +51,14 @@ public class CommodityService {
         List<Map<String, Object>> rawDataList = objectMapper.readValue(rawJsonData, new TypeReference<>() {});
         for(int i = 0 ; i < commodities.size(); i++){
             Commodity commodity = commodities.get(i);
+            Optional<Commodity> existingCommodity = commodityRepository.findById(commodity.getId());
+            if (existingCommodity.isPresent())
+                continue;
             Integer providerId = (Integer) rawDataList.get(i).get("providerId");
             Provider provider = providerRepository.findById(providerId).orElseThrow(ProviderNotFound::new);
             commodity.setProvider(provider);
             updateCommodityAverageRating(commodity);
             commodityRepository.save(commodity);
-            //TODO: Save the first rating
-//            rateCommodity("#InitialRating", commodity.getId(),commodity.getRating());
         }
     }
 

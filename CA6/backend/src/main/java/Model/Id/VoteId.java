@@ -1,11 +1,11 @@
-package Domain.Id;
+package Model.Id;
 
-import Domain.*;
+import Model.Commodity;
+import Model.User;
 import lombok.Getter;
 import lombok.Setter;
 
 import java.io.Serializable;
-import java.util.Objects;
 
 @Getter
 @Setter

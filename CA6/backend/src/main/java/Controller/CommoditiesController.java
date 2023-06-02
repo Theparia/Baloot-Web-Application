@@ -1,9 +1,8 @@
 package Controller;
 
-import DTO.CommentDTO;
 import DTO.CommodityDTO;
-import Domain.Comment;
-import Domain.Commodity;
+import Model.Comment;
+import Model.Commodity;
 import Exceptions.CommodityNotFound;
 import Service.CommentService;
 import Service.CommodityService;

@@ -1,8 +1,8 @@
 package Service;
 
-import Domain.*;
 import Exceptions.*;
 import HTTPRequestHandler.HTTPRequestHandler;
+import Model.*;
 import Repository.*;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.type.TypeFactory;
@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.HashMap;
 import java.util.List;
+import java.util.Optional;
 
 @Getter
 @Setter
@@ -38,7 +39,12 @@ public class UserService {
         ObjectMapper objectMapper = new ObjectMapper();
         TypeFactory typeFactory = objectMapper.getTypeFactory();
         List<User> users = objectMapper.readValue(HTTPRequestHandler.getRequest(USERS_URI), typeFactory.constructCollectionType(List.class, User.class));
-        userRepository.saveAll(users);
+        for(User user: users){
+            Optional<User> existingUser = userRepository.findByUsername(user.getUsername());
+            if (existingUser.isPresent())
+                continue;
+            userRepository.save(user);
+        }
     }
     public User findUserByUsername(String username) throws UserNotFound {
         return userRepository.findByUsername(username)

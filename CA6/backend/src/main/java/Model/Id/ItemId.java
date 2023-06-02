@@ -1,7 +1,7 @@
-package Domain.Id;
+package Model.Id;
 
-import Domain.Commodity;
-import Domain.User;
+import Model.Commodity;
+import Model.User;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -16,5 +16,4 @@ import java.io.Serializable;
 public class ItemId implements Serializable{
     private Commodity commodity;
     private User user;
-
 }

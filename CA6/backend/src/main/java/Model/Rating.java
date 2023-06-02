@@ -1,5 +1,6 @@
-package Domain;
+package Model;
 
+import Model.Id.RatingId;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -12,7 +13,7 @@ import lombok.Setter;
 @AllArgsConstructor
 @Entity
 @Table(name = "rating")
-@IdClass(RatingKey.class)
+@IdClass(RatingId.class)
 public class Rating {
     @Id
     @ManyToOne

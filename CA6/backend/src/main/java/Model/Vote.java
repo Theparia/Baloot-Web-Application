@@ -1,14 +1,11 @@
-package Domain;
+package Model;
 
 //import Domain.Id.CommentId;
-import Domain.Id.CommentId;
-import Domain.Id.VoteId;
+import Model.Id.VoteId;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-
-import java.util.Objects;
 
 @Getter
 @Setter

@@ -1,9 +1,7 @@
 package Controller;
 
-import Domain.Commodity;
-import Domain.Provider;
-import Domain.User;
-import Service.Baloot;
+import Model.Commodity;
+import Model.Provider;
 import Service.ProviderService;
 import lombok.NoArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;

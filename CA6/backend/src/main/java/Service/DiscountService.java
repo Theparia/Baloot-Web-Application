@@ -1,17 +1,14 @@
 package Service;
 
 
-import Domain.Discount;
-import Domain.Provider;
-import Domain.UsedDiscount;
-import Domain.User;
-import Exceptions.CommodityNotFound;
+import Model.Discount;
+import Model.UsedDiscount;
+import Model.User;
 import Exceptions.ExpiredDiscount;
 import Exceptions.InvalidDiscount;
 import Exceptions.UserNotFound;
 import HTTPRequestHandler.HTTPRequestHandler;
 import Repository.DiscountRepository;
-import Repository.ProviderRepository;
 import Repository.UsedDiscountRepository;
 import Repository.UserRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -56,7 +53,6 @@ public class DiscountService {
         }
         user.setCurrentDiscount(discount);
         userRepository.save(user);
-        System.out.println("&&&" + user.getCurrentDiscount().getDiscountCode());
         return discount.getDiscount();
     }
 

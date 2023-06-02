@@ -1,14 +1,11 @@
-package Domain;
+package Model;
 
 //import Domain.Id.CommentId;
-import Domain.Id.CommentId;
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import Model.Id.CommentId;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-
-import java.util.*;
 
 @Getter
 @Setter

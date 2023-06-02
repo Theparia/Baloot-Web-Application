@@ -1,16 +1,13 @@
-package Domain.Id;
+package Model.Id;
 
-import Domain.Comment;
-import Domain.Commodity;
-import Domain.User;
-import jakarta.persistence.Column;
+import Model.Commodity;
+import Model.User;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.io.Serializable;
-import java.util.Objects;
 
 @Getter
 @Setter
@@ -19,9 +16,4 @@ import java.util.Objects;
 public class CommentId implements Serializable {
     private Commodity commodity;
     private User user;
-
-//    public CommentId(Commodity commodity, User user) {
-//        this.commodity = commodity;
-//        this.user = user;
-//    }
 }

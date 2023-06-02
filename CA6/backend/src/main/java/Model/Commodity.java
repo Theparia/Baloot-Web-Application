@@ -1,18 +1,13 @@
-package Domain;
+package Model;
 
 
 import Exceptions.CommodityOutOfStock;
-import Exceptions.RatingOutOfRange;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
 @Getter
@@ -61,14 +56,6 @@ public class Commodity {
             sum += score;
         }
         averageRating = sum / userRatings.size();
-    }
-
-    public boolean isEqual(Integer id) {
-        return this.id.equals(id);
-    }
-
-    public boolean isInCategory(String category){
-        return categories.contains(category);
     }
 
     public boolean isInSimilarCategory(List<String> categories_) {

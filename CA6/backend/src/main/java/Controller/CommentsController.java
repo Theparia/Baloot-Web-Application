@@ -2,8 +2,7 @@ package Controller;
 
 
 import DTO.CommentDTO;
-import Domain.Comment;
-import Service.Baloot;
+import Model.Comment;
 import Service.CommentService;
 import lombok.NoArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,7 +13,6 @@ import org.springframework.web.bind.annotation.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import java.util.UUID;
 
 @NoArgsConstructor
 @CrossOrigin(origins = "http://localhost:3000")

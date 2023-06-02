@@ -1,11 +1,10 @@
 package Repository;
 
-import Domain.Commodity;
+import Model.Commodity;
 //import Domain.Id.CommentId;
-import Domain.Id.CommentId;
-import Domain.Id.VoteId;
-import Domain.User;
-import Domain.Vote;
+import Model.Id.VoteId;
+import Model.User;
+import Model.Vote;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

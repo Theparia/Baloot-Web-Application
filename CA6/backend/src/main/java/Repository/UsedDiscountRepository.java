@@ -1,7 +1,9 @@
 package Repository;
 
-import Domain.*;
-import Domain.Id.UsedDiscountId;
+import Model.Discount;
+import Model.Id.UsedDiscountId;
+import Model.UsedDiscount;
+import Model.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

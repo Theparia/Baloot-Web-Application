@@ -1,4 +1,4 @@
-package Domain;
+package Model;
 
 import jakarta.persistence.*;
 import lombok.NoArgsConstructor;
