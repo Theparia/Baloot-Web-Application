@@ -17,9 +17,4 @@ public class Discount {
     @Id
     private String discountCode;
     private float discount;
-
-//    public Discount(String discountCode, float discount){
-//        this.discount = discount;
-//        this.discountCode = discountCode;
-//    }
 }

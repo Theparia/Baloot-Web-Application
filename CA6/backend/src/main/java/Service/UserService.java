@@ -1,15 +1,9 @@
 package Service;
 
-import Domain.BuyListItem;
-import Domain.Commodity;
-import Domain.PurchasedListItem;
-import Domain.User;
+import Domain.*;
 import Exceptions.*;
 import HTTPRequestHandler.HTTPRequestHandler;
-import Repository.BuyListItemRepository;
-import Repository.CommodityRepository;
-import Repository.PurchasedListItemRepository;
-import Repository.UserRepository;
+import Repository.*;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.type.TypeFactory;
 import lombok.Getter;
@@ -27,13 +21,16 @@ public class UserService {
     private final BuyListItemRepository buyListItemRepository;
     private final CommodityRepository commodityRepository;
     private final PurchasedListItemRepository purchasedListItemRepository;
+    private final UsedDiscountRepository usedDiscountRepository;
 
     public UserService(UserRepository userRepository, BuyListItemRepository buyListItemRepository,
-                       CommodityRepository commodityRepository, PurchasedListItemRepository purchasedListItemRepository) throws Exception {
+                       CommodityRepository commodityRepository, PurchasedListItemRepository purchasedListItemRepository,
+                       UsedDiscountRepository usedDiscountRepository) throws Exception {
         this.userRepository = userRepository;
         this.buyListItemRepository = buyListItemRepository;
         this.commodityRepository = commodityRepository;
         this.purchasedListItemRepository = purchasedListItemRepository;
+        this.usedDiscountRepository = usedDiscountRepository;
         fetchData();
     }
     private void fetchData() throws Exception {
@@ -122,26 +119,29 @@ public class UserService {
         for(BuyListItem item : buylist){
             item.getCommodity().checkInStock(item.getQuantity());
         }
-        user.reduceCredit(calcBuyListPrice(buylist));
+        user.reduceCredit(calcBuyListPrice(buylist, user));
         for(BuyListItem item : buylist){
             buyListItemRepository.delete(item);
             addToPurchasedList(item);
             item.getCommodity().reduceInStock(item.getQuantity());
             commodityRepository.save(item.getCommodity());
         }
-
-//        user.useDiscount();
+        if(user.getCurrentDiscount() != null) {
+            usedDiscountRepository.save(new UsedDiscount(user.getCurrentDiscount(), user));
+            user.useDiscount();
+        }
+        userRepository.save(user);
     }
 
-    public float calcBuyListPrice(List<BuyListItem> buylist) {
+    public float calcBuyListPrice(List<BuyListItem> buylist, User user) {
         float totalPrice = 0;
         for(BuyListItem item : buylist){
             totalPrice += item.getQuantity() * item.getCommodity().getPrice();
         }
-        return totalPrice;
-//         if (user.getCurrentDiscount() == null)
-//             return totalPrice;
-//         return totalPrice * (100 - user.getCurrentDiscount().getDiscount()) / 100;
+//        return totalPrice;
+         if (user.getCurrentDiscount() == null)
+             return totalPrice;
+         return totalPrice * (100 - user.getCurrentDiscount().getDiscount()) / 100;
     }
 
 }

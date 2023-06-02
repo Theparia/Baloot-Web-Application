@@ -1,0 +1,13 @@
+package Repository;
+
+import Domain.*;
+import Domain.Id.UsedDiscountId;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
+
+import java.util.Optional;
+
+@Repository
+public interface UsedDiscountRepository extends JpaRepository<UsedDiscount, UsedDiscountId> {
+    Optional<UsedDiscount> findByDiscountAndUser(Discount discount, User user);
+}

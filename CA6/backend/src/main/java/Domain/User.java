@@ -26,26 +26,17 @@ public class User {
     @Id
     private String username;
     private String password;
+//    @Column(unique = true)
     private String email;
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-DD")
     private String birthDate;
     private String address;
     private float credit;
 //    @JsonIgnore
-//    @OneToMany
-//    private List<BuyListItem> buyList = new ArrayList<>();
-//    @JsonIgnore
-//    @OneToMany
-//    private List<BuyListItem> purchasedList = new ArrayList<>();
-//    @JsonIgnore
-//    private HashMap<Integer, Integer> buyList = new HashMap<>(); // id -> quantity
-//    @JsonIgnore
-//    private HashMap<Integer, Integer> purchasedList = new HashMap<>(); // id -> quantity
+//    @Transient
+//    private List<Discount> usedDiscounts = new ArrayList<>();
     @JsonIgnore
-    @Transient
-    private List<Discount> usedDiscounts = new ArrayList<>();
-    @JsonIgnore
-    @Transient
+    @OneToOne
     private Discount currentDiscount = null;
     public User(String username, String password, String email, String birthDate, String address, float credit) {
         this.username = username;
@@ -67,7 +58,7 @@ public class User {
         this.address = user.getAddress();
         this.birthDate = user.getBirthDate();
 //        this.buyList = user.getBuyList();
-        this.usedDiscounts = user.getUsedDiscounts();
+//        this.usedDiscounts = user.getUsedDiscounts();
         this.currentDiscount = null;
     }
 
@@ -83,15 +74,13 @@ public class User {
 //    }
 
     public void setCurrentDiscount(Discount discount) throws ExpiredDiscount {
-        if (isDiscountCodeExpired(discount.getDiscountCode())){
-            throw new ExpiredDiscount();
-        }
         this.currentDiscount = discount;
+        System.out.println("!!!: " + this.currentDiscount.getDiscountCode());
     }
 
     public void useDiscount(){
-        if(this.currentDiscount != null)
-            this.usedDiscounts.add(this.currentDiscount);
+//        if(this.currentDiscount != null)
+//            this.usedDiscounts.add(this.currentDiscount);
         this.currentDiscount = null;
     }
 
@@ -99,14 +88,14 @@ public class User {
         this.currentDiscount = null;
     }
 
-    public boolean isDiscountCodeExpired(String code){
-        for (Discount discount: this.usedDiscounts){
-            if(discount.getDiscountCode().equals(code)){
-                return true;
-            }
-        }
-        return false;
-    }
+//    public boolean isDiscountCodeExpired(String code){
+//        for (Discount discount: this.usedDiscounts){
+//            if(discount.getDiscountCode().equals(code)){
+//                return true;
+//            }
+//        }
+//        return false;
+//    }
 
     public void resetBuyList(){
 //        this.buyList = new HashMap<>();

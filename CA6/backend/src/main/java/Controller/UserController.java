@@ -4,6 +4,7 @@ import Database.Database;
 import Domain.Commodity;
 import Domain.User;
 import Service.Baloot;
+import Service.DiscountService;
 import Service.UserService;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -24,9 +25,9 @@ import java.util.Map;
 @RequestMapping
 public class UserController {
     @Autowired
-    private Baloot baloot;
-    @Autowired
     private UserService userService;
+    @Autowired
+    private DiscountService discountService;
 
 
     @RequestMapping(value = "/users/{username}", method = RequestMethod.GET)
@@ -84,7 +85,6 @@ public class UserController {
     protected ResponseEntity<HashMap<Integer, Integer>> getPurchasedList(@PathVariable String username) {
         try {
             return ResponseEntity.ok(userService.getPurchasedList(username));
-//            return ResponseEntity.ok(baloot.findUserByUsername(username).getPurchasedList());
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
         }
@@ -103,7 +103,7 @@ public class UserController {
     @RequestMapping(value = "/users/{username}/discount", method = RequestMethod.POST)
     protected ResponseEntity<Float> applyDiscountCode(@PathVariable String username, @RequestBody Map<String, String> info) {
         try {
-            return ResponseEntity.ok(baloot.applyDiscountCode(username, info.get("code")));
+            return ResponseEntity.ok(discountService.applyDiscountCode(username, info.get("code")));
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
         }
@@ -112,7 +112,8 @@ public class UserController {
     @RequestMapping(value = "/users/{username}/discount", method = RequestMethod.DELETE)
     protected ResponseEntity<String> deleteDiscountCode(@PathVariable String username) {
         try {
-            baloot.deleteDiscountCode(username);
+            System.out.println("In delete discount");
+            discountService.deleteDiscountCode(username);
             return ResponseEntity.ok("ok");
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.FORBIDDEN).body(e.getMessage());
