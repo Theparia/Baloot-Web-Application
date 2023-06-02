@@ -1,8 +1,12 @@
 package Domain.Id;
 
 import Domain.Comment;
+import Domain.Commodity;
+import Domain.User;
 import jakarta.persistence.Column;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.io.Serializable;
@@ -10,38 +14,14 @@ import java.util.Objects;
 
 @Getter
 @Setter
+@NoArgsConstructor
+@AllArgsConstructor
 public class CommentId implements Serializable {
-    @Column(name = "user_email")
-    private String userEmail;
+    private Commodity commodity;
+    private User user;
 
-    @Column(name = "commodity_id")
-    private Integer commodityId;
-
-//    @Column(name = "user_email")
-//    private String userEmail;
-//    @Column(name = "commodity_id")
-//    private Integer commodityId;
-
-    // constructors, getters, and setters
-
-    public CommentId(String userEmail, Integer commodityId){
-        this.userEmail = userEmail;
-        this.commodityId = commodityId;
-    }
-
-
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof CommentId)) return false;
-        CommentId that = (CommentId) o;
-        return Objects.equals(getUserEmail(), that.getUserEmail()) &&
-                Objects.equals(getCommodityId(), that.getCommodityId());
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(getUserEmail(), getCommodityId());
-    }
+//    public CommentId(Commodity commodity, User user) {
+//        this.commodity = commodity;
+//        this.user = user;
+//    }
 }

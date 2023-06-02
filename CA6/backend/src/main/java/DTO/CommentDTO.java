@@ -6,7 +6,6 @@ import lombok.Setter;
 @Getter
 @Setter
 public class CommentDTO {
-    private Integer id;
     private String username;
     private Integer commodityId;
     private String userEmail;

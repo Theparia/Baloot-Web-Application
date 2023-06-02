@@ -2,8 +2,10 @@ package Service;
 
 import Database.Database;
 import Domain.*;
+//import Domain.Id.CommentId;
 import Domain.Id.CommentId;
 import Exceptions.CommentNotFound;
+import Exceptions.CommodityNotFound;
 import Exceptions.InvalidCommentVote;
 import Exceptions.UserNotFound;
 import HTTPRequestHandler.HTTPRequestHandler;
@@ -57,50 +59,28 @@ public class CommentService {
         objectMapper.disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
         TypeFactory typeFactory = objectMapper.getTypeFactory();
         List<Comment> comments = objectMapper.readValue(HTTPRequestHandler.getRequest(COMMENTS_URI), typeFactory.constructCollectionType(List.class, Comment.class));
-        commentRepository.saveAll(comments);
-
         String rawJsonData = HTTPRequestHandler.getRequest(COMMENTS_URI);
+
         List<Map<String, Object>> rawDataList = objectMapper.readValue(rawJsonData, new TypeReference<List<Map<String, Object>>>() {});
         for (int i = 0 ; i < comments.size(); i++) {
-            setCommentUser(comments.get(0), (String) rawDataList.get(i).get("userEmail"), (Integer) rawDataList.get(i).get("commodityId"));
+            comments.get(i).setUser(userRepository.findByEmail(((String) rawDataList.get(i).get("userEmail"))));
+            comments.get(i).setCommodity(findCommodityById((Integer) rawDataList.get(i).get("commodityId")));
         }
+        commentRepository.saveAll(comments);
+
+    }
+
+    public Commodity findCommodityById(Integer id) throws CommodityNotFound {
+        return commodityRepository.findById(id)
+                .orElseThrow(CommodityNotFound::new);
     }
 
     public void addComment(String userEmail, Integer commodityId, String text){
-        Comment comment = new Comment(commodityId, userEmail, text, LocalDate.now().toString());
-        commentRepository.save(comment);
-        setCommentUser(comment, userEmail, commodityId);
-//        Database.getInstance().addComment(comment);
-
-//        User user = userRepository.findByEmail(userEmail);
-//
-//        // Fetch the Commodity object
-//        Commodity commodity = commodityRepository.findById(commodityId).orElse(null);
-//
-//        // Create a new Comment object
-//        Comment comment = new Comment();
-//        comment.setUserEmail(userEmail);
-//        comment.setUser(user);
-//        comment.setCommodity(commodity);
-//        comment.setText(text);
-//        comment.setDate(LocalDate.now().toString());
-
-        // Save the Comment object to the repository or perform other operations
-//        commentRepository.save(comment);
-    }
-
-    public void setCommentUser(Comment comment, String userEmail, Integer commodityId) {
         User user = userRepository.findByEmail(userEmail);
-        Commodity commodity = commodityRepository.findById(commodityId)
-                .orElseThrow(() -> new IllegalArgumentException("Commodity not found"));
-        if (user != null && commodity != null) {
-            comment.setUser(user);
-            comment.setCommodity(commodity);
-            commentRepository.save(comment);
-        }
+        Commodity commodity = commodityRepository.findById(commodityId).orElse(null);
+        Comment comment = new Comment(user, commodity, userEmail, text, LocalDate.now().toString());
+        commentRepository.save(comment);
     }
-
-
     public String getEmailByUsername(String username) {
         User user = userRepository.findByUsername(username);
         if (user != null) {
@@ -120,28 +100,32 @@ public class CommentService {
         return vote == 1 || vote == 0 || vote == -1;
     }
 
-
-    public void voteComment(Integer commentId, String username, int value) throws InvalidCommentVote, CommentNotFound, UserNotFound{
+    public Comment findCommentById(CommentId id) throws CommodityNotFound {
+        return commentRepository.findById(id)
+                .orElseThrow(CommodityNotFound::new);
+    }
+    public void voteComment(String username, Integer commodityId, String usernameComment, int value) throws InvalidCommentVote, CommodityNotFound {
         if(!isVoteValid(value))
             throw new InvalidCommentVote();
-//        System.out.println("COMMENT ID IN VOTE COMMENT: " + commentId);
-        Vote vote = new Vote(username, commentRepository.findById(commentId).get().getId(), value);
+        User user = userRepository.findByUsername(username);
+        User userComment = userRepository.findByUsername(usernameComment);
+        Commodity commodity = commodityRepository.findById(commodityId)
+                .orElseThrow(() -> new IllegalArgumentException("Commodity not found"));
+        CommentId commentId = new CommentId(commodity, userComment);
+        Vote vote = new Vote(user, commodity, userComment, value);
         voteRepository.save(vote);
         updateCommentVotes(commentId);
-//        findCommentById(commentId).addVote(findUserByUsername(username).getUsername(), vote);
     }
 
-    public void updateCommentVotes(Integer commentId) {
-        Comment comment = commentRepository.findById(commentId)
-                .orElseThrow(() -> new IllegalArgumentException("Comment not found"));
-
-        List<Vote> votes = voteRepository.findByCommentId(commentId);
+    public void updateCommentVotes(CommentId commentId) throws CommodityNotFound {
+        Comment comment = findCommentById(commentId);
+        List<Vote> votes = voteRepository.findByCommodityAndCommentWriter(commentId.getCommodity(), commentId.getUser());
 
         int likeCount = 0;
         int dislikeCount = 0;
 
         for (Vote vote : votes) {
-            if (vote.getCommentId() == commentId){
+            if (Objects.equals(vote.getCommodity().getId(), commentId.getCommodity().getId()) && Objects.equals(vote.getCommentWriter().getUsername(), commentId.getUser().getUsername())){
                 if (vote.getValue() == 1) {
                     likeCount++;
                 } else if (vote.getValue() == -1) {

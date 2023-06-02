@@ -35,7 +35,7 @@ public class Baloot {
 
 //    private final CommentRepository commentRepository;
 
-    private Baloot(CommentRepository commentRepository){
+    private Baloot(){
         System.out.println("CONSTRUCTOR");
 //        this.commentRepository = commentRepository;
         try {
@@ -296,14 +296,14 @@ public class Baloot {
         throw new UserNotFound();
     }
 
-    public Comment findCommentById(UUID commentId) throws CommentNotFound {
-        for (Comment comment : Database.getInstance().getComments()){
-            if(comment.getId().equals(commentId)){
-                return comment;
-            }
-        }
-        throw new CommentNotFound();
-    }
+//    public Comment findCommentById(UUID commentId) throws CommentNotFound {
+//        for (Comment comment : Database.getInstance().getComments()){
+//            if(comment.getId().equals(commentId)){
+//                return comment;
+//            }
+//        }
+//        throw new CommentNotFound();
+//    }
 
     public List<Commodity> findCommoditiesByProvider(Integer providerId){
         List<Commodity> commodities = new ArrayList<>();

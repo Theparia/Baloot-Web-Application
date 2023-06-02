@@ -1,26 +1,43 @@
 package Domain;
 
+//import Domain.Id.CommentId;
+import Domain.Id.CommentId;
+import Domain.Id.VoteId;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+
+import java.util.Objects;
 
 @Getter
 @Setter
 @Entity
 @NoArgsConstructor
 @Table(name = "vote")
+@IdClass(VoteId.class)
 public class Vote {
-    @Id //todo: composite key after user table created
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private Integer id;
-    private String username; //todo: foreign key after user table created
-    private Integer commentId; //todo: foreign key after user table created
+    @Id
+    @ManyToOne
+    @JoinColumn(name = "commodity_id", referencedColumnName = "id")
+    private Commodity commodity;
+
+    @Id
+    @ManyToOne
+    @JoinColumn(name = "commentWriter", referencedColumnName = "username")
+    private User commentWriter;
+
+    @Id
+    @ManyToOne
+    @JoinColumn(name = "username", referencedColumnName = "username")
+    private User user;
     private Integer value;
 
-    public Vote(String username, Integer commentId, Integer value){
-        this.username = username;
-        this.commentId = commentId;
+    public Vote(User user, Commodity commodity, User commentWriter, Integer value){
+        this.user = user;
+        this.commodity = commodity;
+        this.commentWriter = commentWriter;
         this.value = value;
     }
+
 }

@@ -8,11 +8,11 @@ export function getCommentVotes(commentId){
 }
 
 export function likeComment(commentId, data){
-    return axios.post("/comments/" + commentId + "/like/", data);
+    return axios.post("/comments/like/", data);
 }
 
 export function dislikeComment(commentId, data){
-    return axios.post("/comments/" + commentId + "/dislike/", data);
+    return axios.post("/comments/dislike/", data);
 }
 
 export function addComment(data){

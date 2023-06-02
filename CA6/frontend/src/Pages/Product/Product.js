@@ -51,7 +51,7 @@ const Comments = () => {
     const Comment = ({comment}) => {
         const handleLikeComment = (e) => {
             e.preventDefault();
-            const req = {"username": sessionStorage.getItem('username')}
+            const req = {"username": sessionStorage.getItem('username'), "commodityId": commodityId, "userComment": comment.username}
             likeComment(comment.id, req).then(() => {
                 setVote(!vote)
             }).catch(error => alert(error.response.data));
@@ -59,7 +59,7 @@ const Comments = () => {
 
         const handleDislikeComment = (e) => {
             e.preventDefault();
-            const req = {"username": sessionStorage.getItem('username')}
+            const req = {"username": sessionStorage.getItem('username'), "commodityId": commodityId, "userComment": comment.username}
             dislikeComment(comment.id, req).then(() => {
                 setVote(!vote)
             }).catch((error) => alert(error.response.data));
