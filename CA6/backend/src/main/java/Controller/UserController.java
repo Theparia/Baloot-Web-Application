@@ -42,7 +42,8 @@ public class UserController {
     @RequestMapping(value = "/users/{username}/payment", method = RequestMethod.GET)
     protected ResponseEntity<String> payment(@PathVariable String username) {
         try {
-            baloot.finalizePayment(username);
+            userService.finalizePayment(username);
+//            baloot.finalizePayment(username);
             return ResponseEntity.ok("ok");
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.FORBIDDEN).body(e.getMessage());
@@ -79,14 +80,15 @@ public class UserController {
         }
     }
 
-//    @RequestMapping(value = "/users/{username}/purchasedList", method = RequestMethod.GET)
-//    protected ResponseEntity<HashMap<Integer, Integer>> getPurchasedList(@PathVariable String username) {
-//        try {
+    @RequestMapping(value = "/users/{username}/purchasedList", method = RequestMethod.GET)
+    protected ResponseEntity<HashMap<Integer, Integer>> getPurchasedList(@PathVariable String username) {
+        try {
+            return ResponseEntity.ok(userService.getPurchasedList(username));
 //            return ResponseEntity.ok(baloot.findUserByUsername(username).getPurchasedList());
-//        } catch (Exception e) {
-//            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
-//        }
-//    }
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+        }
+    }
 
     @RequestMapping(value = "/users/{username}/credit", method = RequestMethod.POST)
     protected ResponseEntity<String> addCredit(@PathVariable String username, @RequestBody Map<String, String> info) {
