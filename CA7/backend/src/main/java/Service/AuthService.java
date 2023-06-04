@@ -13,7 +13,6 @@ import org.springframework.stereotype.Service;
 @Getter
 @Setter
 @Service
-//@Transactional
 public class AuthService {
     private User loggedInUser = null;
 

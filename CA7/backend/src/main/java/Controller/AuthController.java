@@ -15,6 +15,8 @@ import java.util.Map;
 @RestController
 @RequestMapping
 public class AuthController {
+    public static final String KEY = "baloot2023";
+
     @Autowired
     private AuthService authService;
 
