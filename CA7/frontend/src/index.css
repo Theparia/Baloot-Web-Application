@@ -1,0 +1,21 @@
+:root {
+  --dark_theme: #593C1C;
+  --medium_theme: #A97B47;
+  --light_theme: #F7F0E9;
+  --red: #C82525;
+  --dark-gray: #919191;
+  --medium_gray: #909090;
+  --light_gray: #F5F5F5;
+  --background_color: #FCFCFC;
+  --yellow: #FFC700;
+  --black: #000000;
+  --white: #FFFFFF;
+  --cream:  #D8C1A8;
+}
+
+body {
+  background: var(--background_color);
+  font-family: 'Inter', serif;
+  font-style: normal;
+  margin: 0;
+}
