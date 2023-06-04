@@ -13,6 +13,20 @@ const Signup = () => {
 
     function handleSignup(e) {
         e.preventDefault();
+        if(username && password && email && birthDate && address){
+            if (!/^\w+$/.test(username)){
+                alert("Invalid Username")
+                return;
+            }
+            if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)){
+                alert("Invalid Email")
+                return;
+            }
+        }
+        else{
+            alert("Please fill the form!")
+            return;
+        }
         const user = {
             "username": username,
             "password": password,

@@ -7,11 +7,13 @@ import lombok.Getter;
 import lombok.Setter;
 
 import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
 
 @Getter
 @Setter
-@Component
+@Service
+//@Transactional
 public class AuthService {
     private User loggedInUser = null;
 
@@ -29,7 +31,8 @@ public class AuthService {
 
     public void login(String username, String password) throws UserNotFound, InvalidCredentials {
         User user = userRepository.findByUsername(username).orElseThrow(UserNotFound::new);
-        if(user.getPassword().equals(password))
+        String hashedPassword = String.valueOf(password.hashCode());
+        if(user.getPassword().equals(hashedPassword))
             loggedInUser = user;
         else
             throw new InvalidCredentials();
@@ -41,10 +44,14 @@ public class AuthService {
         else throw new InvalidLogout();
     }
 
-    public void addUser(User newUser) throws InvalidUsername {
-        if(!newUser.getUsername().matches("\\w+"))
-            throw new InvalidUsername();
-        userRepository.save(newUser);
+    public void addUser(User user) throws EmailAlreadyExists {
+        try {
+            String hashedPassword = String.valueOf(user.getPassword().hashCode());
+            user.setPassword(hashedPassword);
+            userRepository.save(user);
+        } catch (Exception e){
+            throw new EmailAlreadyExists();
+        }
     }
 }
 

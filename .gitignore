@@ -17,3 +17,7 @@ node_modules
 *.class
 
 out/
+
+package.json.json
+
+package-lock.json

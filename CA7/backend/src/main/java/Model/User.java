@@ -15,12 +15,12 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @Entity
-@Table(name = "user")
+@Table(name = "user", uniqueConstraints = @UniqueConstraint(columnNames = "email"))
 public class User {
     @Id
     private String username;
     private String password;
-    @Column(unique = true)
+//    @Column(unique = true)
     private String email;
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-DD")
     private String birthDate;
@@ -40,7 +40,6 @@ public class User {
 
     public void setCurrentDiscount(Discount discount) throws ExpiredDiscount {
         this.currentDiscount = discount;
-        System.out.println("!!!: " + this.currentDiscount.getDiscountCode());
     }
 
     public void useDiscount(){

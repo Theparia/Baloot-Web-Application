@@ -43,6 +43,8 @@ public class UserService {
             Optional<User> existingUser = userRepository.findByUsername(user.getUsername());
             if (existingUser.isPresent())
                 continue;
+            String hashedPassword = String.valueOf(user.getPassword().hashCode());
+            user.setPassword(hashedPassword);
             userRepository.save(user);
         }
     }
