@@ -6,17 +6,21 @@ import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jws;
 import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.Jwts;
+import jakarta.servlet.*;
+import jakarta.servlet.annotation.WebFilter;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.annotation.Order;
 import org.springframework.http.HttpHeaders;
 import org.springframework.stereotype.Component;
+import org.springframework.web.filter.OncePerRequestFilter;
 
+
+//import javax.crypto.SecretKey;
+//import javax.crypto.spec.SecretKeySpec;
 import javax.crypto.SecretKey;
 import javax.crypto.spec.SecretKeySpec;
-import javax.servlet.*;
-import javax.servlet.annotation.WebFilter;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
@@ -24,8 +28,8 @@ import java.util.Date;
 
 @Component
 @Order(2)
-@WebFilter(filterName = "JWTAuthFilter", asyncSupported = true, urlPatterns = {"/*"})
-public class JWTAuthFilter implements Filter {
+//@WebFilter(filterName = "JWTAuthFilter", asyncSupported = true, urlPatterns = {"/*"})
+public class JWTAuthFilter extends OncePerRequestFilter {
 
     @Autowired
     AuthService authService;
@@ -36,14 +40,15 @@ public class JWTAuthFilter implements Filter {
         }
     };
 
-    @Override
-    public void init(FilterConfig filterConfig) {
-    }
+//    @Override
+//    public void init(FilterConfig filterConfig) {
+//    }
 
     @Override
-    public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain) throws IOException, ServletException {
-        HttpServletRequest request = (HttpServletRequest) servletRequest;
-        HttpServletResponse response = (HttpServletResponse) servletResponse;
+//    protected void doFilterInternal(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain) throws IOException, ServletException {
+    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException, java.io.IOException {
+//        HttpServletRequest request = (HttpServletRequest) req;
+//        HttpServletResponse response = (HttpServletResponse) res;
 
         String authHeader = request.getHeader(HttpHeaders.AUTHORIZATION);
         System.out.println("&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&  " + authHeader);
@@ -55,7 +60,6 @@ public class JWTAuthFilter implements Filter {
         }
 
         if (authHeader == null || authHeader.split(" ").length < 2) { //TODO: < 2?
-            System.out.println("#############################################################################3");
             response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
             response.getWriter().write("{\"error\": \"No JWT token\"}");
             response.setHeader("Content-Type", "application/json;charset=UTF-8");
@@ -73,7 +77,9 @@ public class JWTAuthFilter implements Filter {
             if (jwsClaims.getBody().getExpiration().before(new Date()))
                 throw new JwtException("Token is expired");
             request.setAttribute("username", jwsClaims.getBody().get("username")); //TODO: user or username
-
+            if(authService.getLoggedInUser() == null) {
+                authService.loginWithJwtToken(jwsClaims.getBody().get("username").toString());
+            }
         } catch (JwtException e) {
             System.out.println(e.getMessage());
             response.setStatus(HttpServletResponse.SC_FORBIDDEN);

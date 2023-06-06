@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import "./Login.css"
 import Header from "../../Components/Header/Header.js";
 import {login} from "../../APIs/AuthRequest.js";
@@ -7,12 +7,24 @@ const Login = () => {
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
 
+    // useEffect(() => {
+    //     if(localStorage.getItem("userJWT") != null){
+    //         window.location.replace("/");
+    //         return;
+    //     }
+    // }, []);
 
     function handleLogin(e) {
         e.preventDefault();
         const user = {"username": username, "password": password};
         login(user)
             .then(response => {
+                let userJWT = response.data.token;
+                let userUsername = response.data.username;
+                console.log(response)
+                localStorage.setItem("userJWT" , userJWT);
+                localStorage.setItem("username" , userUsername);
+
                 sessionStorage.setItem('username', username);
                 console.log("handle Login: " + response.data);
                 window.location.replace("/");

@@ -15,7 +15,6 @@ import java.util.List;
 import java.util.Map;
 
 @NoArgsConstructor
-@CrossOrigin(origins = "http://localhost:3000")
 @RestController
 @RequestMapping
 public class CommentsController {

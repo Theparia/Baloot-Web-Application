@@ -314,6 +314,8 @@ const UserBody = ({setItemCount}) => {
             e.preventDefault();
             logout().then((response) => {
                 sessionStorage.removeItem('username');
+                localStorage.removeItem("userJWT");
+                localStorage.removeItem("username");
                 window.location.replace("/login");
             })
         }

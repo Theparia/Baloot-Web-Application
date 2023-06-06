@@ -14,7 +14,6 @@ import java.util.HashMap;
 import java.util.Map;
 
 @NoArgsConstructor
-@CrossOrigin(origins = "http://localhost:3000")
 @RestController
 @RequestMapping
 public class UserController {

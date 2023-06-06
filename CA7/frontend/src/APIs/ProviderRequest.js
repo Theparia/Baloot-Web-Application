@@ -5,5 +5,5 @@ export function getProvider(id){
 }
 
 export function getProviderCommodities(id){
-    return axios.get('/providers/' + id + '/commodities/');
+    return axios.get('/providers/' + id + '/commodities/', {headers : {Authorization : localStorage.getItem("userJWT")}});
 }
