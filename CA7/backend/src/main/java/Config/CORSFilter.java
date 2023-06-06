@@ -1,10 +1,9 @@
 package Config;
-import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
-import javax.servlet.*;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
+import jakarta.servlet.*;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 @Component
@@ -12,19 +11,19 @@ import java.io.IOException;
 public class CORSFilter implements Filter {
 
     @Override
-    public void init(FilterConfig fc) throws ServletException {
+    public void init(FilterConfig filterConfig){
     }
 
     @Override
-    public void doFilter(ServletRequest req, ServletResponse resp,
+    public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse,
                          FilterChain chain) throws IOException, ServletException {
         try {
-            Thread.sleep(1000); // 1 seconds
+            Thread.sleep(1000); // 1 second
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-        HttpServletResponse response = (HttpServletResponse) resp;
-        HttpServletRequest request = (HttpServletRequest) req;
+        HttpServletResponse response = (HttpServletResponse) servletResponse;
+        HttpServletRequest request = (HttpServletRequest) servletRequest;
         response.setHeader("Access-Control-Allow-Origin", "*");
         response.setHeader("Access-Control-Allow-Methods", "PUT, POST, GET, OPTIONS, DELETE");
         response.setHeader("Access-Control-Max-Age", "3600");
@@ -33,7 +32,7 @@ public class CORSFilter implements Filter {
         if ("OPTIONS".equalsIgnoreCase(request.getMethod())) {
             response.setStatus(HttpServletResponse.SC_OK);
         } else {
-            chain.doFilter(req, resp);
+            chain.doFilter(servletRequest, servletResponse);
         }
     }
 

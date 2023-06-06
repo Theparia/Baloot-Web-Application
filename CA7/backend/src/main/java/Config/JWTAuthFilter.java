@@ -13,10 +13,10 @@ import org.springframework.stereotype.Component;
 
 import javax.crypto.SecretKey;
 import javax.crypto.spec.SecretKeySpec;
-import javax.servlet.*;
 import javax.servlet.annotation.WebFilter;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
+import jakarta.servlet.*;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
@@ -46,7 +46,6 @@ public class JWTAuthFilter implements Filter {
         HttpServletResponse response = (HttpServletResponse) servletResponse;
 
         String authHeader = request.getHeader(HttpHeaders.AUTHORIZATION);
-        System.out.println("&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&  " + authHeader);
         String[] path = request.getRequestURI().split("/");
 
         if (excludedUrls.contains(path[1])) {
@@ -55,7 +54,6 @@ public class JWTAuthFilter implements Filter {
         }
 
         if (authHeader == null || authHeader.split(" ").length < 2) { //TODO: < 2?
-            System.out.println("#############################################################################3");
             response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
             response.getWriter().write("{\"error\": \"No JWT token\"}");
             response.setHeader("Content-Type", "application/json;charset=UTF-8");
