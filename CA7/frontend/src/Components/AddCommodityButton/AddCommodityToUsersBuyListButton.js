@@ -5,8 +5,7 @@ import React, {useEffect, useState} from "react";
 export function AddCommodityToUsersBuyListButton(props) {
     const handleAddToBuyList = (e) => {
         e.preventDefault();
-        addToBuyList(sessionStorage.getItem('username'), {"id": props.commodity.id}).then(async (response) => {
-            console.log("ADD TO BUY LIST");
+        addToBuyList(localStorage.getItem('username'), {"id": props.commodity.id}).then(async (response) => {
             await fetchBuyList().then(response => {
                     props.setBuyList(response);
                 }
@@ -16,8 +15,7 @@ export function AddCommodityToUsersBuyListButton(props) {
 
     const handleRemoveFromBuyList = (e) => {
         e.preventDefault();
-        removeFromBuyList(sessionStorage.getItem('username'), {"id": props.commodity.id}).then(async (response) => {
-            console.log("REMOVE FROM BUY LIST");
+        removeFromBuyList(localStorage.getItem('username'), {"id": props.commodity.id}).then(async (response) => {
             await fetchBuyList().then(response => {
                     props.setBuyList(response);
                 }

@@ -1,6 +1,5 @@
 import React, {useEffect, useState} from 'react';
 import './Header.css';
-import {getBuyList} from "../../APIs/UserRequest.js";
 import {useLocation} from "react-router-dom";
 
 const BalootLogo = () => {
@@ -81,7 +80,7 @@ const RegisterLoginButtons = () => {
 
 const Header = (props) => {
     const location = useLocation();
-    const username = sessionStorage.getItem('username');
+    const username = localStorage.getItem('username');
     return(
         <header>
             <nav className="navbar">

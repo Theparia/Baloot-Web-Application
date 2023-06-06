@@ -17,7 +17,7 @@ export function addCredit(username, amount){
 }
 
 export function addToBuyList(username, commodityId){
-    return axios.post("/users/" + username + "/buyList/add", commodityId), {headers : {Authorization : localStorage.getItem("userJWT")}};
+    return axios.post("/users/" + username + "/buyList/add", commodityId, {headers : {Authorization : localStorage.getItem("userJWT")}});
 }
 
 export function removeFromBuyList(username, commodityId){

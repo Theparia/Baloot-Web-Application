@@ -12,7 +12,7 @@ import {
     removeFromBuyList
 } from "../../APIs/UserRequest.js";
 import {getCommodity} from "../../APIs/CommoditiesRequest.js";
-import {logout} from "../../APIs/AuthRequest.js";
+// import {logout} from "../../APIs/AuthRequest.js";
 import {toast, ToastContainer} from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import {Modal} from 'react-bootstrap';
@@ -35,7 +35,7 @@ const UserBody = ({setItemCount}) => {
     }, []);
 
     const fetchUser = async () => {
-        const response = await getUser(sessionStorage.getItem('username'));
+        const response = await getUser(localStorage.getItem('username'));
         setUser(response.data)
     }
 
@@ -50,14 +50,14 @@ const UserBody = ({setItemCount}) => {
     }
 
     const fetchBuyList = async () => {
-        const buyListResponse = await getBuyList(sessionStorage.getItem('username'));
+        const buyListResponse = await getBuyList(localStorage.getItem('username'));
         const commodities = await extractCommodities(buyListResponse.data);
         setBuyList(commodities);
         setItemCount(commodities.length);
     }
 
     const fetchPurchasedList = async () => {
-        const purchasedListResponse = await getPurchasedList(sessionStorage.getItem('username'));
+        const purchasedListResponse = await getPurchasedList(localStorage.getItem('username'));
         const commodities = await extractCommodities(purchasedListResponse.data);
         setPurchasedList(commodities);
     }
@@ -312,12 +312,9 @@ const UserBody = ({setItemCount}) => {
 
         const handleLogout = (e) => {
             e.preventDefault();
-            logout().then((response) => {
-                sessionStorage.removeItem('username');
-                localStorage.removeItem("userJWT");
-                localStorage.removeItem("username");
-                window.location.replace("/login");
-            })
+            localStorage.removeItem("userJWT");
+            localStorage.removeItem("username");
+            window.location.replace("/login");
         }
 
         return (
@@ -344,14 +341,14 @@ const UserBody = ({setItemCount}) => {
     const InCart = ({commodity}) => {
         const handleAddToBuyList = (e) => {
             e.preventDefault();
-            addToBuyList(sessionStorage.getItem('username'), {"id": commodity.id}).then(async (response) => {
+            addToBuyList(localStorage.getItem('username'), {"id": commodity.id}).then(async (response) => {
                 await fetchBuyList();
             }).catch((error) => alert(error.response.data))
         }
 
         const handleRemoveFromBuyList = (e) => {
             e.preventDefault();
-            removeFromBuyList(sessionStorage.getItem('username'), {"id": commodity.id}).then(async (response) => {
+            removeFromBuyList(localStorage.getItem('username'), {"id": commodity.id}).then(async (response) => {
                 await fetchBuyList();
             }).catch((error) => alert(error.response.data))
         }
@@ -501,7 +498,7 @@ const UserBody = ({setItemCount}) => {
 const User = () => {
     const [itemCount, setItemCount] = useState(0);
     const {username} = useParams();
-    if (username !== sessionStorage.getItem('username')) {
+    if (username !== localStorage.getItem('username')) {
         window.location.replace("/login") //TODO
     }
     return (

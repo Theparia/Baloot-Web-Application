@@ -19,14 +19,8 @@ const Login = () => {
         const user = {"username": username, "password": password};
         login(user)
             .then(response => {
-                let userJWT = response.data.token;
-                let userUsername = response.data.username;
-                console.log(response)
-                localStorage.setItem("userJWT" , userJWT);
-                localStorage.setItem("username" , userUsername);
-
-                sessionStorage.setItem('username', username);
-                console.log("handle Login: " + response.data);
+                localStorage.setItem("userJWT" , response.data);
+                localStorage.setItem("username" , username);
                 window.location.replace("/");
             }).catch((error) => alert(error.response.data))
     }

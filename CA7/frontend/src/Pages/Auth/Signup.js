@@ -36,8 +36,8 @@ const Signup = () => {
         };
         signup(user)
             .then(response => {
-                sessionStorage.setItem('username', username);
-                console.log("handle Signup: " + response.data);
+                localStorage.setItem("userJWT" , response.data);
+                localStorage.setItem("username" , username);
                 window.location.replace("/");
             }).catch((error) => alert(error.response.data))
     }

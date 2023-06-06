@@ -77,7 +77,7 @@ const Home = () => {
     }
 
     const fetchBuyList = async () => {
-        const buyListResponse = await getBuyList(sessionStorage.getItem('username'));
+        const buyListResponse = await getBuyList(localStorage.getItem('username'));
         const commodities = await extractCommodities(buyListResponse.data);
         setBuyList(commodities);
     }
@@ -118,14 +118,14 @@ const Home = () => {
 
         const handleAddToBuyList = (e) => {
             e.preventDefault();
-            addToBuyList(sessionStorage.getItem('username'), {"id": commodity.id}).then(async (response) => {
+            addToBuyList(localStorage.getItem('username'), {"id": commodity.id}).then(async (response) => {
                 await fetchBuyList();
             }).catch((error) => alert(error.response.data))
         }
 
         const handleRemoveFromBuyList = (e) => {
             e.preventDefault();
-            removeFromBuyList(sessionStorage.getItem('username'), {"id": commodity.id}).then(async(response) => {
+            removeFromBuyList(localStorage.getItem('username'), {"id": commodity.id}).then(async(response) => {
                 await fetchBuyList();
             }).catch((error) => alert(error.response.data))
         }
@@ -191,14 +191,14 @@ const Home = () => {
         )
     }
 
-    if (sessionStorage.getItem('username') === null) {
+    if (localStorage.getItem('username') === null) {
         window.location.replace("/login")
         return;
     }
 
     return(
         <>
-            <Header itemCount={buyList.length} searchFunc={search} username={sessionStorage.getItem('username')}/>
+            <Header itemCount={buyList.length} searchFunc={search} username={localStorage.getItem('username')}/>
             <main id="home-main">
                 <FilterCommodities/>
                 <CommoditiesTable/>

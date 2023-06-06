@@ -12,7 +12,7 @@ export const extractCommodities = async (data) => {
 }
 
 export const fetchBuyList = async () => {
-    const buyListResponse = await getBuyList(sessionStorage.getItem('username'));
+    const buyListResponse = await getBuyList(localStorage.getItem('username'));
     console.log(Object.keys(buyListResponse.data));
     return extractCommodities(buyListResponse.data);
 }

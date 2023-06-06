@@ -6,9 +6,8 @@ import './Product.css'
 import '../Home/Home.css'
 
 import {useParams} from "react-router-dom";
-import {getCommodities, rateCommodity, getCommodity, getSuggestedCommodities} from "../../APIs/CommoditiesRequest.js";
-import {likeComment, dislikeComment, getComments, getCommentVotes, addComment} from "../../APIs/CommentsRequest.js"
-import {getProvider} from "../../APIs/ProviderRequest.js"
+import {rateCommodity, getCommodity, getSuggestedCommodities} from "../../APIs/CommoditiesRequest.js";
+import {likeComment, dislikeComment, getComments, addComment} from "../../APIs/CommentsRequest.js"
 import {getBuyList, addToBuyList, removeFromBuyList} from "../../APIs/UserRequest.js"
 import {Modal, Spinner} from "react-bootstrap";
 
@@ -51,7 +50,7 @@ const Comments = () => {
     const Comment = ({comment}) => {
         const handleLikeComment = (e) => {
             e.preventDefault();
-            const req = {"username": sessionStorage.getItem('username'), "commodityId": commodityId, "userComment": comment.username}
+            const req = {"username": localStorage.getItem('username'), "commodityId": commodityId, "userComment": comment.username}
             likeComment(comment.id, req).then(() => {
                 setVote(!vote)
             }).catch(error => alert(error.response.data));
@@ -59,7 +58,7 @@ const Comments = () => {
 
         const handleDislikeComment = (e) => {
             e.preventDefault();
-            const req = {"username": sessionStorage.getItem('username'), "commodityId": commodityId, "userComment": comment.username}
+            const req = {"username": localStorage.getItem('username'), "commodityId": commodityId, "userComment": comment.username}
             dislikeComment(comment.id, req).then(() => {
                 setVote(!vote)
             }).catch((error) => alert(error.response.data));
@@ -96,7 +95,7 @@ const Comments = () => {
         const handleSubmitComment = (e) => {
             e.preventDefault();
             setIsLoading(true);
-            const req = {"username": sessionStorage.getItem('username'), "commodityId": commodityId, "text": commentText}
+            const req = {"username": localStorage.getItem('username'), "commodityId": commodityId, "text": commentText}
             addComment(req).then(() => {
                 setVote(!vote);
                 setCommentText("");
@@ -157,7 +156,7 @@ const SuggestedProducts = ({setItemCount}) => {
         },[]);
 
     const fetchBuyList = async () => {
-        const buyListResponse = await getBuyList(sessionStorage.getItem('username'));
+        const buyListResponse = await getBuyList(localStorage.getItem('username'));
         const commodities = await extractCommodities(buyListResponse.data);
         setBuyList(commodities);
         setItemCount(commodities.length);
@@ -211,7 +210,7 @@ const SuggestedProducts = ({setItemCount}) => {
 
         const handleAddToBuyList = (e) => {
             e.preventDefault();
-            addToBuyList(sessionStorage.getItem('username'), {"id": commodity.id}).then(async (response) => {
+            addToBuyList(localStorage.getItem('username'), {"id": commodity.id}).then(async (response) => {
                 console.log("ADD TO BUY LIST");
                 await fetchBuyList();
             }).catch((error) => alert(error.response.data))
@@ -219,7 +218,7 @@ const SuggestedProducts = ({setItemCount}) => {
 
         const handleRemoveFromBuyList = (e) => {
             e.preventDefault();
-            removeFromBuyList(sessionStorage.getItem('username'), {"id": commodity.id}).then(async(response) => {
+            removeFromBuyList(localStorage.getItem('username'), {"id": commodity.id}).then(async(response) => {
                 console.log("REMOVE FROM BUY LIST");
                 await fetchBuyList();
             }).catch((error) => alert(error.response.data))
@@ -287,7 +286,7 @@ const ProductInfo = ({setItemCount}) => {
         return commodities;
     }
     const fetchBuyList = async () => {
-        const buyListResponse = await getBuyList(sessionStorage.getItem('username'));
+        const buyListResponse = await getBuyList(localStorage.getItem('username'));
         const commodities = await extractCommodities(buyListResponse.data);
         setBuyList(commodities);
         setItemCount(commodities.length);
@@ -316,7 +315,7 @@ const ProductInfo = ({setItemCount}) => {
 
     const handleAddToBuyList = (e) => {
         e.preventDefault();
-        addToBuyList(sessionStorage.getItem('username'), {"id": commodity.id}).then(async (response) => {
+        addToBuyList(localStorage.getItem('username'), {"id": commodity.id}).then(async (response) => {
             console.log("ADD TO BUY LIST");
             await fetchBuyList();
         }).catch((error) => alert(error.response.data))
@@ -324,7 +323,7 @@ const ProductInfo = ({setItemCount}) => {
 
     const handleRemoveFromBuyList = (e) => {
         e.preventDefault();
-        removeFromBuyList(sessionStorage.getItem('username'), {"id": commodity.id}).then(async (response) => {
+        removeFromBuyList(localStorage.getItem('username'), {"id": commodity.id}).then(async (response) => {
             console.log("REMOVE FROM BUY LIST");
             await fetchBuyList();
         }).catch((error) => alert(error.response.data))
@@ -337,7 +336,7 @@ const ProductInfo = ({setItemCount}) => {
         const handleSubmitRate = (e) => {
             e.preventDefault();
             setIsSubmitting(true);
-            rateCommodity(commodityId, {"username": sessionStorage.getItem('username'), "score": rating})
+            rateCommodity(commodityId, {"username": localStorage.getItem('username'), "score": rating})
                 .then((response) => {
                     fetchCommodity().then();
 
@@ -504,7 +503,7 @@ const ProductInfo = ({setItemCount}) => {
 
 const Product = () => {
     const [itemCount, setItemCount] = useState(0);
-    if (sessionStorage.getItem('username') === null) {
+    if (localStorage.getItem('username') === null) {
         window.location.replace("/login")
         return;
     }

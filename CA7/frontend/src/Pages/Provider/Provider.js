@@ -47,7 +47,7 @@ const ProvidersProducts = ({setItemCount}) => {
     },[]);
 
     const fetchBuyList = async () => {
-        const buyListResponse = await getBuyList(sessionStorage.getItem('username'));
+        const buyListResponse = await getBuyList(localStorage.getItem('username'));
         const commodities = await extractCommodities(buyListResponse.data);
         setBuyList(commodities);
         setItemCount(commodities.length)
@@ -101,14 +101,14 @@ const ProvidersProducts = ({setItemCount}) => {
 
         const handleAddToBuyList = (e) => {
             e.preventDefault();
-            addToBuyList(sessionStorage.getItem('username'), {"id": commodity.id}).then(async (response) => {
+            addToBuyList(localStorage.getItem('username'), {"id": commodity.id}).then(async (response) => {
                 await fetchBuyList();
             }).catch((error) => alert(error.response.data))
         }
 
         const handleRemoveFromBuyList = (e) => {
             e.preventDefault();
-            removeFromBuyList(sessionStorage.getItem('username'), {"id": commodity.id}).then(async(response) => {
+            removeFromBuyList(localStorage.getItem('username'), {"id": commodity.id}).then(async(response) => {
 
                 await fetchBuyList();
             }).catch((error) => alert(error.response.data))
@@ -150,7 +150,7 @@ const ProvidersProducts = ({setItemCount}) => {
 
 const Provider = () => {
     const [itemCount, setItemCount] = useState(0);
-    if (sessionStorage.getItem('username') === null) {
+    if (localStorage.getItem('username') === null) {
         window.location.replace("/login")
         return;
     }
