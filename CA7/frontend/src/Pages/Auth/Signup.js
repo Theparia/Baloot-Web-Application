@@ -42,6 +42,11 @@ const Signup = () => {
             }).catch((error) => alert(error.response.data.errorMessage))
     }
 
+    if (localStorage.getItem('username') !== null) {
+        window.location.replace("/")
+        return;
+    }
+
     return (
         <>
             <Header username={null}/>

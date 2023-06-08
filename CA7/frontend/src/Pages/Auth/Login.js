@@ -7,13 +7,6 @@ const Login = () => {
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
 
-    // useEffect(() => {
-    //     if(localStorage.getItem("userJWT") != null){
-    //         window.location.replace("/");
-    //         return;
-    //     }
-    // }, []);
-
     function handleLogin(e) {
         e.preventDefault();
         const user = {"username": username, "password": password};
@@ -23,6 +16,11 @@ const Login = () => {
                 localStorage.setItem("username" , username);
                 window.location.replace("/");
             }).catch((error) => alert(error.response.data.errorMessage))
+    }
+
+    if (localStorage.getItem('username') !== null) {
+        window.location.replace("/")
+        return;
     }
 
     return (
@@ -40,10 +38,17 @@ const Login = () => {
                                onChange={(event) => setPassword(event.target.value)} required/>
                     </label>
                     <button type="submit" onClick={(e) => handleLogin(e)}>Login</button>
+                    <div id="github">
+                        <img id="github-icon" src="https://github.githubassets.com/images/modules/logos_page/GitHub-Mark.png" alt="GitHub icon"/>
+                        <a id="github-link" href="https://github.com/login/oauth/authorize?client_id=8ff24355f5dd638c4422&scope=user">
+                            Login via Github
+                        </a>
+                    </div>
+
                     {/*Parnian*/}
                     {/*<a className="link" href="https://github.com/login/oauth/authorize?client_id=8ff24355f5dd638c4422&scope=user">Login via Github</a>*/}
                     {/*Paria*/}
-                    <a className="link" href="https://github.com/login/oauth/authorize?client_id=bf0229f4067042e56a4b&scope=user">Login via Github</a>
+                    {/*<a className="link" href="https://github.com/login/oauth/authorize?client_id=bf0229f4067042e56a4b&scope=user">Login via Github</a>*/}
                 </form>
             </div>
         </>

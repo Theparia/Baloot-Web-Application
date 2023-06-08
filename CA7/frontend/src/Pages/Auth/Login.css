@@ -49,25 +49,28 @@
     background: var(--light_theme);
 }
 
-
-.form-container a {
+#github {
     position: relative;
-    margin-top: 70%;
-    left: 28%;
-    margin-left: 10px;
-    background-color: var(--medium_theme);
-    border-radius: 3px;
-    border: none;
-    width: 35%;
-    padding: 10px;
+    display: flex;
+    flex-direction: row;
+    float: left;
+    left: 20%;
+    top: 7%;
     text-align: center;
-    font-size: 15px;
-    color: var(--white);
-    text-decoration: none;
+    align-items: center;
+    align-content: center;
 }
 
-.form-container a:hover {
-    background: #734f37;
+#github-link {
+    font-size: 15px;
+    color: var(--dark_theme);
+    text-decoration: none;
+
+}
+
+#github-icon{
+    padding-right: 3%;
+    width: 10%;
 }
 
 .form-container button {
