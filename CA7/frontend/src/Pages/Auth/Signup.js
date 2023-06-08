@@ -36,7 +36,7 @@ const Signup = () => {
         };
         signup(user)
             .then(response => {
-                localStorage.setItem("userJWT" , response.data);
+                localStorage.setItem("userJWT" , response.data.jwtToken);
                 localStorage.setItem("username" , username);
                 window.location.replace("/");
             }).catch((error) => alert(error.response.data))

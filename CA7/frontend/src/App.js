@@ -9,6 +9,8 @@ import Home from "./Pages/Home/Home.js";
 import Signup from "./Pages/Auth/Signup.js";
 import Product from "./Pages/Product/Product.js";
 import Provider from "./Pages/Provider/Provider.js";
+import Callback from "./Pages/Callback/Callback.js";
+
 
 
 function App() {
@@ -21,6 +23,7 @@ function App() {
                 <Route path="/users/:username" element={<User/>}/>
                 <Route path="/commodities/:commodityId" element={<Product/>}/>
                 <Route path="/providers/:providerId" element={<Provider/>}/>
+                <Route path="/callback" element={<Callback />}/>
             </Routes>
         </Router>
     );

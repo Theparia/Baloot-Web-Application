@@ -26,6 +26,7 @@ public class JWTAuthFilter extends OncePerRequestFilter {
         {
             add("login");
             add("signup");
+            add("callback");
         }
     };
 

@@ -19,7 +19,7 @@ const Login = () => {
         const user = {"username": username, "password": password};
         login(user)
             .then(response => {
-                localStorage.setItem("userJWT" , response.data);
+                localStorage.setItem("userJWT" , response.data.jwtToken);
                 localStorage.setItem("username" , username);
                 window.location.replace("/");
             }).catch((error) => alert(error.response.data))
@@ -40,6 +40,7 @@ const Login = () => {
                                onChange={(event) => setPassword(event.target.value)} required/>
                     </label>
                     <button type="submit" onClick={(e) => handleLogin(e)}>Login</button>
+                    <a className="link" href="https://github.com/login/oauth/authorize?client_id=8ff24355f5dd638c4422&scope=user">Login via Github</a>
                 </form>
             </div>
         </>
