@@ -1,7 +1,7 @@
 package Model;
 
-//import Domain.Id.CommentId;
-import Model.Id.CommentId;
+//import Domain.Id.CommodityUserId;
+import Model.Id.CommodityUserId;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -12,7 +12,7 @@ import lombok.Setter;
 @NoArgsConstructor
 @Entity
 @Table(name = "comment")
-@IdClass(CommentId.class)
+@IdClass(CommodityUserId.class)
 public class Comment {
 
     private String userEmail;

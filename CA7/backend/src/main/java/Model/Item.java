@@ -1,6 +1,6 @@
 package Model;
 
-import Model.Id.ItemId;
+import Model.Id.CommodityUserId;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -12,7 +12,7 @@ import lombok.Setter;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@IdClass(ItemId.class)
+@IdClass(CommodityUserId.class)
 @Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
 public class Item {
     @Id

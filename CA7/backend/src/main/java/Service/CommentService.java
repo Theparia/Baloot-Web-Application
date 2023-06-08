@@ -1,9 +1,9 @@
 package Service;
 
-//import Domain.Id.CommentId;
+//import Domain.Id.CommodityUserId;
 import Model.Comment;
 import Model.Commodity;
-import Model.Id.CommentId;
+import Model.Id.CommodityUserId;
 import Exceptions.CommodityNotFound;
 import Exceptions.InvalidCommentVote;
 import Exceptions.UserNotFound;
@@ -58,7 +58,7 @@ public class CommentService {
             Commodity commodity = findCommodityById((Integer) rawDataList.get(i).get("commodityId"));
             comments.get(i).setUser(user);
             comments.get(i).setCommodity(commodity);
-            Optional<Comment> existingComment = commentRepository.findById(new CommentId(commodity, user));
+            Optional<Comment> existingComment = commentRepository.findById(new CommodityUserId(commodity, user));
             if (existingComment.isPresent())
                 continue;
             commentRepository.save(comments.get(i));
@@ -93,7 +93,7 @@ public class CommentService {
         return vote == 1 || vote == 0 || vote == -1;
     }
 
-    public Comment findCommentById(CommentId id) throws CommodityNotFound {
+    public Comment findCommentById(CommodityUserId id) throws CommodityNotFound {
         return commentRepository.findById(id)
                 .orElseThrow(CommodityNotFound::new);
     }
@@ -104,21 +104,21 @@ public class CommentService {
         User userComment = userRepository.findByUsername(usernameComment).orElseThrow(UserNotFound::new);
         Commodity commodity = commodityRepository.findById(commodityId)
                 .orElseThrow(CommodityNotFound::new);
-        CommentId commentId = new CommentId(commodity, userComment);
+        CommodityUserId commodityUserId = new CommodityUserId(commodity, userComment);
         Vote vote = new Vote(user, commodity, userComment, value);
         voteRepository.save(vote);
-        updateCommentVotes(commentId);
+        updateCommentVotes(commodityUserId);
     }
 
-    public void updateCommentVotes(CommentId commentId) throws CommodityNotFound {
-        Comment comment = findCommentById(commentId);
-        List<Vote> votes = voteRepository.findByCommodityAndCommentWriter(commentId.getCommodity(), commentId.getUser());
+    public void updateCommentVotes(CommodityUserId commodityUserId) throws CommodityNotFound {
+        Comment comment = findCommentById(commodityUserId);
+        List<Vote> votes = voteRepository.findByCommodityAndCommentWriter(commodityUserId.getCommodity(), commodityUserId.getUser());
 
         int likeCount = 0;
         int dislikeCount = 0;
 
         for (Vote vote : votes) {
-            if (Objects.equals(vote.getCommodity().getId(), commentId.getCommodity().getId()) && Objects.equals(vote.getCommentWriter().getUsername(), commentId.getUser().getUsername())){
+            if (Objects.equals(vote.getCommodity().getId(), commodityUserId.getCommodity().getId()) && Objects.equals(vote.getCommentWriter().getUsername(), commodityUserId.getUser().getUsername())){
                 if (vote.getValue() == 1) {
                     likeCount++;
                 } else if (vote.getValue() == -1) {

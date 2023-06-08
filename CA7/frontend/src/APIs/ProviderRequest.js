@@ -1,7 +1,7 @@
 import axios from "./BaseRequest.js";
 
 export function getProvider(id){
-    return axios.get('/providers/' + id);
+    return axios.get('/providers/' + id, {headers : {Authorization : localStorage.getItem("userJWT")}});
 }
 
 export function getProviderCommodities(id){

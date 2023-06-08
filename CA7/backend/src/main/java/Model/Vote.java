@@ -1,6 +1,6 @@
 package Model;
 
-//import Domain.Id.CommentId;
+//import Domain.Id.CommodityUserId;
 import Model.Id.VoteId;
 import jakarta.persistence.*;
 import lombok.Getter;
