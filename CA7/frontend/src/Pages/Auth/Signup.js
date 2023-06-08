@@ -39,7 +39,7 @@ const Signup = () => {
                 localStorage.setItem("userJWT" , response.data.jwtToken);
                 localStorage.setItem("username" , username);
                 window.location.replace("/");
-            }).catch((error) => alert(error.response.data))
+            }).catch((error) => alert(error.response.data.errorMessage))
     }
 
     return (
