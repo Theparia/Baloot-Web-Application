@@ -1,0 +1,44 @@
+.provider-info {
+    display: flex;
+    flex-direction: column;
+    width: 35em;
+    justify-content: center;
+    margin-top: 10%;
+    margin-left: 32%;
+    left: 50%;
+}
+
+#provider-product-topic{
+    margin-left: 11%;
+}
+
+.provider-info img{
+    border-radius: 15px;
+}
+
+#provider-year{
+    font-weight: 500;
+    font-size: 16px;
+    color: var(--dark_theme);
+    text-align: right;
+    padding-right: 0.5em;
+    padding-top: 0.5em;
+}
+
+#provider-name{
+    padding: 0;
+    margin: 0;
+}
+
+#product-container-provider {
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: row;
+    justify-content: flex-start;
+    margin-left: 10%;
+    margin-top: 0;
+}
+
+.provider-product-topic {
+
+}

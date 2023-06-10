@@ -1,0 +1,10 @@
+@import "LoginForm.css";
+
+.form-container h2 {
+    left: 10%;
+    position: relative;
+    font-style: normal;
+    font-weight: 700;
+    font-size: 31px;
+    color: var(--medium_theme);
+}

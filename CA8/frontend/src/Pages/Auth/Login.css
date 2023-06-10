@@ -1,0 +1,107 @@
+@import "./LoginForm.css";
+
+.form-container {
+    margin-bottom: 14%;
+}
+
+#login-title{
+    left: 32%;
+    position: relative;
+    font-weight: 700;
+    font-size: 31px;
+    color: var(--medium_theme);
+}
+
+
+#frgt-psw a {
+    position: relative;
+    left: 18%;
+    margin: 10px;
+    color: var(--medium_theme);
+    text-decoration: none;
+}
+
+.form-container {
+    position: relative;
+    width: 20%;
+    margin-top: 10%;
+    margin-left: 40%;
+}
+
+.form-container input {
+    border: none;
+    margin-bottom: 20px;
+    padding: 10px;
+    background: var(--light_theme);
+    width: 100%;
+    box-sizing: border-box;
+    border-radius: 13px;
+    font-style: normal;
+    font-weight: 300;
+    font-size: 15px;
+}
+
+.form-container input:valid {
+    background: var(--light_theme);
+}
+
+.form-container input:invalid {
+    background: var(--light_theme);
+}
+
+#github {
+    position: relative;
+    display: flex;
+    flex-direction: row;
+    float: left;
+    left: 20%;
+    top: 7%;
+    text-align: center;
+    align-items: center;
+    align-content: center;
+}
+
+#github-link {
+    font-size: 15px;
+    color: var(--dark_theme);
+    text-decoration: none;
+
+}
+
+#github-icon{
+    padding-right: 3%;
+    width: 10%;
+}
+
+.form-container button {
+    position: relative;
+    left: 28%;
+    margin: 10px;
+    background-color: var(--medium_theme);
+    border-radius: 3px;
+    border: none;
+    width: 35%;
+    padding: 10px;
+    text-align: center;
+    font-size: 15px;
+    color: var(--white);
+}
+
+.form-container button:hover {
+    background: #734f37;
+}
+
+#rtn-str {
+    position: relative;
+    left: 27%;
+    bottom: 10%;
+}
+
+#rtn-str a {
+    color: var(--medium_theme);
+    text-decoration: none;
+}
+
+#rtn-str span {
+    color: #4a4a4a;
+}

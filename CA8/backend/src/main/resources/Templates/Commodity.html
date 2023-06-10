@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Commodity</title>
+    <style>
+      li {
+        padding: 5px;
+      }
+      table {
+        width: 50%;
+        text-align: center;
+      }
+    </style>
+  </head>
+  <body>
+   
+    <ul>
+      <li id="id">Id: 2341</li>
+      <li id="name">Name: Galaxy S21</li>
+      <li id="providerId">Provider Id: 1781</li>
+      <li id="price">Price: 21000000</li>
+      <li id="categories">Categories: Technology, Phone</li>
+      <li id="rating">Rating: 8.3</li>
+      <li id="inStock">In Stock: 17</li>
+    </ul>
+
+    <form action="" method="POST">
+      <label>Your ID:</label>
+      <input type="text" id="userId" name="userId" value="" />
+      <br><br>
+      <label>Rate(between 1 and 10):</label>
+      <input type="number" id="rateCommodity" name="quantity" min="1" max="10">
+      <button id="rate" type="submit" formaction="">Rate</button>
+      <br>
+      <button id="add_to_buyList" type="submit" formaction="">Add to BuyList</button>
+
+      <br />
+
+      <table id = "commentsTable">
+        <tr>
+          <th>username</th>
+          <th>comment</th>
+          <th>date</th>
+          <th></th>
+          <th></th>
+        </tr>
+      </table>
+    </form>
+   
+  </body>
+</html>
