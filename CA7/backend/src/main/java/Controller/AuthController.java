@@ -58,12 +58,8 @@ public class AuthController {
 
     @RequestMapping(value = "/callback", method = RequestMethod.GET)
     protected ResponseEntity<AuthDTO> callbackLogin(@RequestParam(value = "code", required = true) String code) throws IOException, InterruptedException{
-//        Parnian
-        String clientId = "8ff24355f5dd638c4422";
-        String clientSecret = "6eacc3ef84f377e4f4c3ed0836459135e057d200";
-//        Paria
-//        String clientId = "bf0229f4067042e56a4b";
-//        String clientSecret = "9dcef5a409303cbdbabe92b35b4907ded461c3da";
+        String clientId = "bf0229f4067042e56a4b";
+        String clientSecret = "9dcef5a409303cbdbabe92b35b4907ded461c3da";
         String accessTokenUrl = String.format(
                 "https://github.com/login/oauth/access_token?client_id=%s&client_secret=%s&code=%s",
                 clientId, clientSecret, code

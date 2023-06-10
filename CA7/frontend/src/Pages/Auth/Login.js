@@ -40,15 +40,10 @@ const Login = () => {
                     <button type="submit" onClick={(e) => handleLogin(e)}>Login</button>
                     <div id="github">
                         <img id="github-icon" src="https://github.githubassets.com/images/modules/logos_page/GitHub-Mark.png" alt="GitHub icon"/>
-                        <a id="github-link" href="https://github.com/login/oauth/authorize?client_id=8ff24355f5dd638c4422&scope=user">
+                        <a id="github-link" href="https://github.com/login/oauth/authorize?client_id=bf0229f4067042e56a4b&scope=user">
                             Login via Github
                         </a>
                     </div>
-
-                    {/*Parnian*/}
-                    {/*<a className="link" href="https://github.com/login/oauth/authorize?client_id=8ff24355f5dd638c4422&scope=user">Login via Github</a>*/}
-                    {/*Paria*/}
-                    {/*<a className="link" href="https://github.com/login/oauth/authorize?client_id=bf0229f4067042e56a4b&scope=user">Login via Github</a>*/}
                 </form>
             </div>
         </>
