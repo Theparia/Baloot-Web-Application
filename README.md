@@ -2,7 +2,7 @@
 
 Baloot is a system for purchasing required supplies. In this system, the user can view a list of products presented in different categories, filter products based on their characteristics, create a shopping list, create a favorite list of the products they want, and rate the products.
 
-<br>
+## Phases
 
 **CA1**: Logic Domain, Git, Maven, Unit Testing (JUnit)
 
@@ -19,3 +19,7 @@ Baloot is a system for purchasing required supplies. In this system, the user ca
 **CA7**: Authentication, JWT, OAuth, JWT Authentication Filter, SQL Injection
 
 **CA8**: Docker, Nginx
+
+## Contributors
+* [Paria Khoshtab](https://github.com/Theparia/)
+* [Parnian Fazel](https://github.com/parnianf/)
