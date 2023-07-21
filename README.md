@@ -28,7 +28,7 @@ Baloot is a system for purchasing required supplies. In this system, the user ca
 
 **CA5**: React, CORS, Spring, Standard API
 
-**CA6**: MySQL Database, JDBC
+**CA6**: MySQL Database, JDBC, Hibernate
 
 **CA7**: Authentication, JWT, OAuth, JWT Authentication Filter, SQL Injection
 
